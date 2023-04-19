@@ -1,8 +1,8 @@
 package Circular_list;
 
 public class Node {
-	Node next;
 	Node prev;
+	Node next;
 	Object obj;
 	
 	/*	Node = um tile do board
@@ -12,9 +12,9 @@ public class Node {
 	 * 		NODE next
 	 * */
 	
-	public Node(Object o,Node n, Node p) {
-		next = n;
+	public Node(Object o, Node p, Node n) {
 		prev = p;
+		next = n;
 		obj = o;
 	}
 	
@@ -23,7 +23,7 @@ public class Node {
 	}
 	
 	public Node get_previous() {
-		return next;
+		return prev;
 	}
 	
 	public Object get_content() {
@@ -32,9 +32,11 @@ public class Node {
 	
 	public void set_next(Node n) {
 		next = n;
+		return;
 	}
 	
 	public void set_prev(Node p) {
 		prev = p;
+		return;
 	}
 }

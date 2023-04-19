@@ -43,7 +43,7 @@ public class Tile {
 	Piece p2 = null;
 	int color;
 	int num_pieces = 0;
-
+	
 	public Tile(int input_id, int input_type, int input_color, Piece input_p1, Piece input_p2, int input_num_pieces) {
 		id = input_id;
 		type = input_type;
@@ -79,6 +79,10 @@ public class Tile {
 
 	public int pieces_in_tile() {
 		return num_pieces;
+	}
+	
+	public int get_id() {
+		return id;
 	}
 	
 	public boolean is_basic() {

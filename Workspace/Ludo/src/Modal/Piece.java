@@ -3,11 +3,11 @@ package Modal;
 
 /* 
  * =======  stack_up()  =======
- * atualiza a variavel stacked das duas pecas sendo stacked para true
+ * atualiza a variavel stacked das duas pecas para true
  * 
  * 
  * =======  stack_down()  =======
- * atualiza a variavel stacked das duas pecas sendo destacked para false
+ * atualiza a variavel stacked das duas pecas para false
  * 
  * 
  * =======  is_stacked()  =======

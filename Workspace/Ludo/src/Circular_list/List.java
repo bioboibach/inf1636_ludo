@@ -1,33 +1,62 @@
 package Circular_list;
 
 public class List {
-	Object o;
-	Node next;
+	private static Node head = new Node(null, null, null);
+	public static int list_size = 0;
 	
-	public List (Object o) {
-		Node node = new Node(o, null, null);
-		node.set_next(node);
-		node.set_prev(node);
-		return;
+	Node curr;
+	Node ini;
+	
+	public void start(Object o) {
+		ini = new Node(o, null, null);
+		head.set_next(ini);
+		ini.set_prev(ini);
+		ini.set_next(ini);
+		curr = ini;
+		list_size++;
 	}
 	
 	public void append(Object o) {
-		Node node = new Node(o, null,this.prev);
+		// new.prev = curr
+		// new.next = curr.next
+		Node new_node = new Node(o, curr, curr.get_next()); 
 		
+		//curr.next = new
+		curr.set_next(new_node);
+		
+		//new.next.prev = new
+		new_node.next.set_prev(new_node);
+		
+		//curr is the new node
+		curr = new_node;
+		list_size++;
 	}
 	
-	public List get_first() {
-		
-		return 
+	public Object get_first() {
+		return ini.get_content();
+	}
+	public Object get_current() {
+		return curr.get_content();
+	}
+	
+	public void go_next() {
+		curr = curr.get_next();
+		return;
+	}
+	
+	public void go_back() {
+		curr = curr.get_previous();
+		return;
 	}
 	
 	public void remove() {
-		
+		curr.prev.set_next(curr.next);
+		curr.next.set_prev(curr.prev);
+		curr = curr.next;
+		list_size--;
 	}
 	
-	public boolean is_empty() {
-		return n.get_next() == null;
+	public int len() {
+		return list_size;
 	}
-	
-	
 }

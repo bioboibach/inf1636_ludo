@@ -8,7 +8,7 @@ public class Node {
 	/*	Node = um tile do board
 	 * 
 	 * componentes:
-	 * 		OBJECT o == Tile 
+	 * 		OBJECT o = Tile
 	 * 		NODE next
 	 * */
 	

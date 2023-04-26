@@ -17,17 +17,12 @@ public class List {
 	}
 	
 	public void append(Object o) {
-		// new.prev = curr
-		// new.next = curr.next
 		Node new_node = new Node(o, curr, curr.get_next()); 
 		
-		//curr.next = new
 		curr.set_next(new_node);
 		
-		//new.next.prev = new
 		new_node.next.set_prev(new_node);
 		
-		//curr is the new node
 		curr = new_node;
 		list_size++;
 	}

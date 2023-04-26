@@ -20,12 +20,12 @@ package modal;
  * outra opcao:
  * 
  * type -> indica tipo do tile:
- * 		-> 0 = basic
- * 		-> 1 = home 
- * 		-> 2 = safe
- * 		-> 3 = entrance
- * 		-> 4 = colored
- * 		-> 5 = finish
+ * 		-> 0 = casa comum
+ * 		-> 1 = casa inicial
+ * 		-> 2 = casa de saida
+ * 		-> 3 = abrigo
+ * 		-> 4 = reta final
+ * 		-> 5 = final
  * 
  * color -> indica a cor do tile [0..3] = player[1..4]
  * 
@@ -53,8 +53,8 @@ public class Tile {
 		num_pieces = input_num_pieces;
 	}
 
-//	construtor pra todos os tiles q n sao home
-//	no inicio do jogo so os tiles de home sao ocupados com pecas
+//	construtor pra todos os tiles q n sao casa inicial
+//	no inicio do jogo so os tiles de casa inicial sao ocupados com pecas
 	public Tile(int input_id, int input_type, int input_color) {
 		id = input_id;
 		type = input_type;
@@ -103,5 +103,4 @@ public class Tile {
 	public boolean is_finish() {
 		return type == 5;
 	}
-
 }

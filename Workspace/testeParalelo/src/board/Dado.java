@@ -2,7 +2,7 @@ package board;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public class Dado {
+protected class Dado {
 	private int d1;
 	
 	public int roll() {

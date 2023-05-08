@@ -1,6 +1,6 @@
 package board;
 
-public enum TeamColors {
+protected enum TeamColors {
 	yellow,
 	blue,
 	red,

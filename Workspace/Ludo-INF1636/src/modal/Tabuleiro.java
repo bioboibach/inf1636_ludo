@@ -1,0 +1,30 @@
+package modal;
+
+public class Tabuleiro {
+	/* tile matriz_de_tile[15x15]
+	 * 
+	 */
+	
+	Casa tile_matrix[][] = new Casa[15][15];
+	
+	private static Tabuleiro instance;
+
+	private Tabuleiro() {
+		int i, j;
+		for (i = 0; i < 15; i++) {
+			for (j = 0; j < 15; j++) {
+				// quando i, j for um tile "inutil" n inicializa nada
+				tile_matrix[i][j] = new Casa(i, j); // passa as coordenadas da casa pra decidir oq vai ser
+			}
+		}
+	}
+
+	public static Tabuleiro getInstance() {
+		if (instance == null) {
+			instance = new Tabuleiro();
+		}
+		return instance;
+	}
+	
+	
+}

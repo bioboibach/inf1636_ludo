@@ -1,6 +1,6 @@
 package modal;
 
-public class Usefull_constants {
+class Usefull_constants {
 	{	
 
 		final int base[][] = {{1, 1}, {4, 1}, {1, 4}, {4, 4}, 		 //base azul

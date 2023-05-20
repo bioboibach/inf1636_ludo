@@ -1,6 +1,6 @@
 package modal;
 
-public class Player {
+class Player {
 	/* peca arr_peca
 	 * int id_player
 	 * 

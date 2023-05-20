@@ -1,6 +1,6 @@
 package modal;
 
-public class Tabuleiro {
+class Tabuleiro {
 	/* tile matriz_de_tile[15x15]
 	 * 
 	 */
@@ -10,7 +10,6 @@ public class Tabuleiro {
 	private static Tabuleiro instance;
 
 	private Tabuleiro() {
-		
 		
 		int i, j;
 		for (i = 0; i < 15; i++) {

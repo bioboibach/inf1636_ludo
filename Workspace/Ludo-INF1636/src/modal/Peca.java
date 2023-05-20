@@ -4,7 +4,7 @@ package modal;
  * int id_time
  * coord posicao
  */
-public class Peca {
+class Peca {
 	int id_time;
 	int coord[] = new int[2];
 	

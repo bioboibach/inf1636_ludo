@@ -9,7 +9,7 @@ public class Player {
 	int player_id;
 	Peca pecas[] = new Peca[4];
 	
-	public Player(int id, Peca p1, Peca p2, Peca p3, Peca p4) {
+	public Player(int id) {
 		player_id = id;
 		for (int count = 0; count < 4; count++) {
 			pecas[count] = new Peca(id, -1, -1); 

@@ -12,54 +12,137 @@ package modal;
  * 		-> 3 = abrigo
  * 		-> 4 = reta final
  * 		-> 5 = final
+ * 
+ * cor  -> 0 = vermelho
+ * 		-> 1 = verde
+ * 		-> 2 = amarelo
+ * 		-> 3 = azul
  * */
 class Casa {
 	
 	int coord[] = new int[2];
 	int type;
+	int cor;
+	Casa next = null;
 	int num_pieces = 0;
 	Peca p1 = null;
 	Peca p2 = null;
 
 	public Casa(int x, int y) {
 		
-//		casa inicial
-		if ((coord[0] == 1 || coord[0] == 4) &&
-			(coord[1] == 1 || coord[1] == 4)) {
+//		casa inicial vermelha
+		if ((x == 1 || x == 4) &&
+			(y == 1 || y == 4)) {
 			type = 1;
-			
+			cor = 0;
+//			
+//			if (x == 1 && y == 1) {
+//			p1 = p[0].pecas[0];
+//			p[0].pecas[0].current_tile = this;
+//			}
+//			
+//			else if (x == 1 && y == 4) {
+//			p1 = p[0].pecas[1];
+//			p[0].pecas[1].current_tile = this;
+//			}
+//			
+//			else if (x == 4 && y == 1) {
+//			p1 = p[0].pecas[2];
+//			p[0].pecas[2].current_tile = this;
+//			}
+//			
+//			else if (x == 4 && y == 4) {
+//			p1 = p[0].pecas[3];
+//			p[0].pecas[3].current_tile = this;
+//			}
 		}
 		
-		if ((coord[0] == 1 || coord[0] == 4 || coord[0] == 10 || coord[0] == 13) &&
-			(coord[1] == 1 || coord[1] == 4 || coord[1] == 10 || coord[1] == 13)) {
+//		casa inicial verde
+		else if ((x == 10 || x == 13) &&
+			(y == 1 || y == 4)) {
 			type = 1;
+			cor = 1;
+//			
+//			if (x == 10 && y == 1) {
+//			p1 = p[1].pecas[0];
+//			p[1].pecas[0].current_tile = this;
+//			}
+//			
+//			else if (x == 10 && y == 4) {
+//			p1 = p[1].pecas[1];
+//			p[1].pecas[1].current_tile = this;
+//			}
+//			
+//			else if (x == 13 && y == 1) {
+//			p1 = p[1].pecas[2];
+//			p[1].pecas[2].current_tile = this;
+//			}
+//			
+//			else if (x == 13 && y == 4) {
+//			p1 = p[1].pecas[3];
+//			p[1].pecas[3].current_tile = this;
+//			}
+		}
+		
+//		casa inicial amarela
+		else if ((x == 10 || x == 13) &&
+			(y == 10 || y == 13)) {
+			type = 1;
+			cor = 2;
+//			
+//			if (x == 10 && y == 1) {
+//			p1 = p[1].pecas[0];
+//			p[1].pecas[0].current_tile = this;
+//			}
+//			
+//			else if (x == 10 && y == 4) {
+//			p1 = p[1].pecas[1];
+//			p[1].pecas[1].current_tile = this;
+//			}
+//			
+//			else if (x == 13 && y == 1) {
+//			p1 = p[1].pecas[2];
+//			p[1].pecas[2].current_tile = this;
+//			}
+//			
+//			else if (x == 13 && y == 4) {
+//			p1 = p[1].pecas[3];
+//			p[1].pecas[3].current_tile = this;
+//			}
+		}
+		
+//		casa inicial azul
+		else if ((x == 1 || x == 4) &&
+			(y == 10 || y == 13)) {
+			type = 1;
+			cor = 3;
 		}
 		
 //		casa de saida
-		else if ((coord[0] == 1 && coord[1] == 8)  ||
-				 (coord[0] == 8 && coord[1] == 13) ||
-			 	 (coord[0] == 6 && coord[1] == 1)  ||
-				 (coord[0] == 13 && coord[1] == 6)) {
+		else if ((x == 1 && y == 8)  ||
+				 (x == 8 && y == 13) ||
+			 	 (x == 6 && y == 1)  ||
+				 (x == 13 && y == 6)) {
 			type = 2;
 		}
 		
 //		casa de abrigo
-		else if ((coord[0] == 1 && coord[1] == 6)  ||
-				 (coord[0] == 6 && coord[1] == 13) ||
-				 (coord[0] == 8 && coord[1] == 1)  ||
-				 (coord[0] == 13 && coord[1] == 8)) {
+		else if ((x == 1 && y == 6)  ||
+				 (x == 6 && y == 13) ||
+				 (x == 8 && y == 1)  ||
+				 (x == 13 && y == 8)) {
 			type = 3;
 		}
-		
-//		
-//		coord[0] = x;
-//		coord[1] = y;
-//		if (this.is_casa_inicial()) {
-//			p1 = p;
-//			p.coord[0] = x;
-//			p.coord[1] = y;			
-//			type = 1;
-		}
+	}
+	
+	protected int get_type() {
+		return type;
+	}
+	
+	public boolean is_casa_comum() {
+		if (type == 0) return true;
+		return false;
+	}
 	
 	public boolean is_casa_inicial() {
 		if (type == 1) return true;
@@ -67,22 +150,17 @@ class Casa {
 	}
 	
 	public boolean is_casa_de_saida() {
-		if (type == 1) return true;
+		if (type == 2) return true;
 		return false;
-	}
-	
-	public boolean is_casa_comum() {
-		if (type == 1) return true;
-		return false;
-	}
+	}	
 	
 	public boolean is_abrigo() {
-		if (type == 1) return true;
+		if (type == 3) return true;
 		return false;
 	}
 	
 	public boolean is_reta_final() {
-		if (type == 1) return true;
+		if (type == 4) return true;
 		return false;
 	}
 	
@@ -90,4 +168,5 @@ class Casa {
 		if (type == 1) return true;
 		return false;
 	}
+	
 }

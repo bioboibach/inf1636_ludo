@@ -14,7 +14,6 @@ class Tabuleiro {
 		int i, j;
 		for (i = 0; i < 15; i++) {
 			for (j = 0; j < 15; j++) {
-				if (i == 1 && j == 1)
 				tile_matrix[i][j] = new Casa(i, j); // passa as coordenadas da casa pra decidir oq vai ser
 			}
 		}

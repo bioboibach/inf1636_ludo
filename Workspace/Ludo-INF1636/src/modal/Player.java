@@ -12,7 +12,13 @@ class Player {
 	public Player(int id) {
 		player_id = id;
 		for (int count = 0; count < 4; count++) {
-			pecas[count] = new Peca(id, -1, -1); 
+			pecas[count] = new Peca(id);
 		}
 	}
+	
+	protected Peca get_peca(int id) {
+		return pecas[id];
+	}
+	
+	
 }

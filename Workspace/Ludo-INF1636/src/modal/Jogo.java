@@ -1,13 +1,27 @@
 package modal;
 
 class Jogo {
-	{
+	Tabuleiro t;
 	Player players[] = new Player[4];
-	Tabuleiro t = Tabuleiro.getInstance();
+	
+	public Jogo() {}
 	
 	
-	for (int i = 0; i < 4; i++) {
-		players[i] = new Player(i);
+	public void start_players() {		
+		for (int i = 0; i < 4; i++) {
+			players[i] = new Player(i);
+		}
 	}
+	
+	public void start_board() {
+//		t = Tabuleiro.getInstance();
+		
+		
 	}
+	
+	protected Player get_player(int id){
+		return players[id];
+	}
+	
 }
+

@@ -6,14 +6,17 @@ package modal;
  */
 class Peca {
 	int id_time;
-	int coord[] = new int[2];
+	Casa current_tile = null;
 	
-	public Peca(int id, int x, int y) {
+	public Peca(int id) {
 		id_time = id;
-		coord[0] = x;
-		coord[1] = y;
 	}
 	
-	
+	public Casa get_current_tile() {
+		return current_tile;
+	}
 
+	public int get_id() {
+		return id_time;
+	}
 }

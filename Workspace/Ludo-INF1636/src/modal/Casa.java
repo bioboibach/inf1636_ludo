@@ -35,26 +35,6 @@ class Casa {
 			(y == 1 || y == 4)) {
 			type = 1;
 			cor = 0;
-//			
-//			if (x == 1 && y == 1) {
-//			p1 = p[0].pecas[0];
-//			p[0].pecas[0].current_tile = this;
-//			}
-//			
-//			else if (x == 1 && y == 4) {
-//			p1 = p[0].pecas[1];
-//			p[0].pecas[1].current_tile = this;
-//			}
-//			
-//			else if (x == 4 && y == 1) {
-//			p1 = p[0].pecas[2];
-//			p[0].pecas[2].current_tile = this;
-//			}
-//			
-//			else if (x == 4 && y == 4) {
-//			p1 = p[0].pecas[3];
-//			p[0].pecas[3].current_tile = this;
-//			}
 		}
 		
 //		casa inicial verde
@@ -62,26 +42,6 @@ class Casa {
 			(y == 1 || y == 4)) {
 			type = 1;
 			cor = 1;
-//			
-//			if (x == 10 && y == 1) {
-//			p1 = p[1].pecas[0];
-//			p[1].pecas[0].current_tile = this;
-//			}
-//			
-//			else if (x == 10 && y == 4) {
-//			p1 = p[1].pecas[1];
-//			p[1].pecas[1].current_tile = this;
-//			}
-//			
-//			else if (x == 13 && y == 1) {
-//			p1 = p[1].pecas[2];
-//			p[1].pecas[2].current_tile = this;
-//			}
-//			
-//			else if (x == 13 && y == 4) {
-//			p1 = p[1].pecas[3];
-//			p[1].pecas[3].current_tile = this;
-//			}
 		}
 		
 //		casa inicial amarela
@@ -89,26 +49,6 @@ class Casa {
 			(y == 10 || y == 13)) {
 			type = 1;
 			cor = 2;
-//			
-//			if (x == 10 && y == 1) {
-//			p1 = p[1].pecas[0];
-//			p[1].pecas[0].current_tile = this;
-//			}
-//			
-//			else if (x == 10 && y == 4) {
-//			p1 = p[1].pecas[1];
-//			p[1].pecas[1].current_tile = this;
-//			}
-//			
-//			else if (x == 13 && y == 1) {
-//			p1 = p[1].pecas[2];
-//			p[1].pecas[2].current_tile = this;
-//			}
-//			
-//			else if (x == 13 && y == 4) {
-//			p1 = p[1].pecas[3];
-//			p[1].pecas[3].current_tile = this;
-//			}
 		}
 		
 //		casa inicial azul

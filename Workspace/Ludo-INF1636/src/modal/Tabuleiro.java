@@ -1,9 +1,7 @@
 package modal;
 
+/* tile matriz_de_tile[15x15] */
 class Tabuleiro {
-	/* tile matriz_de_tile[15x15]
-	 * 
-	 */
 	
 	Casa tile_matrix[][] = new Casa[15][15];
 	

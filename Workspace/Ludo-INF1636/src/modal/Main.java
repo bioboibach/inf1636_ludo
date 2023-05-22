@@ -8,6 +8,8 @@ public class Main {
 		jogo.start_players();
 		jogo.start_board();
 		
+		new Frame();
+		
 		for (int i = 0; i  < 15; i++) {
 			System.out.print("| ");
 			for (int j = 0; j < 15; j++) {

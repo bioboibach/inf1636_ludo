@@ -1,14 +1,12 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import java.awt.Graphics2D;
+package view;
+import modal.*;
+
+import javax.imageio.*;
+import java.awt.*;
+import java.awt.geom.*;
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
 
 
 public class LudoBoard extends JPanel {
@@ -24,11 +22,28 @@ public class LudoBoard extends JPanel {
 	private JButton loadButton;
 	private JButton saveButton;
 	private JButton launchDice;
+	
+	Image i[] = new Image[6];
+	int die_val = 1;
+	int turn = 0;
 
 	public LudoBoard() {
 		setPreferredSize(new Dimension(1200, 700)); // Tamanho da janela
 		setLayout(null);
-
+		
+			try {
+				i[0] = ImageIO.read(new File("res/Dado1.png"));
+				i[1] = ImageIO.read(new File("res/Dado2.png"));
+				i[2] = ImageIO.read(new File("res/Dado3.png"));
+				i[3] = ImageIO.read(new File("res/Dado4.png"));
+				i[4] = ImageIO.read(new File("res/Dado5.png"));
+				i[5] = ImageIO.read(new File("res/Dado6.png"));
+			}
+			catch(IOException e){
+				System.out.println(e.getMessage());
+				System.exit(1);
+			}
+		
 		newGameButton = new JButton("Nova Partida");
 		newGameButton.setBounds(835, 25, 250, 50); // Cordenada dos botoes
 		newGameButton.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -59,7 +74,7 @@ public class LudoBoard extends JPanel {
 		add(saveButton);
 
 		launchDice = new JButton("Lançar Dado");
-		launchDice.setBounds(835, 475, 250, 50); // Cordenada dos botoes
+		launchDice.setBounds(835, 530, 250, 50); // Cordenada dos botoes
 		launchDice.setFont(new Font("Arial", Font.PLAIN, 18));
 		launchDice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -88,7 +103,9 @@ public class LudoBoard extends JPanel {
 	}
 
 	public void launchDice() {
-		System.out.println("Dado rolou 5 ");
+		die_val = modal.Dado.getInstance().roll();
+		turn = (turn + 1) % 4; 
+		repaint();
 	}
 	
 	
@@ -97,6 +114,17 @@ public class LudoBoard extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Color color;
+		
+		Graphics2D g2D = (Graphics2D) g;
+		
+		g2D.setPaint(COLORS[turn]);
+		Rectangle2D rt = new Rectangle2D.Double(890.0,350.0,150.0,150.0);
+		g2D.fill(rt);
+
+		g2D.drawImage(i[die_val-1], 915, 375, null);
+		
+		
+		
 		// Desenha o tabuleiro
 		for (int row = 0; row < HEIGHT; row++) { // Branco
 			for (int col = 0; col < WIDTH; col++) {
@@ -503,12 +531,7 @@ public class LudoBoard extends JPanel {
 		g.fillPolygon(xs8,ys8,3);
 		g.setColor(Color.BLACK);
 		g.drawPolygon(xs8,ys8,3);
-		
-		// Desenha o retângulo cinza no local dos botões
-		Rectangle buttonRectangle = new Rectangle(725, 0, 500, 750);
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(buttonRectangle.x, buttonRectangle.y, buttonRectangle.width, buttonRectangle.height);
-				
+
 		Font font = new Font("Arial", Font.BOLD, 32);
 		g.setFont(font);
 		// Desenha o texto "A jogar"

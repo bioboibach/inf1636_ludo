@@ -28,7 +28,7 @@ class Casa {
 	Peca p1 = null;
 	Peca p2 = null;
 
-	public Casa(int x, int y) {
+	protected Casa(int x, int y) {
 		
 //		casa inicial vermelha
 		if ((x == 1 || x == 4) &&
@@ -79,33 +79,33 @@ class Casa {
 		return type;
 	}
 	
-	public boolean is_casa_comum() {
+	protected boolean is_casa_comum() {
 		if (type == 0) return true;
 		return false;
 	}
 	
-	public boolean is_casa_inicial() {
+	protected boolean is_casa_inicial() {
 		if (type == 1) return true;
 		return false;
 	}
 	
-	public boolean is_casa_de_saida() {
+	protected boolean is_casa_de_saida() {
 		if (type == 2) return true;
 		return false;
 	}	
 	
-	public boolean is_abrigo() {
+	protected boolean is_abrigo() {
 		if (type == 3) return true;
 		return false;
 	}
 	
-	public boolean is_reta_final() {
+	protected boolean is_reta_final() {
 		if (type == 4) return true;
 		return false;
 	}
 	
-	public boolean is_casa_de_entrada() {
-		if (type == 1) return true;
+	protected boolean is_casa_de_entrada() {
+		if (type == 5) return true;
 		return false;
 	}
 	

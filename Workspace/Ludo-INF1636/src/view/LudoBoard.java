@@ -99,6 +99,7 @@ public class LudoBoard extends JPanel {
 	}
 
 	public void saveGame() {
+		// Salvar as posições do jogo com algo tipo fwrite sendo que vai ter que adicionar a opção de colocar esse jogo salvo na matriz de tabuleiro
 		System.out.println("Jogo salvo! ");
 	}
 

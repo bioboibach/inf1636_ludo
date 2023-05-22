@@ -63,7 +63,7 @@ public class LudoBoard extends JPanel {
 		launchDice.setFont(new Font("Arial", Font.PLAIN, 18));
 		launchDice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				startNewGame();
+				launchDice();
 			}
 		});
 		add(launchDice);
@@ -84,11 +84,11 @@ public class LudoBoard extends JPanel {
 	}
 
 	public void saveGame() {
-
+		System.out.println("Jogo salvo! ");
 	}
 
 	public void launchDice() {
-
+		System.out.println("Dado rolou 5 ");
 	}
 	
 	

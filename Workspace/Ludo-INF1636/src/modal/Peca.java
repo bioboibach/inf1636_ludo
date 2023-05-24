@@ -5,18 +5,26 @@ package modal;
  * coord posicao
  */
 class Peca {
-	int id_time;
-	Casa current_tile = null;
+	protected static int id_peca;
+	protected int id_time;
+	protected Casa current_tile = null;
 	
-	public Peca(int id) {
+	protected  Peca(int id) {
 		id_time = id;
+
 	}
 	
-	public Casa get_current_tile() {
+	protected Casa get_current_tile() {
 		return current_tile;
 	}
 
-	public int get_id() {
+	protected int get_cor() {
 		return id_time;
 	}
+	
+	protected void change_casa(Casa c) {
+		current_tile = c;
+	}
+
+	
 }

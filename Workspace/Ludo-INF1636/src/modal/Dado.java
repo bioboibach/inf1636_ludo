@@ -2,9 +2,9 @@ package modal;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public class Dado {
+class Dado {
 	
-	public static Dado instance;
+	private static Dado instance;
 	private int d1;
 	
 	public static Dado getInstance() {

@@ -5,11 +5,11 @@ package modal;
  * coord posicao
  */
 class Peca {
-	protected static int id_peca;
-	protected int id_time;
-	protected Casa current_tile = null;
+	private static int id_peca;
+	private int id_time;
+	private Casa current_tile = null;
 	
-	protected  Peca(int id) {
+	protected Peca(int id) {
 		id_time = id;
 
 	}

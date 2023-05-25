@@ -5,17 +5,17 @@ import java.util.ArrayList;
 class Jogo {
 	
 	private static Jogo instance;	
-	
-	protected Tabuleiro t;
-	protected Dado d;
-	protected Player players[] = new Player[4];
-	
-	protected ArrayList<Casa> path = new ArrayList<Casa>();
-	protected ArrayList<Casa> casas_iniciais = new ArrayList<Casa>();
-	protected ArrayList<Casa> reta_final_vermelho = new ArrayList<Casa>();
-	protected ArrayList<Casa> reta_final_verde = new ArrayList<Casa>();
-	protected ArrayList<Casa> reta_final_amarelo = new ArrayList<Casa>();
-	protected ArrayList<Casa> reta_final_azul = new ArrayList<Casa>();
+
+	private Tabuleiro t;
+	private Dado d;
+	private Player players[] = new Player[4];
+
+	private ArrayList<Casa> path = new ArrayList<Casa>();
+	private ArrayList<Casa> casas_iniciais = new ArrayList<Casa>();
+	private ArrayList<Casa> reta_final_vermelho = new ArrayList<Casa>();
+	private ArrayList<Casa> reta_final_verde = new ArrayList<Casa>();
+	private ArrayList<Casa> reta_final_amarelo = new ArrayList<Casa>();
+	private ArrayList<Casa> reta_final_azul = new ArrayList<Casa>();
 	
 	protected Jogo() {
 		start_players();
@@ -25,13 +25,11 @@ class Jogo {
 	}
 	
 	
-	protected void start_players() {		
+	protected void start_players() {
 		for (int i = 0; i < 4; i++) {
 			players[i] = new Player(i);
 		}
 	}
-	
-	
 	protected void start_casas() {
 		int count;
 		
@@ -88,15 +86,13 @@ class Jogo {
 		}
 		
 	}
-	
 	protected void start_board() {
 		t = Tabuleiro.getInstance();
 	}
-	
 	protected void start_dado() {
 		d = Dado.getInstance();
 	}
-	
+
 //	(?)
 	protected void captura(Casa c) {
 		Peca p = c.get_p1();
@@ -104,13 +100,36 @@ class Jogo {
 			p = c.get_p2();
 		}
 		c.remove_peca(p);
+		casas_iniciais.get(p.get_cor()).add_peca(p);
 	}
 	
 	protected Player get_player(int id){
 		return players[id];
 	}
 	
+	protected ArrayList<Casa> get_path(){
+		return path;
+	}
 	
+	protected ArrayList<Casa> get_casas_iniciais(){
+		return casas_iniciais;
+	}
+	
+	protected ArrayList<Casa> get_reta_final_vermelho(){
+		return reta_final_vermelho;
+	}
+	
+	protected ArrayList<Casa> reta_final_verde(){
+		return reta_final_verde;
+	}
+	
+	protected ArrayList<Casa> reta_final_amarelo(){
+		return reta_final_amarelo;
+	}
+	
+	protected ArrayList<Casa> reta_final_azul(){
+		return reta_final_azul;
+	}
 	
 	public static Jogo getInstance() {
 		if (instance == null) {

@@ -22,15 +22,13 @@ package modal;
  * */
 class Casa {
 	
-//	protected int coord[] = new int[2];
-	protected int type = 0;
-	protected int cor = 8;
-//	protected Casa next = null;
-	protected int num_pecas = 0;
-	protected Peca p1 = null;
-	protected Peca p2 = null;
-	protected Peca p3 = null;
-	protected Peca p4 = null;
+	private int type = 0;
+	private int cor = 8;
+	private int num_pecas = 0;
+	private Peca p1 = null;
+	private Peca p2 = null;
+	private Peca p3 = null;
+	private Peca p4 = null;
 	
 	protected Casa() {}
 	
@@ -84,7 +82,7 @@ class Casa {
 		else p2 = null;
 	}
 	
-//	assumo que a casa esta livre
+//	assumo que pode mover
 	protected void add_peca(Peca p) {
 		num_pecas++;
 		p.change_casa(this);
@@ -96,7 +94,7 @@ class Casa {
 
 //	(?)
 	protected Casa get_casa_inicial(int cor) {
-		return Jogo.getInstance().casas_iniciais.get(cor);
+		return Jogo.getInstance().get_casas_iniciais().get(cor);
 	}
 	
 //	(?)

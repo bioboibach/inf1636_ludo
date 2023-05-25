@@ -3,7 +3,11 @@ package modal;
 import java.util.ArrayList;
 
 class Jogo {
+	
+	private static Jogo instance;	
+	
 	protected Tabuleiro t;
+	protected Dado d;
 	protected Player players[] = new Player[4];
 	
 	protected ArrayList<Casa> path = new ArrayList<Casa>();
@@ -13,7 +17,12 @@ class Jogo {
 	protected ArrayList<Casa> reta_final_amarelo = new ArrayList<Casa>();
 	protected ArrayList<Casa> reta_final_azul = new ArrayList<Casa>();
 	
-	protected Jogo() {}
+	protected Jogo() {
+		start_players();
+		start_board();
+		start_casas();
+		start_dado();
+	}
 	
 	
 	protected void start_players() {		
@@ -21,6 +30,7 @@ class Jogo {
 			players[i] = new Player(i);
 		}
 	}
+	
 	
 	protected void start_casas() {
 		int count;
@@ -53,24 +63,60 @@ class Jogo {
 		}
 		reta_final_azul.add(new Casa(3, 5));
 		
-		for (count = 0; count < 55; count++) {
+//		path
+		for (count = 0; count <= 51; count++) {
+
+//			inicializa casas de saida
+			if (count == 0) path.add(new Casa(2, 0)); 
+			else if (count == 13) path.add(new Casa(2, 1));
+			else if (count == 26) path.add(new Casa(2, 2));
+			else if (count == 39) path.add(new Casa(2, 3));
 			
-			if (count == 0 || count == 13 || count == 26 || count == 39)
-			path.add(new Casa(2));
 			
+//			inicializa casas de abrigo
+			else if (count == 9 || count == 22 || count == 35 || count == 48)
+			path.add(new Casa(3));
+			
+//			inicializa casas de entrada
+			else if (count == 11) path.add(new Casa(6, 1));
+			else if (count == 24) path.add(new Casa(6, 2));
+			else if (count == 37) path.add(new Casa(6, 3));
+			else if (count == 50) path.add(new Casa(6, 0));
+			
+//			inicializa todas as basicas
+			else path.add(new Casa(0));
 		}
 		
 	}
 	
 	protected void start_board() {
-//		t = Tabuleiro.getInstance();
-		
-		
+		t = Tabuleiro.getInstance();
+	}
+	
+	protected void start_dado() {
+		d = Dado.getInstance();
+	}
+	
+//	(?)
+	protected void captura(Casa c) {
+		Peca p = c.get_p1();
+		if (p == null) {
+			p = c.get_p2();
+		}
+		c.remove_peca(p);
 	}
 	
 	protected Player get_player(int id){
 		return players[id];
 	}
 	
+	
+	
+	public static Jogo getInstance() {
+		if (instance == null) {
+			instance = new Jogo();
+		}
+		return instance;
+	}
 }
 

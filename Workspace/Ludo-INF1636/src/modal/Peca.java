@@ -14,6 +14,11 @@ class Peca {
 
 	}
 	
+//	protected void move_to_base() {
+//		Casa c = ;
+//		current_tile = c.get_casa_inicial(id_time);
+//	}
+	
 	protected Casa get_current_tile() {
 		return current_tile;
 	}

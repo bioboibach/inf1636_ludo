@@ -12,18 +12,20 @@ package modal;
  * 		-> 3 = abrigo
  * 		-> 4 = reta final
  * 		-> 5 = final
+ * 		-> 6 = casa de entrada
  * 
  * cor  -> 0 = vermelho
  * 		-> 1 = verde
  * 		-> 2 = amarelo
  * 		-> 3 = azul
+ * 	   -> -1 = neutro
  * */
 class Casa {
 	
-	protected int coord[] = new int[2];
-	protected int type;
-	protected int cor;
-	protected Casa next = null;
+//	protected int coord[] = new int[2];
+	protected int type = 0;
+	protected int cor = 8;
+//	protected Casa next = null;
 	protected int num_pecas = 0;
 	protected Peca p1 = null;
 	protected Peca p2 = null;
@@ -41,55 +43,7 @@ class Casa {
 	protected Casa(int type) {
 		this.type = type;
 	}
-//	
-////	deprecated
-//	protected Casa(int x, int y) {
-//		
-////		casa inicial vermelha
-//		if ((x == 1 || x == 4) &&
-//			(y == 1 || y == 4)) {
-//			type = 1;
-//			cor = 0;
-//		}
-//		
-////		casa inicial verde
-//		else if ((x == 10 || x == 13) &&
-//			(y == 1 || y == 4)) {
-//			type = 1;
-//			cor = 1;
-//		}
-//		
-////		casa inicial amarela
-//		else if ((x == 10 || x == 13) &&
-//			(y == 10 || y == 13)) {
-//			type = 1;
-//			cor = 2;
-//		}
-//		
-////		casa inicial azul
-//		else if ((x == 1 || x == 4) &&
-//			(y == 10 || y == 13)) {
-//			type = 1;
-//			cor = 3;
-//		}
-//		
-////		casa de saida
-//		else if ((x == 1 && y == 8)  ||
-//				 (x == 8 && y == 13) ||
-//			 	 (x == 6 && y == 1)  ||
-//				 (x == 13 && y == 6)) {
-//			type = 2;
-//		}
-//		
-////		casa de abrigo
-//		else if ((x == 1 && y == 6)  ||
-//				 (x == 6 && y == 13) ||
-//				 (x == 8 && y == 1)  ||
-//				 (x == 13 && y == 8)) {
-//			type = 3;
-//		}
-//	}
-//	
+
 	/*casa_vaga(Peca p):
 	 * se for casa de final 	-> true
 	 * se reta final e chega em casa de reta final -> false
@@ -115,6 +69,8 @@ class Casa {
 		return false;
 	}
 	
+	
+	
 	protected boolean is_barreira() {
 		if (num_pecas < 2) return false;
 		else if (p1.get_cor() == p2.get_cor()) return true;
@@ -137,6 +93,25 @@ class Casa {
 		else if (p3 == null) p3 = p;
 		else if (p4 == null) p4 = p;
 	}
+
+//	(?)
+	protected Casa get_casa_inicial(int cor) {
+		return Jogo.getInstance().casas_iniciais.get(cor);
+	}
+	
+//	(?)
+//	sempre que remover uma peca, se p2 tem coisa, muda pra p1 
+	protected void update_casa() {
+		if (num_pecas == 0) return;
+		else if (p1 == null && num_pecas > 1) {
+			p1 = p2;
+			p2 = null;
+		}
+	}
+	
+	protected int get_cor() {
+		return cor;
+	}
 	
 	protected int get_type() {
 		return type;
@@ -158,8 +133,6 @@ class Casa {
 	protected Peca get_p4() {
 		return p4;
 	}
-	
-	
 	
 	protected boolean is_casa_comum() {
 		if (type == 0) return true;

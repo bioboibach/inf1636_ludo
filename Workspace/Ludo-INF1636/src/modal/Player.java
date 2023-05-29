@@ -3,8 +3,7 @@ package modal;
 class Player {
 	/* peca arr_peca
 	 * int id_player
-	 * 
-	 * */
+	*/
 	
 	int player_id;
 	Peca pecas[] = new Peca[4];

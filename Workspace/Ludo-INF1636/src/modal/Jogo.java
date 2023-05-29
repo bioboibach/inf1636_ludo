@@ -17,13 +17,34 @@ class Jogo {
 	private ArrayList<Casa> reta_final_amarelo = new ArrayList<Casa>();
 	private ArrayList<Casa> reta_final_azul = new ArrayList<Casa>();
 	
+	private Peca last_moved_piece = null;
+	private int player_turn = 0;
+//	private ;
+//	private ;
+	
 	protected Jogo() {
 		start_players();
 		start_board();
 		start_casas();
 		start_dado();
+		
+		start_game();
 	}
 	
+	protected boolean check_path(int num_moves, Peca p){
+		Casa c = p.get_current_tile();
+		int index = path.indexOf(c);
+		
+		for (int count = 1; count < num_moves; count++) {
+			c = path.get((index + count)%52);
+			if (c.is_barreira()) return false;
+		}
+		return true;
+	}
+	
+	protected void start_game() {
+		
+	}
 	
 	protected void start_players() {
 		for (int i = 0; i < 4; i++) {
@@ -42,24 +63,24 @@ class Jogo {
 		}
 		
 		for (count = 0; count < 4; count++) {
-			reta_final_vermelho.add(new Casa(0, 4));
+			reta_final_vermelho.add(new Casa(4, 0));
 		}
-		reta_final_vermelho.add(new Casa(0, 5));
+		reta_final_vermelho.add(new Casa(5, 0));
 		
 		for (count = 0; count < 4; count++) {
-			reta_final_verde.add(new Casa(1, 4));
+			reta_final_verde.add(new Casa(4, 1));
 		}
-		reta_final_verde.add(new Casa(1, 5));
+		reta_final_verde.add(new Casa(5, 1));
 		
 		for (count = 0; count < 4; count++) {
-			reta_final_amarelo.add(new Casa(2, 4));
+			reta_final_amarelo.add(new Casa(4, 2));
 		}
-		reta_final_amarelo.add(new Casa(2, 5));
+		reta_final_amarelo.add(new Casa(5, 2));
 		
 		for (count = 0; count < 4; count++) {
-			reta_final_azul.add(new Casa(3, 4));
+			reta_final_azul.add(new Casa(4, 3));
 		}
-		reta_final_azul.add(new Casa(3, 5));
+		reta_final_azul.add(new Casa(5, 3));
 		
 //		path
 		for (count = 0; count <= 51; count++) {
@@ -111,6 +132,11 @@ class Jogo {
 		return path;
 	}
 	
+	protected boolean is_in_path(Peca p) {
+		if (path.indexOf(p.get_current_tile()) == -1) return false;
+		return true;
+	}
+	
 	protected ArrayList<Casa> get_casas_iniciais(){
 		return casas_iniciais;
 	}
@@ -119,19 +145,20 @@ class Jogo {
 		return reta_final_vermelho;
 	}
 	
-	protected ArrayList<Casa> reta_final_verde(){
+	protected ArrayList<Casa> get_reta_final_verde(){
 		return reta_final_verde;
 	}
 	
-	protected ArrayList<Casa> reta_final_amarelo(){
+	protected ArrayList<Casa> get_reta_final_amarelo(){
 		return reta_final_amarelo;
 	}
 	
-	protected ArrayList<Casa> reta_final_azul(){
+	protected ArrayList<Casa> get_reta_final_azul(){
 		return reta_final_azul;
 	}
+
 	
-	public static Jogo getInstance() {
+	protected static Jogo getInstance() {
 		if (instance == null) {
 			instance = new Jogo();
 		}

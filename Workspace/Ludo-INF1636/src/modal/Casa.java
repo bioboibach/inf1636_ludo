@@ -67,8 +67,6 @@ class Casa {
 		return false;
 	}
 	
-	
-	
 	protected boolean is_barreira() {
 		if (num_pecas < 2) return false;
 		else if (p1.get_cor() == p2.get_cor()) return true;
@@ -90,11 +88,6 @@ class Casa {
 		else if (p2 == null) p2 = p;
 		else if (p3 == null) p3 = p;
 		else if (p4 == null) p4 = p;
-	}
-
-//	(?)
-	protected Casa get_casa_inicial(int cor) {
-		return Jogo.getInstance().get_casas_iniciais().get(cor);
 	}
 	
 //	(?)

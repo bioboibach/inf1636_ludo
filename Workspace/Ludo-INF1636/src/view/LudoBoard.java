@@ -104,7 +104,7 @@ public class LudoBoard extends JPanel {
 	}
 
 	public void launchDice() {
-		die_val = modal.Facade.roll();
+		die_val = Facade.getInstance().roll();
 		turn = (turn + 1) % 4; 
 		repaint();
 	}

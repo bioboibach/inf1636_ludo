@@ -5,13 +5,13 @@ package modal;
  * 	int tipo_da_casa
  * 
  * 
- * type -> indica tipo do tile:
+ * tipo -> indica tipo do tile:
  * 		-> 0 = casa comum
  * 		-> 1 = casa inicial
  * 		-> 2 = casa de saida
- * 		-> 3 = abrigo
- * 		-> 4 = reta final
- * 		-> 5 = final
+ * 		-> 3 = casa abrigo
+ * 		-> 4 = casa da reta final
+ * 		-> 5 = casa final
  * 		-> 6 = casa de entrada
  * 
  * cor  -> 0 = vermelho
@@ -22,7 +22,7 @@ package modal;
  * */
 class Casa {
 	
-	private int type = 0;
+	private int tipo = 0;
 	private int cor = 8;
 	private int num_pecas = 0;
 	private Peca p1 = null;
@@ -33,35 +33,35 @@ class Casa {
 	protected Casa() {}
 	
 	
-	protected Casa(int type, int id) {
-		this.type = type;
+	protected Casa(int tipo, int id) {
+		this.tipo = tipo;
 		cor = id;		
 	}
 	
-	protected Casa(int type) {
-		this.type = type;
+	protected Casa(int tipo) {
+		this.tipo = tipo;
 	}
 
 	/*casa_vaga(Peca p):
-	 * se for casa de final 	-> true
-	 * se reta final e chega em casa de reta final -> false
-	 * se n tem peca 			-> true
-	 * 
+	 * se for casa de final(5) 	-> true
+	 * se reta final(4) e chega em casa de reta final -> false
+	 * se nao tem peca 			-> true
+	 * se tem 2 pecas			-> false
 	 * se tem 1 peca da msm cor	
-	 * 		se é casa de saida	-> false
-	 * 		else				-> true 
-	 * se tem 1 peca
+	 * 		se é casa de saida(2) -> false
+	 * 		se nao for			-> true 
+	 * 
 	 * */
 	protected boolean casa_vaga(Peca p) {
-		if (type == 5) return true;
-		else if (p.get_current_tile().type == 4 && this.type == 4) return false;
+		if (tipo == 5) return true;
+		else if (p.get_current_tile().tipo == 4 && this.tipo == 4) return false;
 		
 		else if (num_pecas == 0) return true;
 		else if(num_pecas == 2) return false;
 		
 		else if (num_pecas == 1 && p.get_cor() == p1.get_cor())
 //			se casa de saída
-			if (type == 2) return false;
+			if (tipo == 2) return false;
 			else return true;
 
 		return false;
@@ -104,8 +104,8 @@ class Casa {
 		return cor;
 	}
 	
-	protected int get_type() {
-		return type;
+	protected int get_tipo() {
+		return tipo;
 	}
 	
 	protected int get_num_pecas() {
@@ -126,32 +126,32 @@ class Casa {
 	}
 	
 	protected boolean is_casa_comum() {
-		if (type == 0) return true;
+		if (tipo == 0) return true;
 		return false;
 	}
 	
 	protected boolean is_casa_inicial() {
-		if (type == 1) return true;
+		if (tipo == 1) return true;
 		return false;
 	}
 	
 	protected boolean is_casa_de_saida() {
-		if (type == 2) return true;
+		if (tipo == 2) return true;
 		return false;
 	}	
 	
 	protected boolean is_abrigo() {
-		if (type == 3) return true;
+		if (tipo == 3) return true;
 		return false;
 	}
 	
 	protected boolean is_reta_final() {
-		if (type == 4) return true;
+		if (tipo == 4) return true;
 		return false;
 	}
 	
 	protected boolean is_casa_de_entrada() {
-		if (type == 5) return true;
+		if (tipo == 5) return true;
 		return false;
 	}
 	

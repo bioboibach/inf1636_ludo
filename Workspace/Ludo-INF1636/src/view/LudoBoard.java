@@ -504,7 +504,7 @@ public class LudoBoard extends JPanel {
 		//Triangulo meio verde
 		int[] xs5 = {287,360,432};
 		int[] ys5 = {287,356,287};
-		g.setColor(Color.BLUE);
+		g.setColor(Color.GREEN);
 		g.fillPolygon(xs5,ys5,3);
 		g.setColor(Color.BLACK);
 		g.drawPolygon(xs5,ys5,3);
@@ -512,7 +512,7 @@ public class LudoBoard extends JPanel {
 		//Triangulo meio azul
 		int[] xs6 = {287,360,432};
 		int[] ys6 = {432,356,432};
-		g.setColor(Color.GREEN);
+		g.setColor(Color.BLUE);
 		g.fillPolygon(xs6,ys6,3);
 		g.setColor(Color.BLACK);
 		g.drawPolygon(xs6,ys6,3);

@@ -19,8 +19,7 @@ class Jogo {
 	
 	private Peca last_moved_piece = null;
 	private int player_turn = 0;
-//	private ;
-//	private ;
+
 	
 	protected Jogo() {
 		start_players();
@@ -54,6 +53,7 @@ class Jogo {
 	protected void start_casas() {
 		int count;
 		
+//		Inicializa as casas_iniciais de cada jogador
 		for (count = 0; count < 4; count++) {
 			casas_iniciais.add(new Casa(1, count));
 			casas_iniciais.get(count).add_peca(players[count].get_peca(0));
@@ -62,6 +62,7 @@ class Jogo {
 			casas_iniciais.get(count).add_peca(players[count].get_peca(3));
 		}
 		
+//		Inicializa as casas da reta final e a casa final de cada jogador
 		for (count = 0; count < 4; count++) {
 			reta_final_vermelho.add(new Casa(4, 0));
 		}

@@ -16,7 +16,9 @@ class Peca {
 	protected void move(int die_val) {
 		Jogo j = Jogo.getInstance();
 		
-		j.check_path(die_val, this);
+		if (j.check_path(die_val, this)) {
+			
+		}
 	}
 	
 	protected void move_to_base() {

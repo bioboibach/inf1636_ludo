@@ -128,13 +128,13 @@ class Jogo {
 		return players[id];
 	}
 	
-	protected ArrayList<Casa> get_path(){
-		return path;
-	}
-	
 	protected boolean is_in_path(Peca p) {
 		if (path.indexOf(p.get_current_tile()) == -1) return false;
 		return true;
+	}
+	
+	protected ArrayList<Casa> get_path(){
+		return path;
 	}
 	
 	protected ArrayList<Casa> get_casas_iniciais(){

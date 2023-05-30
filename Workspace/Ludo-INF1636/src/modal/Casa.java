@@ -43,8 +43,8 @@ class Casa {
 	}
 
 	/*casa_vaga(Peca p):
-	 * se for casa de final(5) 	-> true
-	 * se reta final(4) e chega em casa de reta final -> false
+	 * se for casa de final(tipo = 5) 	-> true
+	 * se reta final(tipo = 4) e chega em casa de reta final -> false
 	 * se nao tem peca 			-> true
 	 * se tem 2 pecas			-> false
 	 * se tem 1 peca da msm cor	
@@ -75,7 +75,6 @@ class Casa {
 	
 	protected void remove_peca(Peca p) {
 		num_pecas--;
-		p.change_casa(null);
 		if (p.equals(p1)) p1 = null;			
 		else p2 = null;
 	}
@@ -83,7 +82,6 @@ class Casa {
 //	assumo que pode mover
 	protected void add_peca(Peca p) {
 		num_pecas++;
-		p.change_casa(this);
 		if (p1 == null) p1 = p;
 		else if (p2 == null) p2 = p;
 		else if (p3 == null) p3 = p;

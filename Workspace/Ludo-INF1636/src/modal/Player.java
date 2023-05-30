@@ -5,8 +5,8 @@ class Player {
 	 * int id_player
 	*/
 	
-	int player_id;
-	Peca pecas[] = new Peca[4];
+	private int player_id;
+	private Peca pecas[] = new Peca[4];
 	
 	protected Player(int id) {
 		player_id = id;

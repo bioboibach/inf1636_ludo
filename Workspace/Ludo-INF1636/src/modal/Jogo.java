@@ -30,6 +30,8 @@ class Jogo {
 		start_dado();
 	}
 	
+//	TODO
+//	funcao q faz o turno acontecer
 	protected void turn() {
 	/* 	
 	 * 	check_end_game_condition()
@@ -38,41 +40,45 @@ class Jogo {
 	 * 
 	 * 	if valor do dado = 5
 	 * 		if tem pecas na casa inicial
-	 * 			if pode mover peca pra casa inicial
-	 * 				p.move_to_casa_inicial()
+	 * 			if pode mover peca pra casa de saida
+	 * 				p.move_to_casa_de_saida()
 	 * 
-	 * 	if tirou 6
-	 * 		
-	 * 
-	 *  if so tem uma peca q pode ser movida
-	 * 		p.move()
-	 * 
-	 *  else if pode escolher
-	 *  	escolhe a peca
-	 * 		p.move()
-	 * 
-	 *  else if n pode andar nada
-	 *  	if nao tirou 6
+	 *	else if valor do dado = 6
+	 * 		num_de_6++ (update numero de vezes q tirou 6)
+	 * 		if num_de_6 > 2
+	 * 			if last_moved_piece movimentada n ta na reta final ou chegada
+	 *  			last_moved_piece.move_to_base()
+	 *  		num_de_6 = 0
 	 *  		end_turn()
-	 *  	else if tirou 6
-	 *  		if tirou 6 pela 1a ou 2a vez
-	 *  			turn()
-	 *  		if tirou 6 pela 3a vez
-	 *  			if last_moved_piece movimentada n ta na reta final ou chegada
-	 *  				last_moved_piece.move_to_base()
-	 *  			end_turn()
+	 *  
+	 *  	else
+	 * 			if pode mover alguma peca de barreira
+	 * 				pega um p da barreira
+	 * 				p.move()
+	 * 
+	 *	 		else if pode mover so uma peca
+	 * 				p.move()
+	 * 
+	 * 			else if pode escolher qual peca andar
+	 * 				escolhe p
+	 * 				p.move()
+	 * 			
+	 *	else
+	 *		if so tem uma peca q pode ser movida
+	 * 			p.move()
+	 * 
+	 *  	else if pode escolher
+	 *  		escolhe p
+	 * 			p.move()
 	 *  			
-	 *  se capturou uma peca
-	 * 		se n tem nada pra mover
-	 * 			n move
-	 * 
-	 *  	se so tem uma peca q pode ser movida
+	 *  verifica se capturou alguma peca
+	 *  if capturou
+	 *  	if so tem uma peca q pode ser movida
 	 * 			p.move()
 	 * 
-	 *  	se pode escolher
-	 * 			escolhe uma peca
+	 *  	else if pode escolher
+	 * 			escolhe p
 	 * 			p.move()
-	 * 
 	 * 
 	 *  end_turn()
 	 *  	

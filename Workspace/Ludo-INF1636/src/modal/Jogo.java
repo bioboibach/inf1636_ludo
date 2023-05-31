@@ -1,7 +1,5 @@
 package modal;
 
-import java.util.ArrayList;
-
 class Jogo {
 	
 	private static Jogo instance;	
@@ -9,12 +7,10 @@ class Jogo {
 	private Tabuleiro t;
 	private Dado d;
 	private Player players[] = new Player[4];
-
-//	TODO
-//	acho q todas essas listas deviam ta dentro do board 
 	
 	private Peca last_moved_piece = null;
 	private int player_turn = 0;
+	private int num_6_rolados = 0;
 
 	
 	protected Jogo() {

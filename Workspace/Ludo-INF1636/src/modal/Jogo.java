@@ -13,10 +13,13 @@ class Jogo {
 	private int num_6_rolados = 0;
 
 	
-	protected Jogo() {
+	protected Jogo() {}
+	
+	protected void initialize_jogo() {
 		start_players();
 		start_board();
 		start_dado();
+		start_game();
 	}
 	
 //	TODO
@@ -61,13 +64,17 @@ class Jogo {
 	 * 			p.move()
 	 *  			
 	 *  verifica se capturou alguma peca
-	 *  if capturou
+	 *  while capturou ou chegou com uma peca no final
 	 *  	if so tem uma peca q pode ser movida
 	 * 			p.move()
 	 * 
 	 *  	else if pode escolher
 	 * 			escolhe p
 	 * 			p.move()
+	 * 		else if n pode mover nada
+	 * 			break
+	 * 
+	 * 		verifica se capturou ou chegou no final e update variavel
 	 * 
 	 *  end_turn()
 	 *  	

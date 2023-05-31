@@ -12,12 +12,6 @@ class Jogo {
 
 //	TODO
 //	acho q todas essas listas deviam ta dentro do board 
-	private ArrayList<Casa> path = new ArrayList<Casa>();
-	private ArrayList<Casa> casas_iniciais = new ArrayList<Casa>();
-	private ArrayList<Casa> reta_final_vermelho = new ArrayList<Casa>();
-	private ArrayList<Casa> reta_final_verde = new ArrayList<Casa>();
-	private ArrayList<Casa> reta_final_amarelo = new ArrayList<Casa>();
-	private ArrayList<Casa> reta_final_azul = new ArrayList<Casa>();
 	
 	private Peca last_moved_piece = null;
 	private int player_turn = 0;
@@ -26,7 +20,6 @@ class Jogo {
 	protected Jogo() {
 		start_players();
 		start_board();
-		start_casas();
 		start_dado();
 	}
 	
@@ -86,34 +79,25 @@ class Jogo {
 		
 	}
 	
-	protected boolean check_path(int num_moves, Peca p){
-		Casa c = p.get_current_tile();
-		int index = path.indexOf(c);
-		
-		for (int count = 1; count < num_moves; count++) {
-			c = path.get((index + count)%52);
-			if (c.is_barreira()) return false;
-		}
-		return true;
-	}
+	
 	
 //	TODO
 //	funcao encarregada de lidar com a captura
 //	assumo que pode ocorrer captura
 	protected void captura(Casa c) {
-		Peca p = c.get_p1();
+		Peca p = c.get_peca(0);
 		if (p == null) {
-			p = c.get_p2();
+			p = c.get_peca(1);
 		}
 		c.remove_peca(p);
-		casas_iniciais.get(p.get_cor()).add_peca(p);
+		t.get_casas_iniciais_index(p.get_cor()).add_peca(p);
 	}
 	
 	protected boolean check_end_game_condition() {
-		if (reta_final_vermelho.get(6).get_num_pecas() == 4 ||
-			reta_final_verde.get(6).get_num_pecas() == 4 ||
-			reta_final_amarelo.get(6).get_num_pecas() == 4 ||
-			reta_final_azul.get(6).get_num_pecas() == 4)
+		if (t.get_reta_final_vermelho_index(6).get_num_pecas() == 4 ||
+			t.get_reta_final_verde_index(6).get_num_pecas() == 4 ||
+			t.get_reta_final_amarelo_index(6).get_num_pecas() == 4 ||
+			t.get_reta_final_azul_index(6).get_num_pecas() == 4)
 			return true;
 		return false;
 	}
@@ -138,32 +122,9 @@ class Jogo {
 		return players[id];
 	}
 	
-//	retorna true se a peca p ta dentro da path
-	protected boolean is_in_path(Peca p) {
-		if (path.indexOf(p.get_current_tile()) == -1) return false;
-		return true;
-	}
-	
-//	retorna a Casa de index i dentro da lista
-	protected Casa get_path_index(int i){
-		return path.get(i);
-	}
-	protected Casa get_casas_iniciais_index(int i){
-		return casas_iniciais.get(i);
-	}
-	protected Casa get_reta_final_vermelho_index(int i){
-		return reta_final_vermelho.get(i);
-	}
-	protected Casa get_reta_final_verde_index(int i){
-		return reta_final_verde.get(i);
-	}
-	protected Casa get_reta_final_amarelo_index(int i){
-		return reta_final_amarelo.get(i);
-	}
-	protected Casa get_reta_final_azul_index(int i){
-		return reta_final_azul.get(i);
-	}
 
+//	retorna a Casa de index i dentro da lista
+	
 //	inicia o jogo, ja movendo a primeira peca vermelha pra casa de saida
 	protected void start_game() {
 		Peca p = players[0].get_peca(0);
@@ -175,64 +136,6 @@ class Jogo {
 		for (int i = 0; i < 4; i++) {
 			players[i] = new Player(i);
 		}
-	}
-	protected void start_casas() {
-		int count;
-		
-//		Inicializa as casas_iniciais de cada jogador
-		for (count = 0; count < 4; count++) {
-			casas_iniciais.add(new Casa(1, count));
-			casas_iniciais.get(count).add_peca(players[count].get_peca(0));
-			casas_iniciais.get(count).add_peca(players[count].get_peca(1));
-			casas_iniciais.get(count).add_peca(players[count].get_peca(2));
-			casas_iniciais.get(count).add_peca(players[count].get_peca(3));
-		}
-		
-//		Inicializa as casas da reta final e a casa final de cada jogador
-		for (count = 0; count < 5; count++) {
-			reta_final_vermelho.add(new Casa(4, 0));
-		}
-		reta_final_vermelho.add(new Casa(5, 0));
-		
-		for (count = 0; count < 5; count++) {
-			reta_final_verde.add(new Casa(4, 1));
-		}
-		reta_final_verde.add(new Casa(5, 1));
-		
-		for (count = 0; count < 5; count++) {
-			reta_final_amarelo.add(new Casa(4, 2));
-		}
-		reta_final_amarelo.add(new Casa(5, 2));
-		
-		for (count = 0; count < 5; count++) {
-			reta_final_azul.add(new Casa(4, 3));
-		}
-		reta_final_azul.add(new Casa(5, 3));
-		
-//		path
-		for (count = 0; count <= 51; count++) {
-
-//			inicializa casas de saida
-			if (count == 0) path.add(new Casa(2, 0)); 
-			else if (count == 13) path.add(new Casa(2, 1));
-			else if (count == 26) path.add(new Casa(2, 2));
-			else if (count == 39) path.add(new Casa(2, 3));
-			
-			
-//			inicializa casas de abrigo
-			else if (count == 9 || count == 22 || count == 35 || count == 48)
-			path.add(new Casa(3));
-			
-//			inicializa casas de entrada
-			else if (count == 11) path.add(new Casa(6, 1));
-			else if (count == 24) path.add(new Casa(6, 2));
-			else if (count == 37) path.add(new Casa(6, 3));
-			else if (count == 50) path.add(new Casa(6, 0));
-			
-//			inicializa todas as basicas
-			else path.add(new Casa(0));
-		}
-		
 	}
 	protected void start_board() {
 		t = Tabuleiro.getInstance();

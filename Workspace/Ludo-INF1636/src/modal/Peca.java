@@ -10,7 +10,6 @@ class Peca {
 	
 	protected Peca(int id) {
 		id_time = id;
-
 	}
 	
 //	TODO
@@ -31,7 +30,7 @@ class Peca {
 			this.move_to_reta_fianl(die_val);
 		}
 		
-		if (j.check_path(die_val, this)) {
+		if (Tabuleiro.getInstance().check_path(die_val, this)) {
 			
 		}
 		
@@ -39,21 +38,21 @@ class Peca {
 	}
 	
 	protected void move_to_base() {
-		current_tile = Jogo.getInstance().get_casas_iniciais_index(id_time);
+		current_tile = Tabuleiro.getInstance().get_casas_iniciais_index(id_time);
 		current_tile.add_peca(this);
 	}
 	protected void move_to_casa_de_saida() {
-		if (id_time == 0) current_tile = Jogo.getInstance().get_path_index(0);
-		else if (id_time == 1) current_tile = Jogo.getInstance().get_path_index(13);
-		else if (id_time == 2) current_tile = Jogo.getInstance().get_path_index(26);			
-		else if (id_time == 3) current_tile = Jogo.getInstance().get_path_index(39);
+		if (id_time == 0) current_tile = Tabuleiro.getInstance().get_path_index(0);
+		else if (id_time == 1) current_tile = Tabuleiro.getInstance().get_path_index(13);
+		else if (id_time == 2) current_tile = Tabuleiro.getInstance().get_path_index(26);			
+		else if (id_time == 3) current_tile = Tabuleiro.getInstance().get_path_index(39);
 		current_tile.add_peca(this);
 	}
 	protected void move_to_reta_fianl(int index) {
-		if (id_time == 0) current_tile = Jogo.getInstance().get_reta_final_vermelho_index(index);
-		else if (id_time == 1) current_tile = Jogo.getInstance().get_reta_final_verde_index(index);
-		else if (id_time == 2) current_tile = Jogo.getInstance().get_reta_final_amarelo_index(index);			
-		else if (id_time == 3) current_tile = Jogo.getInstance().get_reta_final_azul_index(index);
+		if (id_time == 0) current_tile = Tabuleiro.getInstance().get_reta_final_vermelho_index(index);
+		else if (id_time == 1) current_tile = Tabuleiro.getInstance().get_reta_final_verde_index(index);
+		else if (id_time == 2) current_tile = Tabuleiro.getInstance().get_reta_final_amarelo_index(index);			
+		else if (id_time == 3) current_tile = Tabuleiro.getInstance().get_reta_final_azul_index(index);
 		current_tile.add_peca(this);
 	}
 	

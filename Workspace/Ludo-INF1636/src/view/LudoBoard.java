@@ -105,7 +105,7 @@ public class LudoBoard extends JPanel {
 
 	public void launchDice() {
 		die_val = Facade.getInstance().roll();
-		turn = (turn + 1) % 4; 
+		turn = (turn + 1) % 4; // remover dps TODO
 		repaint();
 	}
 	

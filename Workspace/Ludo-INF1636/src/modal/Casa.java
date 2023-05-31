@@ -25,11 +25,13 @@ class Casa {
 	private int tipo = 0;
 	private int cor = 8;
 	private int num_pecas = 0;
-	private Peca p1 = null;
-	private Peca p2 = null;
-	private Peca p3 = null;
-	private Peca p4 = null;
-	
+//	array de peca
+	private Peca[] peca_arr = new Peca[4]; 
+//	private Peca p1 = null;
+//	private Peca p2 = null;
+//	private Peca p3 = null;
+//	private Peca p4 = null;
+
 	protected Casa() {}
 	
 	
@@ -59,7 +61,7 @@ class Casa {
 		else if (num_pecas == 0) return true;
 		else if(num_pecas == 2) return false;
 		
-		else if (num_pecas == 1 && p.get_cor() == p1.get_cor())
+		else if (num_pecas == 1 && p.get_cor() == peca_arr[0].get_cor())
 //			se casa de saída
 			if (tipo == 2) return false;
 			else return true;
@@ -69,32 +71,33 @@ class Casa {
 	
 	protected boolean is_barreira() {
 		if (num_pecas < 2) return false;
-		else if (p1.get_cor() == p2.get_cor()) return true;
+		else if (peca_arr[0].get_cor() == peca_arr[1].get_cor()) return true;
 		return false;
 	}
 	
 	protected void remove_peca(Peca p) {
 		num_pecas--;
-		if (p.equals(p1)) p1 = null;			
-		else p2 = null;
+		if (p.equals(peca_arr[0])) peca_arr[0] = null;			
+		else peca_arr[1] = null;
 	}
 	
 //	assumo que pode mover
 	protected void add_peca(Peca p) {
 		num_pecas++;
-		if (p1 == null) p1 = p;
-		else if (p2 == null) p2 = p;
-		else if (p3 == null) p3 = p;
-		else if (p4 == null) p4 = p;
+		for (int i = 0; i < 4; i++) {
+			if (peca_arr[i] == null) {
+				peca_arr[i] = p;
+			}
+		}
 	}
 	
 //	(?)
 //	sempre que remover uma peca, se p2 tem coisa, muda pra p1 
 	protected void update_casa() {
 		if (num_pecas == 0) return;
-		else if (p1 == null && num_pecas > 1) {
-			p1 = p2;
-			p2 = null;
+		else if (peca_arr[0] == null && num_pecas > 1) {
+			peca_arr[0] = peca_arr[1];
+			peca_arr[1] = null;
 		}
 	}
 	
@@ -110,17 +113,8 @@ class Casa {
 		return num_pecas;
 	}
 	
-	protected Peca get_p1() {
-		return p1;
-	}
-	protected Peca get_p2() {
-		return p2;
-	}
-	protected Peca get_p3() {
-		return p3;
-	}
-	protected Peca get_p4() {
-		return p4;
+	protected Peca get_peca(int index) {
+		return peca_arr[index];
 	}
 	
 	protected boolean is_casa_comum() {

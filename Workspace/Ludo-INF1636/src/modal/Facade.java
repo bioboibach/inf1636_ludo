@@ -1,6 +1,5 @@
 package modal;
 
-// singleton
 
 public class Facade {
 	

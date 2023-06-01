@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 class Tabuleiro {
 	
+	private static Tabuleiro instance;
+	
 	private ArrayList<Casa> path = new ArrayList<Casa>();
 	private ArrayList<Casa> casas_iniciais = new ArrayList<Casa>();
 	private ArrayList<Casa> reta_final_vermelho = new ArrayList<Casa>();
@@ -11,8 +13,6 @@ class Tabuleiro {
 	private ArrayList<Casa> reta_final_amarelo = new ArrayList<Casa>();
 	private ArrayList<Casa> reta_final_azul = new ArrayList<Casa>();
 	
-	private static Tabuleiro instance;
-
 	private Tabuleiro() {
 		start_casas();
 	}

@@ -524,7 +524,7 @@ public class LudoBoard extends JPanel {
 		g.fillPolygon(xs7,ys7,3);
 		g.setColor(Color.BLACK);
 		g.drawPolygon(xs7,ys7,3);
-		
+
 		//Triangulo meio amarelo
 		int[] xs8 = {432,360,432};
 		int[] ys8 = {432,356,287};

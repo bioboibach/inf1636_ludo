@@ -11,7 +11,7 @@ class Jogo {
 	private Peca last_moved_piece = null;
 	private int player_turn = 0;
 	private int num_6_rolados = 0;
-
+	private boolean capture_flag = false;
 	
 	protected Jogo() {}
 	
@@ -25,65 +25,83 @@ class Jogo {
 //	TODO
 //	funcao q faz o turno acontecer
 	protected void turn() {
-	/* 	
-	 * 	check_end_game_condition()
-	 * 
-	 *  rola o dado
-	 * 
-	 * 	if valor do dado = 5
-	 * 		if tem pecas na casa inicial
-	 * 			if pode mover peca pra casa de saida
-	 * 				p.move_to_casa_de_saida()
-	 * 
-	 *	else if valor do dado = 6
-	 * 		num_de_6++ (update numero de vezes q tirou 6)
-	 * 		if num_de_6 > 2
-	 * 			if last_moved_piece movimentada n ta na reta final ou chegada
-	 *  			last_moved_piece.move_to_base()
-	 *  		num_de_6 = 0
-	 *  		end_turn()
-	 *  
-	 *  	else
-	 * 			if pode mover alguma peca de barreira
-	 * 				pega um p da barreira
-	 * 				p.move()
-	 * 
-	 *	 		else if pode mover so uma peca
-	 * 				p.move()
-	 * 
-	 * 			else if pode escolher qual peca andar
-	 * 				escolhe p
-	 * 				p.move()
-	 * 			
-	 *	else
-	 *		if so tem uma peca q pode ser movida
-	 * 			p.move()
-	 * 
-	 *  	else if pode escolher
-	 *  		escolhe p
-	 * 			p.move()
-	 *  			
-	 *  verifica se capturou alguma peca
-	 *  while capturou ou chegou com uma peca no final
-	 *  	if so tem uma peca q pode ser movida
-	 * 			p.move()
-	 * 
-	 *  	else if pode escolher
-	 * 			escolhe p
-	 * 			p.move()
-	 * 		else if n pode mover nada
-	 * 			break
-	 * 
-	 * 		verifica se capturou ou chegou no final e update variavel
-	 * 
-	 *  end_turn()
-	 *  	
-	 */			
 		
+		int val = d.roll();
+		Player ply = players[player_turn];
+		Peca p;
+		Casa c;
+		
+		switch(val) {
+		
+		case 5:
+			c = t.get_casas_iniciais_index(ply.get_id());
+			
+//			se tem peca na casa inicial
+			if (c.get_num_pecas() != 0) {
+				p = c.get_primeira_peca_player(ply);
+//				se casa (de saida) vaga
+				if (t.get_casa_de_saida(ply.get_id()).casa_vaga(p)) {
+					p.move_to_casa_de_saida();
+					update_last_moved_piece(p);
+				}
+			}
+//			se pode mover alguma coisa
+			else if (ply.can_move(val)) {
+				p = pick_peca();
+				p.move(val);
+				update_last_moved_piece(p);
+			}
+			break;
+			
+		case 6:
+			num_6_rolados++;
+			if (num_6_rolados == 3) {
+				c = last_moved_piece.get_current_tile();
+				if(c.get_tipo() != 5 && c.get_tipo() != 4) {
+					last_moved_piece.move_to_base();
+				}
+				end_turn();
+				return;
+			}
+			
+//			se player tem barreira
+			else if (ply.get_barrier() != null){
+				p = ply.get_barrier();
+				p.move(val);
+				update_last_moved_piece(p);
+			}
+			
+			else if (ply.can_move(val)){
+				p = pick_peca();
+				p.move(val);
+				update_last_moved_piece(p);
+			}
+			turn();
+			break;
+
+		default:
+			if (ply.can_move(val)) {
+				p = pick_peca();
+				p.move(val);
+				update_last_moved_piece(p);
+			}
+		}
+		
+		while (last_moved_piece.get_current_tile().is_casa_final() || capture_flag == true) {
+			if(ply.can_move(6)) {
+				p = pick_peca();
+				p.move(val);
+				update_last_moved_piece(p);
+			}
+			else break;
+		}
+		
+		check_end_game_condition();
+		end_turn();
+		return;		
 	}
-	
-	
-	
+
+
 //	TODO
 //	funcao encarregada de lidar com a captura
 //	assumo que pode ocorrer captura
@@ -96,13 +114,19 @@ class Jogo {
 		t.get_casas_iniciais_index(p.get_cor()).add_peca(p);
 	}
 	
-	protected boolean check_end_game_condition() {
+	protected void check_end_game_condition() {
 		if (t.get_reta_final_vermelho_index(6).get_num_pecas() == 4 ||
 			t.get_reta_final_verde_index(6).get_num_pecas() == 4 ||
 			t.get_reta_final_amarelo_index(6).get_num_pecas() == 4 ||
 			t.get_reta_final_azul_index(6).get_num_pecas() == 4)
-			return true;
-		return false;
+			end_game();
+	}
+	
+	
+//	TODO
+//	fazer retornar uma peca clickada pelo mouse
+	protected Peca pick_peca() {
+		return players[player_turn].get_peca(0);
 	}
 	
 	protected void end_game() {
@@ -112,6 +136,8 @@ class Jogo {
 	
 	protected void end_turn() {
 		player_turn = (player_turn + 1) % 4;
+		num_6_rolados = 0;
+		capture_flag = false;
 	}
 	
 	protected void update_last_moved_piece(Peca p) {

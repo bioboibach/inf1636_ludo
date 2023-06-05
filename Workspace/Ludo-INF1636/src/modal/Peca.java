@@ -17,7 +17,6 @@ class Peca {
 //	verifica onde a peca ta, pra onde vai, se pode mover e atualiza
 	protected void move(int die_val) {
 		return;
-	}
 //		Jogo j = Jogo.getInstance();
 //		
 ////		se esta na casa inicial
@@ -35,11 +34,11 @@ class Peca {
 //		if (Tabuleiro.getInstance().check_path(die_val, this)) {
 //			
 //		}
-//	}
+	}
 //	
 	protected boolean can_move(int val_die) {
 		return true;
-	}
+		
 //		int[] i = new int[2];
 //		int count;
 //		i = Tabuleiro.getInstance().get_index_current_tile(this);
@@ -50,7 +49,7 @@ class Peca {
 //		else if (i[1] == 1) {
 //			Tabuleiro.getInstance().check_path(i[0], val_die, this);
 //		}
-//	}
+	}
 //	
 	protected void move_to_base() {
 		current_tile.remove_peca(this);

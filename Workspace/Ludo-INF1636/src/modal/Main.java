@@ -6,7 +6,7 @@ public class Main {
 	public static void main(String[] args) {
 		Jogo j = Jogo.getInstance();
 		j.initialize_jogo();
-		
-		new Frame();
+		j.turn();
+//		new Frame();
 	}
 }

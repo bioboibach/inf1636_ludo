@@ -99,9 +99,13 @@ class Tabuleiro {
 		for (count = 0; count < 4; count++) {
 			casas_iniciais.add(new Casa(1, count));
 			casas_iniciais.get(count).add_peca(Jogo.getInstance().get_player(count).get_peca(0));
+			Jogo.getInstance().get_player(count).get_peca(0).change_casa(casas_iniciais.get(count));
 			casas_iniciais.get(count).add_peca(Jogo.getInstance().get_player(count).get_peca(1));
+			Jogo.getInstance().get_player(count).get_peca(1).change_casa(casas_iniciais.get(count));
 			casas_iniciais.get(count).add_peca(Jogo.getInstance().get_player(count).get_peca(2));
+			Jogo.getInstance().get_player(count).get_peca(2).change_casa(casas_iniciais.get(count));
 			casas_iniciais.get(count).add_peca(Jogo.getInstance().get_player(count).get_peca(3));
+			Jogo.getInstance().get_player(count).get_peca(3).change_casa(casas_iniciais.get(count));
 		}
 		
 //		Inicializa as casas da reta final e a casa final de cada jogador
@@ -147,7 +151,6 @@ class Tabuleiro {
 //			inicializa todas as basicas
 			else path.add(new Casa(0));
 		}
-		
 	}
 
 	protected static Tabuleiro getInstance() {

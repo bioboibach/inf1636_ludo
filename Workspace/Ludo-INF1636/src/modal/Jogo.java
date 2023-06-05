@@ -1,6 +1,9 @@
 package modal;
+import java.util.*;
+import controller.Observable;
+import controller.Observer;
 
-class Jogo {
+class Jogo implements Observable{
 	
 	private static Jogo instance;	
 
@@ -13,6 +16,11 @@ class Jogo {
 	private int num_6_rolados = 0;
 	private boolean capture_flag = false;
 	
+	private int current_piece;
+	private int dado_res;
+	
+	List<Observer> lob = new ArrayList<Observer>();
+	
 	protected Jogo() {}
 	
 	protected void initialize_jogo() {
@@ -22,8 +30,6 @@ class Jogo {
 		start_game();
 	}
 	
-//	TODO
-//	funcao q faz o turno acontecer
 	protected void turn() {
 		
 		int val = d.roll();
@@ -96,7 +102,9 @@ class Jogo {
 			else break;
 		}
 		
-		check_end_game_condition();
+		if (check_end_game_condition() != -1) {
+			end_game();
+		}
 		end_turn();
 		return;		
 	}
@@ -114,12 +122,12 @@ class Jogo {
 		t.get_casas_iniciais_index(p.get_cor()).add_peca(p);
 	}
 	
-	protected void check_end_game_condition() {
-		if (t.get_reta_final_vermelho_index(6).get_num_pecas() == 4 ||
-			t.get_reta_final_verde_index(6).get_num_pecas() == 4 ||
-			t.get_reta_final_amarelo_index(6).get_num_pecas() == 4 ||
-			t.get_reta_final_azul_index(6).get_num_pecas() == 4)
-			end_game();
+	protected int check_end_game_condition() {
+		if (t.get_reta_final_vermelho_index(5).get_num_pecas() == 4) return 0;
+		else if	(t.get_reta_final_verde_index(5).get_num_pecas() == 4) return 1;
+		else if	(t.get_reta_final_amarelo_index(5).get_num_pecas() == 4) return 2;
+		else if	(t.get_reta_final_azul_index(5).get_num_pecas() == 4) return 3;
+		return -1;
 	}
 	
 	
@@ -132,6 +140,7 @@ class Jogo {
 	protected void end_game() {
 //		TODO
 //		finaliza o jogo
+//		calcula 2o 3o e 4o lugar
 	}
 	
 	protected void end_turn() {
@@ -151,9 +160,6 @@ class Jogo {
 		return players[id];
 	}
 	
-
-//	retorna a Casa de index i dentro da lista
-	
 //	inicia o jogo, ja movendo a primeira peca vermelha pra casa de saida
 	protected void start_game() {
 		Peca p = players[0].get_peca(0);
@@ -171,6 +177,25 @@ class Jogo {
 	}
 	protected void start_dado() {
 		d = Dado.getInstance();
+	}
+	
+	public void addObserver(Observer o) {
+		lob.add(o);
+	}
+	public void removeObserver(Observer o) {
+		lob.remove(o);
+	}
+	
+	public Object get() {
+		Object dados[] = new Object[5];
+		dados[0] = new Integer (player_turn);
+		dados[1] = new Integer (dado_res);
+		dados[2] = new Integer (check_end_game_condition());
+		dados[3] = new Integer (player_turn);
+		dados[4] = new Integer (current_piece);
+		dados[5] = new Integer (Tabuleiro.getInstance().get_index_current_tile(players[player_turn].get_peca(current_piece))[0]);
+		dados[6] = new Integer (Tabuleiro.getInstance().get_index_current_tile(players[player_turn].get_peca(current_piece))[1]);
+		return dados;
 	}
 
 	protected static Jogo getInstance() {

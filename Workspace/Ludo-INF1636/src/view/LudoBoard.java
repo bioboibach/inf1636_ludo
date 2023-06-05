@@ -1,5 +1,6 @@
 package view;
 import modal.*;
+import controller.*;
 
 import javax.imageio.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.io.*;
 import javax.swing.*;
 
 
-public class LudoBoard extends JPanel {
+public class LudoBoard extends JPanel implements Observer{
 
 	private static final int SIZE = 720 / 15; // Tamanho de cada célula do tabuleiro
 	private static final int WIDTH = 15; // Largura do tabuleiro em células
@@ -26,6 +27,18 @@ public class LudoBoard extends JPanel {
 	Image i[] = new Image[6];
 	int die_val = 1;
 	int turn = 0;
+	
+	Observable obs;
+	Object lob[];
+
+	int vez;
+	int val_dado;
+	int res; 
+	
+	int id_jogador;
+	int id_peca;
+	int qual_array;
+	int index_do_array;
 
 	public LudoBoard() {
 		setPreferredSize(new Dimension(1200, 700)); // Tamanho da janela
@@ -540,9 +553,18 @@ public class LudoBoard extends JPanel {
 		int textX = 900; // Posição x do texto
 		int textY = 310; // Posição y do texto
 		g.drawString(text, textX, textY);
-		
-		
-		
-		
+	}
+	public void notify(Observable o) {
+		obs = o;
+		lob = (Object []) obs.get();
+		vez = (Integer) lob[0];
+		val_dado = (Integer) lob[1];
+		res = (Integer) lob[2];
+		id_jogador = (Integer) lob[3];
+		id_peca = (Integer) lob[4];
+		qual_array = (Integer) lob[5];
+		index_do_array = (Integer) lob[6];
 	}
 }
+
+

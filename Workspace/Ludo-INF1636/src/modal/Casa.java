@@ -84,31 +84,12 @@ class Casa {
 	protected void add_peca(Peca p) {
 		num_pecas++;
 		for (int i = 0; i < 4; i++) {
-			if (peca_arr[i] == null) peca_arr[i] = p;
+			if (peca_arr[i] == null) {
+				peca_arr[i] = p;
+				break;
+			}
 		}
 	}
-	
-//	TODO
-//	update a casa para o vetor estar sempre preenchido em ordem crescente
-//	protected void update_casa() {
-//		if (num_pecas == 0) return;
-//		else {
-//			int index1 = 0;
-//			int index2 = 3;
-//			while(index1 != index2) {
-////				se tem peca, anda o index1
-//				if (this.get_peca(index1) != null) {
-//					index1++;
-//				}
-//				else if (this.get_peca(index2) == null) {
-//					index2--;	
-//				}
-//				else if() {
-//					
-//				}
-//			}
-//		}
-//	}
 	
 	protected int get_cor() {
 		return cor;

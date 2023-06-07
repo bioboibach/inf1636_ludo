@@ -36,17 +36,6 @@ class Casa {
 		this.tipo = tipo;
 	}
 
-	/*casa_vaga(Peca p):
-	 * se for casa de final(tipo = 5) 	-> true
-	 * se reta final(tipo = 4) e chega em casa de reta final -> false
-	 * se nao tem peca 			-> true
-	 * se tem 2 pecas			-> false
-	 * 
-	 * se tem 1 peca da msm cor	
-	 * 		se é casa de saida(2) -> false
-	 * 		se nao for			-> true 
-	 * 
-	 * */
 	protected boolean casa_vaga(Peca p) {
 //		se casa de final
 		if (tipo == 5) return true;

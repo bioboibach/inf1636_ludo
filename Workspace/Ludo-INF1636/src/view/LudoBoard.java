@@ -554,6 +554,7 @@ public class LudoBoard extends JPanel implements Observer{
 		int textY = 310; // Posição y do texto
 		g.drawString(text, textX, textY);
 	}
+	
 	public void notify(Observable o) {
 		obs = o;
 		lob = (Object []) obs.get();

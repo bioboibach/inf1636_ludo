@@ -1,9 +1,5 @@
 package modal;
 
-/* int id_peca - acho q n precisa do id da peca
- * int id_time
- * coord posicao
- */
 class Peca {
 	private int id_time;
 	private Casa current_tile = null;

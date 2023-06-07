@@ -36,7 +36,6 @@ class Tabuleiro {
 		return false;
 	}
 
-	
 	protected Casa get_casa_de_saida(int player_id) {
 		if (player_id == 0) return get_path_index(0);
 		else if (player_id == 1) return get_path_index(13);

@@ -1,10 +1,7 @@
 package modal;
 
 class Player {
-	/* peca arr_peca
-	 * int id_player
-	*/
-	
+
 	private int player_id;
 	private Peca pecas[] = new Peca[4];
 	
@@ -14,7 +11,7 @@ class Player {
 			pecas[count] = new Peca(id);
 		}
 	}
-	
+
 	protected Peca get_peca(int id) {
 		return pecas[id];
 	}

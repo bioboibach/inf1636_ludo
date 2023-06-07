@@ -7,6 +7,6 @@ public class Main {
 		Jogo j = Jogo.getInstance();
 		j.initialize_jogo();
 		j.turn();
-//		new Frame();
+		new Frame();
 	}
 }

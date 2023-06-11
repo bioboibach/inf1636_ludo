@@ -7,8 +7,8 @@ public class Modal_interface {
 
 	private Modal_interface() {}
 	
-	public int roll() {
-		return Dado.getInstance().roll();
+	public int get_roll() {
+		return Jogo.getInstance().get_val_dado();
 	}
 	
 	public Casa get_path_index(int index){
@@ -18,16 +18,24 @@ public class Modal_interface {
 		return Tabuleiro.getInstance().get_casas_iniciais_index(index);
 	}
 	public Casa get_reta_final_vermelho_index(int index){
-		return Tabuleiro.getInstance().get_reta_final_vermelho_index(index);
+		return Tabuleiro.getInstance().get_reta_final_index(index, 0);
 	}
 	public Casa get_reta_final_verde_index(int index){
-		return Tabuleiro.getInstance().get_reta_final_verde_index(index);
+		return Tabuleiro.getInstance().get_reta_final_index(index, 1);
 	}
 	public Casa get_reta_final_amarelo_index(int index){
-		return Tabuleiro.getInstance().get_reta_final_amarelo_index(index);
+		return Tabuleiro.getInstance().get_reta_final_index(index, 2);
 	}
 	public Casa get_reta_final_azul_index(int index){
-		return Tabuleiro.getInstance().get_reta_final_azul_index(index);
+		return Tabuleiro.getInstance().get_reta_final_index(index, 3);
+	}
+	
+	public void run_turn() {
+		Jogo.getInstance().turn();
+	}
+	
+	public int get_player_turn() {
+		return Jogo.getInstance().get_turn(); 
 	}
 	
 	public static Modal_interface getInstance() {

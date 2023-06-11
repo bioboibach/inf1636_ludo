@@ -37,6 +37,16 @@ class Player {
 		return possible_moves;
 	}
 	
+	protected Peca pick_peca(int val_die) {
+		Jogo j = Jogo.getInstance();
+		Peca p = j.get_player(j.get_turn()).get_peca(0);
+		
+		int[] possible_pieces = new int[4];
+		possible_pieces = movable_pieces(val_die);
+		
+		return p;
+	}
+	
 //	retorna null se n tem barreira
 	protected Peca get_barrier() {
 		int i, j;

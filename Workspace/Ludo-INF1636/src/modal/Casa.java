@@ -95,7 +95,7 @@ class Casa {
 	protected Peca get_primeira_peca_player(Player ply) {
 		int player_cor = ply.get_id();
 		for (int i = 0; i < 4; i++) {
-			if (peca_arr[i].get_cor() == player_cor) {
+			if (peca_arr[i] != null && peca_arr[i].get_cor() == player_cor) {
 				return peca_arr[i];
 			}
 		}

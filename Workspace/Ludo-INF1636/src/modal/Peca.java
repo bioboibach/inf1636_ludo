@@ -12,6 +12,12 @@ class Peca {
 //	funcao encarregada de movimentar a peca
 //	verifica onde a peca ta, pra onde vai, se pode mover e atualiza
 	protected void move(int die_val) {
+		Tabuleiro t = Tabuleiro.getInstance();
+		if (t.get_path_current_tile(this) == -1) return;
+		Casa c = t.get_destination(t.get_path_current_tile(this), die_val, this, true);
+		current_tile.remove_peca(this);
+		current_tile = c;
+		current_tile.add_peca(this);
 		return;
 //		Jogo j = Jogo.getInstance();
 //		
@@ -75,7 +81,7 @@ class Peca {
 	}
 	protected void move_to_reta_final(int index) {
 		current_tile.remove_peca(this);
-		Tabuleiro.getInstance().get_reta_final_index(index, this);
+		Tabuleiro.getInstance().get_reta_final_index(index, id_time);
 		current_tile.add_peca(this);
 	}
 	

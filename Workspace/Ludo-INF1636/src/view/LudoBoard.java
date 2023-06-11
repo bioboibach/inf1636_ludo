@@ -117,8 +117,9 @@ public class LudoBoard extends JPanel implements Observer{
 	}
 
 	public void launchDice() {
-		die_val = Modal_interface.getInstance().roll();
-		turn = (turn + 1) % 4; // remover dps TODO
+		Modal_interface.getInstance().run_turn();
+		die_val = Modal_interface.getInstance().get_roll();
+		turn = Modal_interface.getInstance().get_player_turn(); // remover dps TODO
 		repaint();
 	}
 	

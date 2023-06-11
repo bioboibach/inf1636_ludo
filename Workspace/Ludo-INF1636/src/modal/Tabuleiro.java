@@ -37,7 +37,6 @@ class Tabuleiro {
 		if (this.check_for_barrier(index, num_moves, p)) return false;
 		c = get_destination(index, num_moves, p, is_in_path(p));
 		return c.casa_vaga(p);
-
 	}
 	
 //	return true se tem barreira no caminho ate casa de entrada da peca ou ate fim do movimento
@@ -57,12 +56,13 @@ class Tabuleiro {
 		int current_index = index;
 		
 		if(is_in_path == true) {
-			for (int i = 0; i < num_moves; i++) {
-				current_index = (current_index + i) % 52;
+			for (int i = 0; i <= num_moves; i++) {
+				current_index = (index + i) % 52;
 				c = get_path_index(current_index);
 
 				if (c.is_casa_de_entrada() && c.get_cor() == p.get_cor() && i != num_moves) {
-					get_reta_final_index(num_moves - i - 1, p);
+					c = get_reta_final_index(num_moves - i - 1, p.get_cor());
+					break;
 				}
 			}
 		}
@@ -70,7 +70,7 @@ class Tabuleiro {
 //		se n ta na path
 		else {
 			if (index + num_moves > 5) return null;
-			else get_reta_final_index(index + num_moves, p);
+			else get_reta_final_index(index + num_moves, p.get_cor());
 		}
 		return c;
 	}
@@ -82,18 +82,21 @@ class Tabuleiro {
 		else return get_path_index(39);	
 	}
 	
-
-	protected Casa get_path_index(int i){
+	protected ArrayList<Casa> get_path(){
+		return path;
+	}
+	
+ 	protected Casa get_path_index(int i){
 		return path.get(i);
 	}
 	protected Casa get_casas_iniciais_index(int i) {
 		return casas_iniciais.get(i);
 	}
-	protected Casa get_reta_final_index(int i, Peca p) {
-		if (p.get_cor() == 0) return reta_final_vermelho.get(i);
-		else if (p.get_cor() == 1) return reta_final_verde.get(i);
-		else if (p.get_cor() == 2) return reta_final_amarelo.get(i);
-		else /*if (p.get_cor() == 3)*/ return reta_final_azul.get(i);
+	protected Casa get_reta_final_index(int i, int cor) {
+		if (cor == 0) return reta_final_vermelho.get(i);
+		else if (cor == 1) return reta_final_verde.get(i);
+		else if (cor == 2) return reta_final_amarelo.get(i);
+		else /*if (cor == 3)*/ return reta_final_azul.get(i);
 	}
 
 	protected Casa get_casa_final(int player_id) {

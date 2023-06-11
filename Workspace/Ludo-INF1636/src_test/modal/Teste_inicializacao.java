@@ -29,7 +29,7 @@ public class Teste_inicializacao {
 		tb.get_casas_iniciais_index(0).remove_peca(jg.get_player(0).get_peca(2));
 		tb.get_casas_iniciais_index(0).remove_peca(jg.get_player(0).get_peca(3));
 		for (int i = 0; i < 4; i++) {
-			tb.get_reta_final_vermelho_index(5).add_peca(jg.get_player(0).get_peca(i));
+			tb.get_reta_final_index(5, 0).add_peca(jg.get_player(0).get_peca(i));
 		}
 		assertSame(jg.check_end_game_condition(), 0);
 	}	

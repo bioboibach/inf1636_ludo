@@ -14,8 +14,8 @@ public class Frame extends JFrame {
         frame.setVisible(true);
         
         // Acessando variáveis e métodos de LudoBoard
-        board.startNewGame();
-        board.loadSavedGame();
-        board.saveGame();
+//        board.startNewGame();
+//        board.loadSavedGame();
+//        board.saveGame();
     }
 }

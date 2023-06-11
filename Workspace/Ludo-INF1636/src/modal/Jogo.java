@@ -17,7 +17,7 @@ class Jogo implements Observable{
 	private boolean capture_flag = false;
 	
 	private int current_piece;
-	private int dado_res;
+	private int dado_res = 5;
 	
 	List<Observer> lob = new ArrayList<Observer>();
 	
@@ -30,14 +30,28 @@ class Jogo implements Observable{
 		start_game();
 	}
 	
+	protected void print_map() {
+		ArrayList<Casa> map = t.get_path();
+		
+		for (int i = 0; i < 52; i++) {
+			System.out.print(map.get(i).get_num_pecas() + " ");
+		}
+		System.out.println();
+	}
+	
 	protected void turn() {
 		
-		int val = d.roll();
+		dado_res = d.roll();
 		Player ply = players[player_turn];
 		Peca p;
 		Casa c;
+		System.out.println("player " + player_turn + " turn");
+		System.out.println("dado = " + dado_res);
+		print_map();
 		
-		switch(val) {
+		
+		switch(dado_res) {
+		
 		
 		case 5:
 			c = t.get_casas_iniciais_index(ply.get_id());
@@ -52,9 +66,9 @@ class Jogo implements Observable{
 				}
 			}
 //			se pode mover alguma coisa
-			else if (ply.can_move(val)) {
-				p = pick_peca();
-				p.move(val);
+			else if (ply.can_move(dado_res)) {
+				p = ply.pick_peca(dado_res);
+				p.move(dado_res);
 				update_last_moved_piece(p);
 			}
 			break;
@@ -73,30 +87,30 @@ class Jogo implements Observable{
 //			se player tem barreira
 			else if (ply.get_barrier() != null){
 				p = ply.get_barrier();
-				p.move(val);
+				p.move(dado_res);
 				update_last_moved_piece(p);
 			}
 			
-			else if (ply.can_move(val)){
-				p = pick_peca();
-				p.move(val);
+			else if (ply.can_move(dado_res)){
+				p = ply.pick_peca(dado_res);
+				p.move(dado_res);
 				update_last_moved_piece(p);
 			}
 			turn();
 			break;
 
 		default:
-			if (ply.can_move(val)) {
-				p = pick_peca();
-				p.move(val);
+			if (ply.can_move(dado_res)) {
+				p = ply.pick_peca(dado_res);
+				p.move(dado_res);
 				update_last_moved_piece(p);
 			}
 		}
 		
 		while (last_moved_piece.get_current_tile().is_casa_final() || capture_flag == true) {
 			if(ply.can_move(6)) {
-				p = pick_peca();
-				p.move(val);
+				p = ply.pick_peca(dado_res);
+				p.move(dado_res);
 				update_last_moved_piece(p);
 			}
 			else break;
@@ -117,6 +131,10 @@ class Jogo implements Observable{
 		p.move_to_base();
 	}
 	
+
+//	TODO
+//	fazer retornar uma peca clickada pelo mouse
+
 	protected int check_end_game_condition() {
 		if (t.get_casa_final(0).get_num_pecas() == 4) return 0;
 		else if	(t.get_casa_final(1).get_num_pecas() == 4) return 1;
@@ -124,19 +142,11 @@ class Jogo implements Observable{
 		else if	(t.get_casa_final(3).get_num_pecas() == 4) return 3;
 		return -1;
 	}
-
-//	TODO
-//	fazer retornar uma peca clickada pelo mouse
-	protected Peca pick_peca() {
-		return players[player_turn].get_peca(0);
-	}
-	
 	protected void end_game() {
 //		TODO
 //		finaliza o jogo
 //		calcula 2o 3o e 4o lugar
 	}
-	
 	protected void end_turn() {
 		player_turn = (player_turn + 1) % 4;
 		num_6_rolados = 0;
@@ -156,7 +166,9 @@ class Jogo implements Observable{
 	protected Player get_player(int id){
 		return players[id];
 	}
-	
+	protected int get_turn() {
+		return player_turn;
+	}
 //	inicia o jogo, ja movendo a primeira peca vermelha pra casa de saida
 	protected void start_game() {
 		Peca p = players[0].get_peca(0);
@@ -174,6 +186,10 @@ class Jogo implements Observable{
 	}
 	protected void start_dado() {
 		d = Dado.getInstance();
+	}
+	
+	protected int get_val_dado() {
+		return dado_res;
 	}
 	
 	public void addObserver(Observer o) {

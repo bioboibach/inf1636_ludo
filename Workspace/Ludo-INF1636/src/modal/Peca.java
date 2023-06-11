@@ -33,18 +33,31 @@ class Peca {
 	}
 //	
 	protected boolean can_move(int val_die) {
-		return true;
+		Tabuleiro t = Tabuleiro.getInstance();
+		Casa c;
+		int[] i = new int[2];
+		int count;
+		i = t.get_index_current_tile(this);
 		
-//		int[] i = new int[2];
-//		int count;
-//		i = Tabuleiro.getInstance().get_index_current_tile(this);
-////		se ta na path
-//		if (i[1] == 0) {
-//			return Tabuleiro.getInstance().check_path(i[0], val_die, this);
-//		}
-//		else if (i[1] == 1) {
-//			Tabuleiro.getInstance().check_path(i[0], val_die, this);
-//		}
+		if (t.is_in_path(this)) {
+			return t.check_path(i[0], val_die, this);
+		}
+		
+		else if (current_tile.is_casa_inicial()) {
+			c = t.get_casa_de_saida(id_time);
+			return c.casa_vaga(this);
+		}
+		
+		else if (current_tile.is_casa_final()) {
+			return false;
+		}
+		
+		else if (current_tile.is_reta_final()) {
+			c = t.get_destination(i[0], val_die, this, false);
+			if (c == null) return false;
+			return c.casa_vaga(this);
+		}
+		return true;
 	}
 //	
 	protected void move_to_base() {
@@ -60,12 +73,9 @@ class Peca {
 		else if (id_time == 3) current_tile = Tabuleiro.getInstance().get_path_index(39);
 		current_tile.add_peca(this);
 	}
-	protected void move_to_reta_fianl(int index) {
+	protected void move_to_reta_final(int index) {
 		current_tile.remove_peca(this);
-		if (id_time == 0) current_tile = Tabuleiro.getInstance().get_reta_final_vermelho_index(index);
-		else if (id_time == 1) current_tile = Tabuleiro.getInstance().get_reta_final_verde_index(index);
-		else if (id_time == 2) current_tile = Tabuleiro.getInstance().get_reta_final_amarelo_index(index);			
-		else if (id_time == 3) current_tile = Tabuleiro.getInstance().get_reta_final_azul_index(index);
+		Tabuleiro.getInstance().get_reta_final_index(index, this);
 		current_tile.add_peca(this);
 	}
 	

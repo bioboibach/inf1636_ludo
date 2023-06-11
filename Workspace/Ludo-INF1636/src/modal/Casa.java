@@ -31,7 +31,6 @@ class Casa {
 		this.tipo = tipo;
 		cor = id;		
 	}
-	
 	protected Casa(int tipo) {
 		this.tipo = tipo;
 	}

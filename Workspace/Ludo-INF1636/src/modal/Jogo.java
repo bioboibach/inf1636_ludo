@@ -109,28 +109,22 @@ class Jogo implements Observable{
 		return;		
 	}
 
-
-//	TODO
-//	funcao encarregada de lidar com a captura
-//	assumo que pode ocorrer captura
 	protected void captura(Casa c) {
 		Peca p = c.get_peca(0);
 		if (p == null) {
 			p = c.get_peca(1);
 		}
-		c.remove_peca(p);
-		t.get_casas_iniciais_index(p.get_cor()).add_peca(p);
+		p.move_to_base();
 	}
 	
 	protected int check_end_game_condition() {
-		if (t.get_reta_final_vermelho_index(5).get_num_pecas() == 4) return 0;
-		else if	(t.get_reta_final_verde_index(5).get_num_pecas() == 4) return 1;
-		else if	(t.get_reta_final_amarelo_index(5).get_num_pecas() == 4) return 2;
-		else if	(t.get_reta_final_azul_index(5).get_num_pecas() == 4) return 3;
+		if (t.get_casa_final(0).get_num_pecas() == 4) return 0;
+		else if	(t.get_casa_final(1).get_num_pecas() == 4) return 1;
+		else if	(t.get_casa_final(2).get_num_pecas() == 4) return 2;
+		else if	(t.get_casa_final(3).get_num_pecas() == 4) return 3;
 		return -1;
 	}
-	
-	
+
 //	TODO
 //	fazer retornar uma peca clickada pelo mouse
 	protected Peca pick_peca() {
@@ -149,6 +143,9 @@ class Jogo implements Observable{
 		capture_flag = false;
 	}
 	
+	protected void update_capture() {
+		capture_flag = true;
+	}
 	protected void update_last_moved_piece(Peca p) {
 		last_moved_piece = p;
 	}
@@ -186,12 +183,12 @@ class Jogo implements Observable{
 		lob.remove(o);
 	}
 	
+	@SuppressWarnings("removal")
 	public Object get() {
 		Object dados[] = new Object[5];
 		dados[0] = new Integer (player_turn);
 		dados[1] = new Integer (dado_res);
 		dados[2] = new Integer (check_end_game_condition());
-		dados[3] = new Integer (player_turn);
 		dados[4] = new Integer (current_piece);
 		dados[5] = new Integer (Tabuleiro.getInstance().get_index_current_tile(players[player_turn].get_peca(current_piece))[0]);
 		dados[6] = new Integer (Tabuleiro.getInstance().get_index_current_tile(players[player_turn].get_peca(current_piece))[1]);

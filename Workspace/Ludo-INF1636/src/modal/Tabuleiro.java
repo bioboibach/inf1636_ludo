@@ -23,19 +23,58 @@ class Tabuleiro {
 		return true;
 	}
 	
+	protected boolean is_in_reat_final(Peca p) {
+		if (p.get_cor() == 0) if (reta_final_vermelho.indexOf(p.get_current_tile()) == -1) return false;
+		else if (p.get_cor() == 1) if (reta_final_verde.indexOf(p.get_current_tile()) == -1) return false;
+		else if (p.get_cor() == 2) if (reta_final_amarelo.indexOf(p.get_current_tile()) == -1) return false;
+		else if (p.get_cor() == 3) if (reta_final_azul.indexOf(p.get_current_tile()) == -1) return false;
+		return true;
+	}
+	
+//	verifica o caminho e a casa de destino
 	protected boolean check_path(int index, int num_moves, Peca p){
+		Casa c; 
+		if (this.check_for_barrier(index, num_moves, p)) return false;
+		c = get_destination(index, num_moves, p, is_in_path(p));
+		return c.casa_vaga(p);
+
+	}
+	
+//	return true se tem barreira no caminho ate casa de entrada da peca ou ate fim do movimento
+	protected boolean check_for_barrier(int index, int num_moves, Peca p){
 		Casa c = p.get_current_tile();
 		int count;
 		for (count = 1; count < num_moves; count++) {
 			c = path.get((index + count)%52);
-			if (c.is_barreira()) return false;
-		}
-		if(c.casa_vaga(p)) {
-			return true;
+			if (c.is_barreira()) return true;
+			else if (c.is_casa_de_entrada() && c.get_cor() == p.get_cor()) return false;
 		}
 		return false;
 	}
+	
+	protected Casa get_destination(int index, int num_moves, Peca p, boolean is_in_path){
+		Casa c = p.get_current_tile();
+		int current_index = index;
+		
+		if(is_in_path == true) {
+			for (int i = 0; i < num_moves; i++) {
+				current_index = (current_index + i) % 52;
+				c = get_path_index(current_index);
 
+				if (c.is_casa_de_entrada() && c.get_cor() == p.get_cor() && i != num_moves) {
+					get_reta_final_index(num_moves - i - 1, p);
+				}
+			}
+		}
+		
+//		se n ta na path
+		else {
+			if (index + num_moves > 5) return null;
+			else get_reta_final_index(index + num_moves, p);
+		}
+		return c;
+	}
+	
 	protected Casa get_casa_de_saida(int player_id) {
 		if (player_id == 0) return get_path_index(0);
 		else if (player_id == 1) return get_path_index(13);
@@ -43,49 +82,55 @@ class Tabuleiro {
 		else return get_path_index(39);	
 	}
 	
+
 	protected Casa get_path_index(int i){
 		return path.get(i);
 	}
-	protected Casa get_casas_iniciais_index(int i){
+	protected Casa get_casas_iniciais_index(int i) {
 		return casas_iniciais.get(i);
 	}
-	protected Casa get_reta_final_vermelho_index(int i){
-		return reta_final_vermelho.get(i);
+	protected Casa get_reta_final_index(int i, Peca p) {
+		if (p.get_cor() == 0) return reta_final_vermelho.get(i);
+		else if (p.get_cor() == 1) return reta_final_verde.get(i);
+		else if (p.get_cor() == 2) return reta_final_amarelo.get(i);
+		else /*if (p.get_cor() == 3)*/ return reta_final_azul.get(i);
 	}
-	protected Casa get_reta_final_verde_index(int i){
-		return reta_final_verde.get(i);
+
+	protected Casa get_casa_final(int player_id) {
+		if (player_id == 0) return reta_final_vermelho.get(5);
+		else if (player_id == 1) return reta_final_verde.get(5);
+		else if (player_id == 2) return reta_final_amarelo.get(5);
+		else return reta_final_azul.get(5);
 	}
-	protected Casa get_reta_final_amarelo_index(int i){
-		return reta_final_amarelo.get(i);
-	}
-	protected Casa get_reta_final_azul_index(int i){
-		return reta_final_azul.get(i);
+	
+	protected int get_path_current_tile(Peca p) {
+		return path.indexOf(p.get_current_tile());
 	}
 
 	protected int[] get_index_current_tile(Peca p) {
 		int[] i = new int[2];
-		if((i[0] = this.path.indexOf(p.get_current_tile())) != -1) {
+		if(get_path_current_tile(p) != -1) {
 			i[1] = 0;
 			return i;
 		}
-		else if ((i[0] = this.casas_iniciais.indexOf(p.get_current_tile())) != -1) {
+		else if ((i[0] = casas_iniciais.indexOf(p.get_current_tile())) != -1) {
 			i[1] = 1;
 			return i;
 		}
-		else if ((i[0] = this.reta_final_vermelho.indexOf(p.get_current_tile())) != -1) {
+		else if ((i[0] = reta_final_vermelho.indexOf(p.get_current_tile())) != -1) {
 			i[1] = 2;
 			return i;
 		}
-		else if ((i[0] = this.reta_final_verde.indexOf(p.get_current_tile())) != -1) {
+		else if ((i[0] = reta_final_verde.indexOf(p.get_current_tile())) != -1) {
 			i[1] = 3;
 			return i;
 		}
-		else if ((i[0] = this.reta_final_amarelo.indexOf(p.get_current_tile())) != -1) {
+		else if ((i[0] = reta_final_amarelo.indexOf(p.get_current_tile())) != -1) {
 			i[1] = 4;
 			return i;
 		}
 		else {
-			i[0] = this.reta_final_azul.indexOf(p.get_current_tile());
+			i[0] = reta_final_azul.indexOf(p.get_current_tile());
 			i[1] = 5;
 			return i;
 		}

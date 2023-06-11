@@ -27,13 +27,23 @@ class Player {
 		return false;
 	}
 	
+//	retorna lista de quais pecas podem se mover
+	protected int[] movable_pieces(int val_die) {
+		int[] possible_moves = new int[4];
+		for (int i = 0; i < 4; i++) {
+			if(pecas[i].can_move(val_die)) possible_moves[i] = 1;
+			else possible_moves[i] = 0;
+		}
+		return possible_moves;
+	}
+	
 //	retorna null se n tem barreira
 	protected Peca get_barrier() {
 		int i, j;
 		for(i = 0; i < 3; i++) {
-			if (pecas[i].get_current_tile().is_casa_inicial() || pecas[i].get_current_tile().is_casa_final()) continue;
+			if (pecas[i].get_current_tile().is_casa_inicial() || pecas[i].get_current_tile().is_casa_final() || pecas[i].get_current_tile().is_casa_de_saida()) continue;
 			for (j = i + 1; j < 4; j++) {
-				if (pecas[j].get_current_tile().is_casa_inicial() || pecas[j].get_current_tile().is_casa_final()) continue;
+				if (pecas[j].get_current_tile().is_casa_inicial() || pecas[j].get_current_tile().is_casa_final() || pecas[j].get_current_tile().is_casa_de_saida()) continue;
 				else if (pecas[i].get_current_tile().equals(pecas[j].get_current_tile())) return pecas[i];
 			}
 		}

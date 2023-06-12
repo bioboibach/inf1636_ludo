@@ -7,8 +7,30 @@ public class Modal_interface {
 
 	private Modal_interface() {}
 	
+	public int[] get_peca_indexes(int player_id, int peca_id) {
+		Peca p = Jogo.getInstance().get_player(player_id).get_peca(peca_id);
+		return Tabuleiro.getInstance().get_index_current_tile(p);
+	}
+	
 	public int get_roll() {
 		return Jogo.getInstance().get_val_dado();
+	}
+	
+	public void set_positions(int player_id, int peca_id, int index, int list_id) {
+		Peca p = Jogo.getInstance().get_player(player_id).get_peca(peca_id);
+		Casa c = null;
+//		path
+		if (list_id == 0) {
+			c = Tabuleiro.getInstance().get_path_index(index);
+		}
+//		casa inicial
+		else if (list_id == 1) {
+			c = Tabuleiro.getInstance().get_casas_iniciais_index(player_id);
+		}
+		else {
+			c = Tabuleiro.getInstance().get_reta_final_index(index, list_id - 2);
+		}
+		c.add_peca(p);
 	}
 	
 	public Casa get_path_index(int index){

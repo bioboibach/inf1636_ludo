@@ -171,6 +171,16 @@ class Jogo implements Observable{
 	}
 //	inicia o jogo, ja movendo a primeira peca vermelha pra casa de saida
 	protected void start_game() {
+		for (int count = 0; count < 4; count++) {
+			t.get_casas_iniciais_index(count).add_peca(instance.get_player(count).get_peca(0));
+			instance.get_player(count).get_peca(0).change_casa(t.get_casas_iniciais_index(count));
+			t.get_casas_iniciais_index(count).add_peca(instance.get_player(count).get_peca(1));
+			instance.get_player(count).get_peca(1).change_casa(t.get_casas_iniciais_index(count));
+			t.get_casas_iniciais_index(count).add_peca(instance.get_player(count).get_peca(2));
+			instance.get_player(count).get_peca(2).change_casa(t.get_casas_iniciais_index(count));
+			t.get_casas_iniciais_index(count).add_peca(instance.get_player(count).get_peca(3));
+			instance.get_player(count).get_peca(3).change_casa(t.get_casas_iniciais_index(count));
+		}
 		Peca p = players[0].get_peca(0);
 		p.move_to_casa_de_saida();
 		update_last_moved_piece(p);

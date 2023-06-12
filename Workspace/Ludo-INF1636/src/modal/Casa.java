@@ -45,6 +45,8 @@ class Casa {
 //		se tem 2 pecas na casa
 		else if(num_pecas == 2) return false;
 		
+		
+//		TODO peca_arr[0]ta pegando so a primeira posicao, tem q ver se vai fazer update_casa pra sempre mover as pecas pra posicao 0 ou se so verifica qual index ta
 //		se tem 1 peca na casa e a cor dessa peca for igual a movimentada
 		else if (num_pecas == 1 && p.get_cor() == peca_arr[0].get_cor()) {
 //			se casa de saída

@@ -37,7 +37,7 @@ class Peca {
 //			
 //		}
 	}
-//	
+	
 	protected boolean can_move(int val_die) {
 		Tabuleiro t = Tabuleiro.getInstance();
 		Casa c;
@@ -65,7 +65,7 @@ class Peca {
 		}
 		return true;
 	}
-//	
+	
 	protected void move_to_base() {
 		current_tile.remove_peca(this);
 		current_tile = Tabuleiro.getInstance().get_casas_iniciais_index(id_time);

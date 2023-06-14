@@ -1,32 +1,43 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
 import modal.Modal_interface;
 import modal.Modal_interface.*;
 import java.io.*;
 
 class Save_game {
 	private static Save_game instance = null;
-	private FileWriter inputStream = null;
 	
-	
-	private void save() {
+	protected void save() throws IOException{
 		Modal_interface m = Modal_interface.getInstance();
 		int[] aux = new int[2];
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				aux = m.get_peca_indexes(i, j);
-//				escreve index e lista no arq
+		FileWriter inputStream = new FileWriter("res/save_data/save_file.txt");
+		
+		try {
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					aux = m.get_peca_indexes(i, j);
+					inputStream.write(aux[0] + "");
+					inputStream.write(aux[1] + "");
+				}
 			}
+			int turn = m.get_player_turn();
+			inputStream.write(turn + "");
+			
 		}
-		m.get_player_turn();
-//		escreve o turno
+		catch (Exception e){
+			e.getStackTrace();
+		}
+		finally {
+			inputStream.close();
+		}
 	}
 	
-	protected Save_game getInstance() {
+	protected static Save_game getInstance() {
 		if (instance == null) {
 			instance = new Save_game();
 		}
-		
 		return instance;
 	}
 	

@@ -8,19 +8,19 @@ class Load_game {
 	private static Load_game instance;
 	private FileReader outputStream = null;
 	
-	private void load() {
+	protected void load() {
 		Modal_interface m = Modal_interface.getInstance();
-		int[] aux = new int[2];
+		int list_index, index; 
 		for (int i = 0; i < 4; i++) {
+			
 			for (int j = 0; j < 4; j++) {
-				aux = m.get_peca_indexes(i, j);
-//				escreve index e lista no arq
+				m.set_positions(i, j, i, i);
 			}
 		}
 		m.get_player_turn();
 //		escreve o turno
 	}
-	protected Load_game getInstance() {
+	protected static Load_game getInstance() {
 		if (instance == null) {
 			instance = new Load_game();
 		}

@@ -45,12 +45,12 @@ public class LudoBoard extends JPanel implements Observer{
 		setLayout(null);
 		
 			try {
-				i[0] = ImageIO.read(new File("res/Dado1.png"));
-				i[1] = ImageIO.read(new File("res/Dado2.png"));
-				i[2] = ImageIO.read(new File("res/Dado3.png"));
-				i[3] = ImageIO.read(new File("res/Dado4.png"));
-				i[4] = ImageIO.read(new File("res/Dado5.png"));
-				i[5] = ImageIO.read(new File("res/Dado6.png"));
+				i[0] = ImageIO.read(new File("res/images/Dado1.png"));
+				i[1] = ImageIO.read(new File("res/images/Dado2.png"));
+				i[2] = ImageIO.read(new File("res/images/Dado3.png"));
+				i[3] = ImageIO.read(new File("res/images/Dado4.png"));
+				i[4] = ImageIO.read(new File("res/images/Dado5.png"));
+				i[5] = ImageIO.read(new File("res/images/Dado6.png"));
 			}
 			catch(IOException e){
 				System.out.println(e.getMessage());

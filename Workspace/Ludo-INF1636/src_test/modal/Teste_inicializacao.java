@@ -17,7 +17,7 @@ public class Teste_inicializacao {
 	@Test
 	public void initialization() {
 		Casa c1, c2;
-		c1 = jg.get_player(0).get_peca(0).get_current_tile();
+		c1 = jg.get_player(0).get_peca(0).get_current_casa();
 		c2 = tb.get_path_index(0);
 
 		assertEquals(c1, c2);

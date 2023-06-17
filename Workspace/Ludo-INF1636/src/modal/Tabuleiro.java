@@ -6,28 +6,91 @@ class Tabuleiro {
 	
 	private static Tabuleiro instance;
 	
-	private ArrayList<Casa> path = new ArrayList<Casa>();
-	private ArrayList<Casa> casas_iniciais = new ArrayList<Casa>();
+	private ArrayList<Casa> path 				= new ArrayList<Casa>();
+	private ArrayList<Casa> casas_iniciais 		= new ArrayList<Casa>();
 	private ArrayList<Casa> reta_final_vermelho = new ArrayList<Casa>();
-	private ArrayList<Casa> reta_final_verde = new ArrayList<Casa>();
-	private ArrayList<Casa> reta_final_amarelo = new ArrayList<Casa>();
-	private ArrayList<Casa> reta_final_azul = new ArrayList<Casa>();
+	private ArrayList<Casa> reta_final_verde 	= new ArrayList<Casa>();
+	private ArrayList<Casa> reta_final_amarelo 	= new ArrayList<Casa>();
+	private ArrayList<Casa> reta_final_azul 	= new ArrayList<Casa>();
+	
+	
+	protected static Tabuleiro getInstance() {
+		if (instance == null) {
+			instance = new Tabuleiro();
+		}
+		return instance;
+	}
 	
 	private Tabuleiro() {
 		start_casas();
 	}
+
+//	Inicializacao --------------------------------------
+	protected void start_casas() {
+		int count;
+		
+//		Inicializa as casas_iniciais
+		for (count = 0; count < 4; count++) {
+			casas_iniciais.add(new Casa(1, count));
+		}
+		
+//		Inicializa as casas da reta final e a casa final de cada jogador
+		for (count = 0; count < 5; count++) {
+			reta_final_vermelho.add(new Casa(4, 0));
+		}
+		reta_final_vermelho.add(new Casa(5, 0));
+		
+		for (count = 0; count < 5; count++) {
+			reta_final_verde.add(new Casa(4, 1));
+		}
+		reta_final_verde.add(new Casa(5, 1));
+		
+		for (count = 0; count < 5; count++) {
+			reta_final_amarelo.add(new Casa(4, 2));
+		}
+		reta_final_amarelo.add(new Casa(5, 2));
+		
+		for (count = 0; count < 5; count++) {
+			reta_final_azul.add(new Casa(4, 3));
+		}
+		reta_final_azul.add(new Casa(5, 3));
+		
+//		path
+		for (count = 0; count <= 51; count++) {
+
+//			inicializa casas de saida
+			if (count == 0) path.add(new Casa(2, 0)); 
+			else if (count == 13) path.add(new Casa(2, 1));
+			else if (count == 26) path.add(new Casa(2, 2));
+			else if (count == 39) path.add(new Casa(2, 3));			
+			
+//			inicializa casas de entrada
+			else if (count == 11) path.add(new Casa(6, 1));
+			else if (count == 24) path.add(new Casa(6, 2));
+			else if (count == 37) path.add(new Casa(6, 3));
+			else if (count == 50) path.add(new Casa(6, 0));
+			
+//			inicializa casas de abrigo
+			else if (count == 9 || count == 22 || count == 35 || count == 48)
+				path.add(new Casa(3));
+			
+//			inicializa todas as basicas
+			else path.add(new Casa(0));
+		}
+	}
 	
+//	Verificacoes ---------------------------------------
 //	retorna true se a peca p ta dentro da path
 	protected boolean is_in_path(Peca p) {
-		if (path.indexOf(p.get_current_tile()) == -1) return false;
+		if (path.indexOf(p.get_current_casa()) == -1) return false;
 		return true;
 	}
 	
 	protected boolean is_in_reat_final(Peca p) {
-		if (p.get_cor() == 0) if (reta_final_vermelho.indexOf(p.get_current_tile()) == -1) return false;
-		else if (p.get_cor() == 1) if (reta_final_verde.indexOf(p.get_current_tile()) == -1) return false;
-		else if (p.get_cor() == 2) if (reta_final_amarelo.indexOf(p.get_current_tile()) == -1) return false;
-		else if (p.get_cor() == 3) if (reta_final_azul.indexOf(p.get_current_tile()) == -1) return false;
+		if (p.get_cor() == 0) if (reta_final_vermelho.indexOf(p.get_current_casa()) == -1) return false;
+		else if (p.get_cor() == 1) if (reta_final_verde.indexOf(p.get_current_casa()) == -1) return false;
+		else if (p.get_cor() == 2) if (reta_final_amarelo.indexOf(p.get_current_casa()) == -1) return false;
+		else if (p.get_cor() == 3) if (reta_final_azul.indexOf(p.get_current_casa()) == -1) return false;
 		return true;
 	}
 	
@@ -36,12 +99,12 @@ class Tabuleiro {
 		Casa c; 
 		if (this.check_for_barrier(index, num_moves, p)) return false;
 		c = get_destination(index, num_moves, p, is_in_path(p));
-		return c.casa_vaga(p);
+		return c.is_casa_vaga(p);
 	}
 	
 //	return true se tem barreira no caminho ate casa de entrada da peca ou ate fim do movimento
 	protected boolean check_for_barrier(int index, int num_moves, Peca p){
-		Casa c = p.get_current_tile();
+		Casa c = p.get_current_casa();
 		int count;
 		for (count = 1; count < num_moves; count++) {
 			c = path.get((index + count)%52);
@@ -51,8 +114,10 @@ class Tabuleiro {
 		return false;
 	}
 	
+	
+//	Metodos get ----------------------------------------
 	protected Casa get_destination(int index, int num_moves, Peca p, boolean is_in_path){
-		Casa c = p.get_current_tile();
+		Casa c = p.get_current_casa();
 		int current_index = index;
 		
 		if(is_in_path == true) {
@@ -106,110 +171,40 @@ class Tabuleiro {
 		else return reta_final_azul.get(5);
 	}
 	
-	protected int get_path_current_tile(Peca p) {
-		return path.indexOf(p.get_current_tile());
+	protected int get_path_current_casa(Peca p) {
+		return path.indexOf(p.get_current_casa());
 	}
 
-	protected int[] get_index_current_tile(Peca p) {
+	protected int[] get_index_current_casa(Peca p) {
 		int[] i = new int[2];
-		if(get_path_current_tile(p) != -1) {
+		if(get_path_current_casa(p) != -1) {
 			i[1] = 0;
 			return i;
 		}
-		else if ((i[0] = casas_iniciais.indexOf(p.get_current_tile())) != -1) {
+		else if ((i[0] = casas_iniciais.indexOf(p.get_current_casa())) != -1) {
 			i[1] = 1;
 			return i;
 		}
-		else if ((i[0] = reta_final_vermelho.indexOf(p.get_current_tile())) != -1) {
+		else if ((i[0] = reta_final_vermelho.indexOf(p.get_current_casa())) != -1) {
 			i[1] = 2;
 			return i;
 		}
-		else if ((i[0] = reta_final_verde.indexOf(p.get_current_tile())) != -1) {
+		else if ((i[0] = reta_final_verde.indexOf(p.get_current_casa())) != -1) {
 			i[1] = 3;
 			return i;
 		}
-		else if ((i[0] = reta_final_amarelo.indexOf(p.get_current_tile())) != -1) {
+		else if ((i[0] = reta_final_amarelo.indexOf(p.get_current_casa())) != -1) {
 			i[1] = 4;
 			return i;
 		}
 		else {
-			i[0] = reta_final_azul.indexOf(p.get_current_tile());
+			i[0] = reta_final_azul.indexOf(p.get_current_casa());
 			i[1] = 5;
 			return i;
 		}
 	}
 	
-	protected void start_casas() {
-		int count;
-		Jogo j = Jogo.getInstance();
-		
-//		Inicializa as casas_iniciais de cada jogador e add pecas
-//		for (count = 0; count < 4; count++) {
-//			casas_iniciais.add(new Casa(1, count));
-//			casas_iniciais.get(count).add_peca(j.get_player(count).get_peca(0));
-//			j.get_player(count).get_peca(0).change_casa(casas_iniciais.get(count));
-//			casas_iniciais.get(count).add_peca(j.get_player(count).get_peca(1));
-//			j.get_player(count).get_peca(1).change_casa(casas_iniciais.get(count));
-//			casas_iniciais.get(count).add_peca(j.get_player(count).get_peca(2));
-//			j.get_player(count).get_peca(2).change_casa(casas_iniciais.get(count));
-//			casas_iniciais.get(count).add_peca(j.get_player(count).get_peca(3));
-//			j.get_player(count).get_peca(3).change_casa(casas_iniciais.get(count));
-//		}
-		
-//		Inicializa as casas_iniciais
-		for (count = 0; count < 4; count++) {
-			casas_iniciais.add(new Casa(1, count));
-		}
-		
-//		Inicializa as casas da reta final e a casa final de cada jogador
-		for (count = 0; count < 5; count++) {
-			reta_final_vermelho.add(new Casa(4, 0));
-		}
-		reta_final_vermelho.add(new Casa(5, 0));
-		
-		for (count = 0; count < 5; count++) {
-			reta_final_verde.add(new Casa(4, 1));
-		}
-		reta_final_verde.add(new Casa(5, 1));
-		
-		for (count = 0; count < 5; count++) {
-			reta_final_amarelo.add(new Casa(4, 2));
-		}
-		reta_final_amarelo.add(new Casa(5, 2));
-		
-		for (count = 0; count < 5; count++) {
-			reta_final_azul.add(new Casa(4, 3));
-		}
-		reta_final_azul.add(new Casa(5, 3));
-		
-//		path
-		for (count = 0; count <= 51; count++) {
+	
 
-//			inicializa casas de saida
-			if (count == 0) path.add(new Casa(2, 0)); 
-			else if (count == 13) path.add(new Casa(2, 1));
-			else if (count == 26) path.add(new Casa(2, 2));
-			else if (count == 39) path.add(new Casa(2, 3));			
-			
-//			inicializa casas de entrada
-			else if (count == 11) path.add(new Casa(6, 1));
-			else if (count == 24) path.add(new Casa(6, 2));
-			else if (count == 37) path.add(new Casa(6, 3));
-			else if (count == 50) path.add(new Casa(6, 0));
-			
-//			inicializa casas de abrigo
-			else if (count == 9 || count == 22 || count == 35 || count == 48)
-				path.add(new Casa(3));
-			
-//			inicializa todas as basicas
-			else path.add(new Casa(0));
-		}
-	}
 
-	protected static Tabuleiro getInstance() {
-		if (instance == null) {
-			instance = new Tabuleiro();
-		}
-		return instance;
-	}
 }

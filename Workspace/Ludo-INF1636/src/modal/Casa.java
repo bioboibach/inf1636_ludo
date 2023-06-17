@@ -1,9 +1,6 @@
 package modal;
 
-
-/*	int num_pecas na tile
- * 	int tipo_da_casa
- * 
+/*	Padrao Utilizado  
  * 
  * tipo -> indica tipo do tile:
  * 		-> 0 = casa comum
@@ -18,10 +15,9 @@ package modal;
  * 		-> 1 = verde
  * 		-> 2 = amarelo
  * 		-> 3 = azul
- * 	   -> -1 = neutro
+ * 	    -> -1 = neutro
  * */
 class Casa {
-	
 	private int tipo = 0;
 	private int cor = -1;
 	private int num_pecas = 0;
@@ -35,41 +31,7 @@ class Casa {
 		this.tipo = tipo;
 	}
 
-	protected boolean casa_vaga(Peca p) {
-//		se casa de final
-		if (tipo == 5) return true;
-		
-//		se ta na reta final e vai para outra casa da reta final (nao tirou o numero exato para chegar no final)
-		else if (p.get_current_tile().tipo == 4 && this.tipo == 4) return false;
-
-//		se tem 2 pecas na casa
-		else if(num_pecas == 2) return false;
-		
-		
-//		TODO peca_arr[0]ta pegando so a primeira posicao, tem q ver se vai fazer update_casa pra sempre mover as pecas pra posicao 0 ou se so verifica qual index ta
-//		se tem 1 peca na casa e a cor dessa peca for igual a movimentada
-		else if (num_pecas == 1 && p.get_cor() == peca_arr[0].get_cor()) {
-//			se casa de saída
-			if (tipo == 2) return false;
-			else return true;
-		}
-//		se tem 1 ou 0 pecas, se tem mais de 2 (casa inicial e final), 
-		return true;
-	}
-	
-	protected boolean is_barreira() {
-		if (num_pecas < 2) return false;
-		else if (peca_arr[0].get_cor() == peca_arr[1].get_cor()) return true;
-		return false;
-	}
-	
-	protected void remove_peca(Peca p) {
-		num_pecas--;
-		for (int i = 0; i < 4; i++) {
-			if (p.equals(peca_arr[i])) peca_arr[i] = null;
-		}
-	}
-	
+//	Operacoes -------------------------------------------
 //	assumo que pode mover
 	protected void add_peca(Peca p) {
 		num_pecas++;
@@ -80,30 +42,15 @@ class Casa {
 			}
 		}
 	}
-	
-	protected int get_cor() {
-		return cor;
-	}
-	protected int get_tipo() {
-		return tipo;
-	}
-	protected int get_num_pecas() {
-		return num_pecas;
-	}
-	protected Peca get_peca(int index) {
-		return peca_arr[index];
-	}
-	
-	protected Peca get_primeira_peca_player(Player ply) {
-		int player_cor = ply.get_id();
+	protected void remove_peca(Peca p) {
+		num_pecas--;
 		for (int i = 0; i < 4; i++) {
-			if (peca_arr[i] != null && peca_arr[i].get_cor() == player_cor) {
-				return peca_arr[i];
-			}
+			if (p.equals(peca_arr[i])) peca_arr[i] = null;
 		}
-		return null;
 	}
+		
 	
+//	Verificacoes ---------------------------------------
 	protected boolean is_casa_comum() {
 		if (tipo == 0) return true;
 		return false;
@@ -132,4 +79,55 @@ class Casa {
 		if (tipo == 6) return true;
 		return false;
 	}
+	protected boolean is_casa_vaga(Peca p) {
+//		se casa de final
+		if (tipo == 5) return true;
+		
+//		se ta na reta final e vai para outra casa da reta final (nao tirou o numero exato para chegar no final)
+		else if (p.get_current_casa().tipo == 4 && this.tipo == 4) return false;
+
+//		se tem 2 pecas na casa
+		else if(num_pecas == 2) return false;
+		
+		
+//		TODO peca_arr[0]ta pegando so a primeira posicao, tem q ver se vai fazer update_casa pra sempre mover as pecas pra posicao 0 ou se so verifica qual index ta
+//		se tem 1 peca na casa e a cor dessa peca for igual a movimentada
+		else if (num_pecas == 1 && p.get_cor() == peca_arr[0].get_cor()) {
+//			se casa de saída
+			if (tipo == 2) return false;
+			else return true;
+		}
+//		se tem 1 ou 0 pecas, se tem mais de 2 (casa inicial e final), 
+		return true;
+	}
+	protected boolean is_barreira() {
+		if (num_pecas < 2) return false;
+		else if (peca_arr[0].get_cor() == peca_arr[1].get_cor()) return true;
+		return false;
+	}
+	
+	
+//	Metodos get ----------------------------------------
+	protected int get_cor() {
+		return cor;
+	}
+	protected int get_tipo() {
+		return tipo;
+	}
+	protected int get_num_pecas() {
+		return num_pecas;
+	}
+	protected Peca get_peca(int index) {
+		return peca_arr[index];
+	}
+	protected Peca get_primeira_peca_player(Player ply) {
+		int player_cor = ply.get_id();
+		for (int i = 0; i < 4; i++) {
+			if (peca_arr[i] != null && peca_arr[i].get_cor() == player_cor) {
+				return peca_arr[i];
+			}
+		}
+		return null;
+	}
+	
 }

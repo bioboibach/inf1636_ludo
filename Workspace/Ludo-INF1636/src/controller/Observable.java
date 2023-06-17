@@ -1,7 +1,9 @@
 package controller;
 
 public interface Observable {
-	public void addObserver(Observer o);
-	public void removeObserver(Observer o);
-	public Object get();
+	int state = 0;
+    void addObserver(Observer observer);
+    void removeObserver(Observer observer);
+    void notifyObservers();
+    public Object get();
 }

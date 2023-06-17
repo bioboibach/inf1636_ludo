@@ -2,20 +2,11 @@ package modal;
 
 
 public class Modal_interface {
-	
 	private static Modal_interface instance;
 
 	private Modal_interface() {}
 	
-	public int[] get_peca_indexes(int player_id, int peca_id) {
-		Peca p = Jogo.getInstance().get_player(player_id).get_peca(peca_id);
-		return Tabuleiro.getInstance().get_index_current_tile(p);
-	}
-	
-	public int get_roll() {
-		return Jogo.getInstance().get_val_dado();
-	}
-	
+//	Operacoes -------------------------------------------
 	public void set_positions(int player_id, int peca_id, int index, int list_id) {
 		Peca p = Jogo.getInstance().get_player(player_id).get_peca(peca_id);
 		Casa c = null;
@@ -32,7 +23,12 @@ public class Modal_interface {
 		}
 		c.add_peca(p);
 	}
+	public void run_turn() {
+		Jogo.getInstance().turn();
+	}
 	
+	
+//	Metodos get ----------------------------------------
 	public Casa get_path_index(int index){
 		return Tabuleiro.getInstance().get_path_index(index);
 	}
@@ -52,14 +48,19 @@ public class Modal_interface {
 		return Tabuleiro.getInstance().get_reta_final_index(index, 3);
 	}
 	
-	public void run_turn() {
-		Jogo.getInstance().turn();
-	}
-	
 	public int get_player_turn() {
 		return Jogo.getInstance().get_turn(); 
 	}
+	public int[] get_peca_indexes(int player_id, int peca_id) {
+		Peca p = Jogo.getInstance().get_player(player_id).get_peca(peca_id);
+		return Tabuleiro.getInstance().get_index_current_casa(p);
+	}
+	public int get_roll() {
+		return Jogo.getInstance().get_val_dado();
+	}
 	
+	
+//	Singleton ------------------------------------------
 	public static Modal_interface getInstance() {
 		if (instance == null) {
 			instance = new Modal_interface();

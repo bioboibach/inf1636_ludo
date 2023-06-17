@@ -18,7 +18,9 @@ class Jogo implements Observable {
 	private int 	current_dado 		= 5;
 	private int 	qtd_6_rolados 		= 0;
 	
-	protected Jogo() {}
+	protected Jogo() {
+		addOberver(ObserverDaView);
+	}
 	
 //	Inicializacao --------------------------------------
 	protected void initialize_jogo() {

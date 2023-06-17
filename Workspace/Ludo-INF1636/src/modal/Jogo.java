@@ -1,6 +1,7 @@
 package modal;
 import java.util.*;
 import controller.Observable;
+import view.ObserverView;
 import controller.Observer;
 
 class Jogo implements Observable {    
@@ -19,7 +20,8 @@ class Jogo implements Observable {
 	private int 	qtd_6_rolados 		= 0;
 	
 	protected Jogo() {
-		addOberver(ObserverDaView);
+		
+		this.addObserver(ObserverView.getInstance());
 	}
 	
 //	Inicializacao --------------------------------------

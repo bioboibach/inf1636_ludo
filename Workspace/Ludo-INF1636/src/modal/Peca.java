@@ -2,7 +2,7 @@ package modal;
 
 class Peca {
 	private int id_time;
-	private Casa current_tile = null;
+	private Casa current_casa = null;
 	
 	protected Peca(int id) {
 		id_time = id;
@@ -17,9 +17,9 @@ class Peca {
 		Tabuleiro t = Tabuleiro.getInstance();
 		if (t.get_path_current_casa(this) == -1) return;
 		Casa c = t.get_destination(t.get_path_current_casa(this), die_val, this, true);
-		current_tile.remove_peca(this);
-		current_tile = c;
-		current_tile.add_peca(this);
+		current_casa.remove_peca(this);
+		current_casa = c;
+		current_casa.add_peca(this);
 		return;
 //		Jogo j = Jogo.getInstance();
 //		
@@ -40,26 +40,26 @@ class Peca {
 //		}
 	}
 	protected void move_to_base() {
-		current_tile.remove_peca(this);
-		current_tile = Tabuleiro.getInstance().get_casas_iniciais_index(id_time);
-		current_tile.add_peca(this);
+		current_casa.remove_peca(this);
+		current_casa = Tabuleiro.getInstance().get_casas_iniciais_index(id_time);
+		current_casa.add_peca(this);
 	}
 	protected void move_to_casa_de_saida() {
-		current_tile.remove_peca(this);
-		if 		(id_time == 0) current_tile = Tabuleiro.getInstance().get_path_index(0);
-		else if (id_time == 1) current_tile = Tabuleiro.getInstance().get_path_index(13);
-		else if (id_time == 2) current_tile = Tabuleiro.getInstance().get_path_index(26);			
-		else if (id_time == 3) current_tile = Tabuleiro.getInstance().get_path_index(39);
-		current_tile.add_peca(this);
+		current_casa.remove_peca(this);
+		if 		(id_time == 0) current_casa = Tabuleiro.getInstance().get_path_index(0);
+		else if (id_time == 1) current_casa = Tabuleiro.getInstance().get_path_index(13);
+		else if (id_time == 2) current_casa = Tabuleiro.getInstance().get_path_index(26);			
+		else if (id_time == 3) current_casa = Tabuleiro.getInstance().get_path_index(39);
+		current_casa.add_peca(this);
 	}
 	protected void move_to_reta_final(int index) {
-		current_tile.remove_peca(this);
+		current_casa.remove_peca(this);
 		Tabuleiro.getInstance().get_reta_final_index(index, id_time);
-		current_tile.add_peca(this);
+		current_casa.add_peca(this);
 	}
 	
 	protected void change_casa(Casa c) {
-		current_tile = c;
+		current_casa = c;
 	}
 
 //	Verificacoes ---------------------------------------
@@ -74,16 +74,16 @@ class Peca {
 			return t.check_path(i[0], val_die, this);
 		}
 		
-		else if (current_tile.is_casa_inicial()) {
+		else if (current_casa.is_casa_inicial()) {
 			c = t.get_casa_de_saida(id_time);
 			return c.is_casa_vaga(this);
 		}
 		
-		else if (current_tile.is_casa_final()) {
+		else if (current_casa.is_casa_final()) {
 			return false;
 		}
 		
-		else if (current_tile.is_reta_final()) {
+		else if (current_casa.is_reta_final()) {
 			c = t.get_destination(i[0], val_die, this, false);
 			if (c == null) return false;
 			return c.is_casa_vaga(this);
@@ -93,7 +93,7 @@ class Peca {
 
 //	Metodos get ----------------------------------------
 	protected Casa get_current_casa() {
-		return current_tile;
+		return current_casa;
 	}
 	protected int get_cor() {
 		return id_time;

@@ -4,6 +4,12 @@ import controller.Observer;
 import controller.Observable;
 
 public class ObserverView implements Observer {	
+	
+	private static ObserverView viewInstace;
+
+	
+	protected ObserverView() {}
+	
 	private int 	current_peca		;
 	private int 	current_player 		;
 	private int 	current_dado 		;
@@ -20,4 +26,10 @@ public class ObserverView implements Observer {
     	this.valor0			=  (int)		dados[4];
     	this.valor1			=  (int)		dados[5];
     }
+    
+    
+//	Singleton ------------------------------------------
+	public static ObserverView getInstance() {
+		return viewInstace;
+	}
 }

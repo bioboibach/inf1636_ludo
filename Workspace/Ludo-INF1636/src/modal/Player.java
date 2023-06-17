@@ -3,7 +3,7 @@ package modal;
 class Player {
 
 	private int player_id;
-	private Peca pecas[];
+	private Peca pecas[] = new Peca[4];
 	
 	protected Player(int id) {
 		player_id = id;

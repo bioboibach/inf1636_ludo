@@ -8,7 +8,7 @@ class Jogo implements Observable {
 	private static Jogo instance;
 	List<Observer> observers = new ArrayList<Observer>();
 
-	private Player players[];
+	private Player players[] = new Player[4];
 	private Tabuleiro t;
 	private Dado d;
 	
@@ -171,9 +171,6 @@ class Jogo implements Observable {
 		
 		return podio;
 	}
-	
-	
-	
 	
 	protected void update_last_moved_peca(Peca p) {
 		last_moved_peca = p;

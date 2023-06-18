@@ -78,6 +78,22 @@ class Tabuleiro {
 			else path.add(new Casa(0));
 		}
 	}
+	protected void clear_tabuleiro() {
+		int i, j;
+		int[] aux = new int[2];
+		
+		Peca p;
+		Casa c;
+		Jogo jg = Jogo.getInstance();
+		for (i = 0; i < 4; i++) {
+			for (j = 0; j < 4; j++) {
+				p = jg.get_player(i).get_peca(j);
+				c = p.get_current_casa();
+				c.remove_peca(p);
+				p.change_casa(null);
+			}
+		}
+	}
 	
 //	Verificacoes ---------------------------------------
 //	retorna true se a peca p ta dentro da path
@@ -113,7 +129,6 @@ class Tabuleiro {
 		}
 		return false;
 	}
-	
 	
 //	Metodos get ----------------------------------------
 	protected Casa get_destination(int index, int num_moves, Peca p, boolean is_in_path){
@@ -203,8 +218,4 @@ class Tabuleiro {
 			return i;
 		}
 	}
-	
-	
-
-
 }

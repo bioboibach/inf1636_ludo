@@ -1,9 +1,7 @@
 package controller;
 
-import java.io.File;
-import java.io.IOException;
 import modal.Modal_interface;
-import modal.Modal_interface.*;
+import java.io.File;
 import java.io.*;
 
 class Save_game {

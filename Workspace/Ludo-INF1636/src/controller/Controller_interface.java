@@ -9,15 +9,11 @@ public class Controller_interface {
 
 	private Controller_interface() {}
 	
-//	public int roll() {
-//		return Modal_interface.getInstance().roll();
-//	}
-	
 	public void save_game() throws IOException{
 		Save_game.getInstance().save();
 	}
 	
-	public void load_game() {
+	public void load_game() throws IOException{
 		Load_game.getInstance().load();
 	}
 	

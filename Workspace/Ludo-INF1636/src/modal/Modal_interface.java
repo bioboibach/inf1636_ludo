@@ -26,7 +26,12 @@ public class Modal_interface {
 	public void run_turn() {
 		Jogo.getInstance().turn();
 	}
-	
+	public void set_turn(int t) {
+		Jogo.getInstance().set_turn(t);
+	}
+	public void clear_tabuleiro() {
+		Tabuleiro.getInstance().clear_tabuleiro();
+	}
 	
 //	Metodos get ----------------------------------------
 	public Casa get_path_index(int index){

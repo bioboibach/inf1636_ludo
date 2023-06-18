@@ -10,9 +10,9 @@ public class Main {
 		Jogo j = Jogo.getInstance();
 		j.initialize_jogo();
 		j.turn();
-		
-		Controller_interface.getInstance().save_game();
-		
-		//new Frame();
+
+		Controller_interface.getInstance().load_game();
+
+//		new Frame();
 	}
 }

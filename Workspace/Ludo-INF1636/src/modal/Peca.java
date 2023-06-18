@@ -12,7 +12,7 @@ class Peca {
 	
 //	TODO
 //	funcao encarregada de movimentar a peca
-//	verifica onde a peca ta, pra onde vai, se pode mover e atualiza
+//	verifica onde a peca ta, pra onde vai, se pode mover e atualiza-la
 	protected void move(int die_val) {
 		Tabuleiro t = Tabuleiro.getInstance();
 		if (t.get_path_current_casa(this) == -1) return;

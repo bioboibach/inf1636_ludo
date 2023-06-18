@@ -1,7 +1,7 @@
 package modal;
 import java.util.*;
 import controller.Observable;
-//import view.ObserverView;
+import view.ObserverView;
 import controller.Observer;
 
 class Jogo implements Observable {    
@@ -20,7 +20,8 @@ class Jogo implements Observable {
 	private int 	qtd_6_rolados 		= 0;
 	
 	protected Jogo() {
-//		this.addObserver(ObserverView.getInstance());
+		
+		this.addObserver(ObserverView.getInstance());
 	}
 	
 //	Inicializacao --------------------------------------
@@ -55,6 +56,7 @@ class Jogo implements Observable {
 		end_turn();
 	}
 	
+
 //	Operacoes -------------------------------------------
 	protected void turn() {
 		current_dado = d.roll();
@@ -169,7 +171,7 @@ class Jogo implements Observable {
 		
 		return podio;
 	}
-
+	
 	protected void update_last_moved_peca(Peca p) {
 		last_moved_peca = p;
 	}
@@ -185,7 +187,7 @@ class Jogo implements Observable {
 		capture_flag = true;
 	}
 	
-	
+
 //	Metodos get ----------------------------------------
 	protected Peca get_last_moved_piece() {
 		return last_moved_peca;
@@ -210,9 +212,7 @@ class Jogo implements Observable {
 		}
 		System.out.println();
 	}
-	protected void set_turn(int t) {
-		current_player = t;
-	}
+	
 	
 //	Implementacao da interface Observer ----------------
 	public void addObserver(Observer o) {

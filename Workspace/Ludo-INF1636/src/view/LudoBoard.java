@@ -7,28 +7,85 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 
-public class LudoBoard extends JPanel implements Observer{
+public class LudoBoard extends JPanel{
 
-	private static final int SIZE = 720 / 15; // Tamanho de cada célula do tabuleiro
-	private static final int WIDTH = 15; // Largura do tabuleiro em células
-	private static final int HEIGHT = 15; // Altura do tabuleiro em células
+	private static final int SIZE = 720 / 15; 	// Tamanho de cada célula do tabuleiro
+	private static final int WIDTH = 15; 		// Largura do tabuleiro em células
+	private static final int HEIGHT = 15; 		// Altura do tabuleiro em células
 
-	private static final Color[] COLORS = { Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.WHITE,
-			Color.BLACK };
+	private static final Color[] COLORS = { Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.WHITE, Color.BLACK };
 	
 	private JButton newGameButton;
 	private JButton loadButton;
 	private JButton saveButton;
 	private JButton launchDice;
 	
+	
+	int[][] array = new int[51][2];
+
+	array[0] = new int[] {107 - SIZE, 300};
+	array[1] = new int[] {107, 300};
+	array[2] = new int[] {107 + SIZE, 300};
+	array[3] = new int[] {107 + 2 * SIZE, 300};
+	array[4] = new int[] {107 + 3 * SIZE, 300};
+	array[5] = new int[] {107 + 4 * SIZE, 300 - SIZE};
+	array[6] = new int[] {107 + 4 * SIZE, 300 - 2 * SIZE};
+	array[7] = new int[] {107 + 4 * SIZE, 300 - 3 * SIZE};
+	array[8] = new int[] {107 + 4 * SIZE, 300 - 4 * SIZE};
+	array[9] = new int[] {107 + 4 * SIZE, 300 - 5 * SIZE};
+	array[10] = new int[] {107 + 4 * SIZE, 300 - 6 * SIZE};
+	array[11] = new int[] {107 + 5 * SIZE, 300 - 6 * SIZE};
+	array[12] = new int[] {107 + 6 * SIZE, 300 - 6 * SIZE};
+	array[13] = new int[] {107 + 6 * SIZE, 300 - 5 * SIZE};
+	array[14] = new int[] {107 + 6 * SIZE, 300 - 4 * SIZE};
+	array[15] = new int[] {107 + 6 * SIZE, 300 - 3 * SIZE};
+	array[16] = new int[] {107 + 6 * SIZE, 300 - 2 * SIZE};
+	array[17] = new int[] {107 + 6 * SIZE, 300 - SIZE};
+	array[18] = new int[] {107 + 7 * SIZE, 300};
+	array[19] = new int[] {107 + 8 * SIZE, 300};
+	array[20] = new int[] {107 + 9 * SIZE, 300};
+	array[21] = new int[] {107 + 10 * SIZE, 300};
+	array[22] = new int[] {107 + 11 * SIZE, 300};
+	array[23] = new int[] {107 + 12 * SIZE, 300};
+	array[24] = new int[] {107 + 12 * SIZE, 300 + SIZE};
+	array[25] = new int[] {107 + 12 * SIZE, 300 + 2 * SIZE};
+	array[26] = new int[] {107 + 11 * SIZE, 300 + 2 * SIZE};
+	array[27] = new int[] {107 + 10 * SIZE, 300 + 2 * SIZE};
+	array[28] = new int[] {107 + 9 * SIZE, 300 + 2 * SIZE};
+	array[29] = new int[] {107 + 8 * SIZE, 300 + 2 * SIZE};
+	array[30] = new int[] {107 + 7 * SIZE, 300 + 2 * SIZE};
+	array[31] = new int[] {107 + 6 * SIZE, 300 + 3 * SIZE};
+	array[32] = new int[] {107 + 6 * SIZE, 300 + 4 * SIZE};
+	array[33] = new int[] {107 + 6 * SIZE, 300 + 5 * SIZE};
+	array[34] = new int[] {107 + 6 * SIZE, 300 + 6 * SIZE};
+	array[35] = new int[] {107 + 6 * SIZE, 300 + 7 * SIZE};
+	array[36] = new int[] {107 + 6 * SIZE, 300 + 8 * SIZE};
+	array[37] = new int[] {107 + 5 * SIZE, 300 + 8 * SIZE};
+	array[38] = new int[] {107 + 4 * SIZE, 300 + 8 * SIZE};
+	array[39] = new int[] {107 + 4 * SIZE, 300 + 7 * SIZE};
+	array[40] = new int[] {107 + 4 * SIZE, 300 + 6 * SIZE};
+	array[41] = new int[] {107 + 4 * SIZE, 300 + 5 * SIZE};
+	array[42] = new int[] {107 + 4 * SIZE, 300 + 4 * SIZE};
+	array[43] = new int[] {107 + 4 * SIZE, 300 + 3 * SIZE};
+	array[44] = new int[] {107 + 3 * SIZE, 300 + 2 * SIZE};
+	array[45] = new int[] {107 + 2 * SIZE, 300 + 2 * SIZE};
+	array[46] = new int[] {107 + SIZE, 300 + 2 * SIZE};
+	array[47] = new int[] {107 - SIZE, 300 + 2 * SIZE};
+	array[48] = new int[] {107 - 2 * SIZE, 300 + 2 * SIZE};
+	array[49] = new int[] {107 - 2 * SIZE, 300 + SIZE};
+	array[50] = new int[] {107 - 2 * SIZE, 300};
+
+
 	Image i[] = new Image[6];
 	int die_val = 1;
 	int turn = 0;
 	
-	Observable obs;
+	Observavel obs;
 	Object lob[];
 
 	int vez;
@@ -123,8 +180,94 @@ public class LudoBoard extends JPanel implements Observer{
 		repaint();
 	}
 	
-	
 
+
+//public void drawAbrigo(Graphics g){
+//		g.setColor(Color.BLACK);
+//		g.drawOval(posX, posY, 35,35);
+//		g.setColor(Color.GREEN);
+//		g.fillOval(posX, posY, 35,35)
+//		g.setColor(Color.RED);
+//		g.fillOval(posX, posY, 25,25);
+//	
+//}
+
+
+public void drawPieces(Graphics g) {
+		
+		// Peças Vermelho
+		g.setColor(Color.BLACK);
+		g.drawOval(57,57, 25, 25);
+		g.setColor(Color.RED);
+		g.fillOval(57, 57, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(197, 57, 25, 25);
+		g.setColor(Color.RED);
+		g.fillOval(197, 57, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(57, 177, 25, 25);
+		g.setColor(Color.RED);
+		g.fillOval(57, 177, 25, 25);		
+		g.setColor(Color.BLACK);
+		g.drawOval(197, 177, 25, 25);
+		g.setColor(Color.RED);
+		g.fillOval(197, 177, 25, 25);
+		
+		// Peças Verde
+		g.setColor(Color.BLACK);
+		g.drawOval(492,57, 25, 25);
+		g.setColor(Color.GREEN);
+		g.fillOval(492, 57, 25, 25);	
+		g.setColor(Color.BLACK);
+		g.drawOval(632, 57, 25, 25);
+		g.setColor(Color.GREEN);
+		g.fillOval(632, 57, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(632, 177, 25, 25);
+		g.setColor(Color.GREEN);
+		g.fillOval(632, 177, 25, 25);				
+		g.setColor(Color.BLACK);
+		g.drawOval(492, 177, 25, 25);
+		g.setColor(Color.GREEN);
+		g.fillOval(492, 177, 25, 25);
+		
+		// Peças Azul
+		g.setColor(Color.BLACK);
+		g.drawOval(57,492, 25, 25);
+		g.setColor(Color.BLUE);
+		g.fillOval(57, 492, 25, 25);	
+		g.setColor(Color.BLACK);
+		g.drawOval(197, 492, 25, 25);
+		g.setColor(Color.BLUE);
+		g.fillOval(197, 492, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(57, 612, 25, 25);
+		g.setColor(Color.BLUE);
+		g.fillOval(57, 612, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(197, 612, 25, 25);
+		g.setColor(Color.BLUE);
+		g.fillOval(197, 612, 25, 25);
+		
+		// Pecas amarelo
+		g.setColor(Color.BLACK);
+		g.drawOval(632, 612, 25, 25);
+		g.setColor(Color.YELLOW);
+		g.fillOval(632, 612, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(632, 492, 25, 25);
+		g.setColor(Color.YELLOW);
+		g.fillOval(632, 492, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(492, 492, 25, 25);
+		g.setColor(Color.YELLOW);
+		g.fillOval(492, 492, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(492, 612, 25, 25);
+		g.setColor(Color.YELLOW);
+		g.fillOval(492, 612, 25, 25);
+				
+	}
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -556,7 +699,7 @@ public class LudoBoard extends JPanel implements Observer{
 		g.drawString(text, textX, textY);
 	}
 	
-	public void notify(Observable o) {
+	public void notify(Observavel o) {
 		obs = o;
 		lob = (Object []) obs.get();
 		vez = (Integer) lob[0];

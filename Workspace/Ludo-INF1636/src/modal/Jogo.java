@@ -2,7 +2,6 @@ package modal;
 import java.util.*;
 import controller.Observavel;
 import view.Observador;
-import controller.Observer;
 
 class Jogo implements Observavel {    
 	private static Jogo instance;
@@ -21,7 +20,7 @@ class Jogo implements Observavel {
 	
 	protected Jogo() {
 		
-		this.addObserver(Observador.getInstance());
+		this.addObservador(Observador.getInstance());
 	}
 	
 //	Inicializacao --------------------------------------
@@ -201,7 +200,7 @@ class Jogo implements Observavel {
 	protected int get_val_dado() {
 		return current_dado;
 	}
-        
+
 	
 //	Metodos Auxiliares ---------------------------------
 	protected void print_map() {
@@ -222,7 +221,7 @@ class Jogo implements Observavel {
 		observers.remove(o);
 	}
     public void notifyObservers() {
-        ListIterator<Observer> li = observers.listIterator();
+        ListIterator<Observador> li = observers.listIterator();
         while(li.hasNext()) {
         	li.next().notify(this);
         }

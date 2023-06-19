@@ -1,7 +1,8 @@
 package modal;
 
-import view.*;
 import controller.*;
+
+import view.Frame;
 import java.io.IOException;
 
 
@@ -13,6 +14,6 @@ public class Main {
 		
 		Controller_interface.getInstance().save_game();
 		
-		//new Frame();
+		new Frame();
 	}
 }

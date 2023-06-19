@@ -11,13 +11,18 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import javax.swing.JComboBox;
 
 public class LudoBoard extends JPanel{
 
-	private static final int SIZE = 720 / 15; 	// Tamanho de cada célula do tabuleiro
-	private static final int WIDTH = 15; 		// Largura do tabuleiro em células
-	private static final int HEIGHT = 15; 		// Altura do tabuleiro em células
+	private static final long serialVersionUID = 1L;
+	private static final int BOARD_SIZE = 720;			// Tamanho do lado do tabuleiro
+	private static final int SIZE = BOARD_SIZE / 15; 	// Tamanho de cada célula do tabuleiro
+	private static final int WIDTH = 15; 				// Largura do tabuleiro em células
+	private static final int HEIGHT = 15; 				// Altura do tabuleiro em células
 
+	private JComboBox<String> dado1;
+	
 	private static final Color[] COLORS = { Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.WHITE, Color.BLACK };
 	
 	private JButton newGameButton;
@@ -25,62 +30,30 @@ public class LudoBoard extends JPanel{
 	private JButton saveButton;
 	private JButton launchDice;
 	
+	private Controller_interface control = Controller_interface.getInstance();
 	
-	int[][] array = new int[51][2];
-
-	array[0] = new int[] {107 - SIZE, 300};
-	array[1] = new int[] {107, 300};
-	array[2] = new int[] {107 + SIZE, 300};
-	array[3] = new int[] {107 + 2 * SIZE, 300};
-	array[4] = new int[] {107 + 3 * SIZE, 300};
-	array[5] = new int[] {107 + 4 * SIZE, 300 - SIZE};
-	array[6] = new int[] {107 + 4 * SIZE, 300 - 2 * SIZE};
-	array[7] = new int[] {107 + 4 * SIZE, 300 - 3 * SIZE};
-	array[8] = new int[] {107 + 4 * SIZE, 300 - 4 * SIZE};
-	array[9] = new int[] {107 + 4 * SIZE, 300 - 5 * SIZE};
-	array[10] = new int[] {107 + 4 * SIZE, 300 - 6 * SIZE};
-	array[11] = new int[] {107 + 5 * SIZE, 300 - 6 * SIZE};
-	array[12] = new int[] {107 + 6 * SIZE, 300 - 6 * SIZE};
-	array[13] = new int[] {107 + 6 * SIZE, 300 - 5 * SIZE};
-	array[14] = new int[] {107 + 6 * SIZE, 300 - 4 * SIZE};
-	array[15] = new int[] {107 + 6 * SIZE, 300 - 3 * SIZE};
-	array[16] = new int[] {107 + 6 * SIZE, 300 - 2 * SIZE};
-	array[17] = new int[] {107 + 6 * SIZE, 300 - SIZE};
-	array[18] = new int[] {107 + 7 * SIZE, 300};
-	array[19] = new int[] {107 + 8 * SIZE, 300};
-	array[20] = new int[] {107 + 9 * SIZE, 300};
-	array[21] = new int[] {107 + 10 * SIZE, 300};
-	array[22] = new int[] {107 + 11 * SIZE, 300};
-	array[23] = new int[] {107 + 12 * SIZE, 300};
-	array[24] = new int[] {107 + 12 * SIZE, 300 + SIZE};
-	array[25] = new int[] {107 + 12 * SIZE, 300 + 2 * SIZE};
-	array[26] = new int[] {107 + 11 * SIZE, 300 + 2 * SIZE};
-	array[27] = new int[] {107 + 10 * SIZE, 300 + 2 * SIZE};
-	array[28] = new int[] {107 + 9 * SIZE, 300 + 2 * SIZE};
-	array[29] = new int[] {107 + 8 * SIZE, 300 + 2 * SIZE};
-	array[30] = new int[] {107 + 7 * SIZE, 300 + 2 * SIZE};
-	array[31] = new int[] {107 + 6 * SIZE, 300 + 3 * SIZE};
-	array[32] = new int[] {107 + 6 * SIZE, 300 + 4 * SIZE};
-	array[33] = new int[] {107 + 6 * SIZE, 300 + 5 * SIZE};
-	array[34] = new int[] {107 + 6 * SIZE, 300 + 6 * SIZE};
-	array[35] = new int[] {107 + 6 * SIZE, 300 + 7 * SIZE};
-	array[36] = new int[] {107 + 6 * SIZE, 300 + 8 * SIZE};
-	array[37] = new int[] {107 + 5 * SIZE, 300 + 8 * SIZE};
-	array[38] = new int[] {107 + 4 * SIZE, 300 + 8 * SIZE};
-	array[39] = new int[] {107 + 4 * SIZE, 300 + 7 * SIZE};
-	array[40] = new int[] {107 + 4 * SIZE, 300 + 6 * SIZE};
-	array[41] = new int[] {107 + 4 * SIZE, 300 + 5 * SIZE};
-	array[42] = new int[] {107 + 4 * SIZE, 300 + 4 * SIZE};
-	array[43] = new int[] {107 + 4 * SIZE, 300 + 3 * SIZE};
-	array[44] = new int[] {107 + 3 * SIZE, 300 + 2 * SIZE};
-	array[45] = new int[] {107 + 2 * SIZE, 300 + 2 * SIZE};
-	array[46] = new int[] {107 + SIZE, 300 + 2 * SIZE};
-	array[47] = new int[] {107 - SIZE, 300 + 2 * SIZE};
-	array[48] = new int[] {107 - 2 * SIZE, 300 + 2 * SIZE};
-	array[49] = new int[] {107 - 2 * SIZE, 300 + SIZE};
-	array[50] = new int[] {107 - 2 * SIZE, 300};
-
-
+//	Posicionamento
+	int[][] coordsMapeadas = new int[52][2];				// Coordenadas do tabuleiros convertidas para a casa correspondente
+	int[][] coordsMapeadasDesenho = new int[52][2];			// Coordenadas do tabuleiros convertidas para a coordenada da casa correspondente
+	
+	int[][] coordsMapeadas_vermelho = new int[6][2];		// Coordenadas do tabuleiros convertidas para a casa correspondente
+	int[][] coordsMapeadasDesenho_vermelho = new int[6][2];	// Coordenadas do tabuleiros convertidas para a coordenada da casa correspondente
+	
+	int[][] coordsMapeadas_azul = new int[6][2];			// Coordenadas do tabuleiros convertidas para a casa correspondente
+	int[][] coordsMapeadasDesenho_azul = new int[6][2];		// Coordenadas do tabuleiros convertidas para a coordenada da casa correspondente
+	
+	int[][] coordsMapeadas_amarelo = new int[6][2];			// Coordenadas do tabuleiros convertidas para a casa correspondente
+	int[][] coordsMapeadasDesenho_amarelo = new int[6][2];	// Coordenadas do tabuleiros convertidas para a coordenada da casa correspondente
+	
+	int[][] coordsMapeadas_verde = new int[6][2];			// Coordenadas do tabuleiros convertidas para a casa correspondente
+	int[][] coordsMapeadasDesenho_verde = new int[6][2];	// Coordenadas do tabuleiros convertidas para a coordenada da casa correspondente
+	
+	private int coord_x;
+	private int coord_y;
+	private int casa_x;
+	private int casa_y;
+	
+	
 	Image i[] = new Image[6];
 	int die_val = 1;
 	int turn = 0;
@@ -96,8 +69,79 @@ public class LudoBoard extends JPanel{
 	int id_peca;
 	int qual_array;
 	int index_do_array;
+	
+	
 
 	public LudoBoard() {
+
+		MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	            	
+                coord_x = e.getX();
+                coord_y = e.getY();
+                casa_x = (int) (coord_x / SIZE);
+                casa_y = (int) (coord_y / SIZE);
+//                System.out.printf("Coordenadas: %d - %d\nPosicao: %d - %d\n", coord_x, coord_y, casa_x, casa_y);
+                if (coord_x > 0 && coord_x < BOARD_SIZE && coord_y > 0 && coord_y < BOARD_SIZE) {
+                	if(control.get_dadosRolados() == true) {
+                		JOptionPane.showMessageDialog(null, "Jogue os dados antes de escolher o peao!");
+                	}
+                	else {
+                		System.out.printf("Coordenadas: %d - %d\nPosicao: %d - %d\n", coord_x, coord_y, casa_x, casa_y);
+                		
+    		            int indice_path = -1;
+    		            int indice_final_path = -1;
+
+    		            for (int i = 0; i < coordsMapeadas.length; i++) {
+//    		            	Busca o indice no array do path
+    		                int[] coordinates = coordsMapeadas[i];
+    		                if (coordinates[0] == casa_x && coordinates[1] == casa_y) {
+    		                    indice_path = i;
+    		                    break;
+    		                }
+    		            }
+    		            for (int i = 0; i < coordsMapeadas_vermelho.length; i++) {
+//    		                Busca o indice no array da reta_final_vermelho
+    		            	int[] coordinates = coordsMapeadas_vermelho[i];
+    		                if (coordinates[0] == casa_x && coordinates[1] == casa_y) {
+    		                	indice_final_path = i;
+    		                    break;
+    		                }
+//    		                Busca o indice no array da reta_final_azul
+    		                coordinates = coordsMapeadas_azul[i];
+    		                if (coordinates[0] == casa_x && coordinates[1] == casa_y) {
+    		                	indice_final_path = i;
+    		                    break;
+    		                }
+//    		                Busca o indice no array da reta_final_amarelo
+    		                coordinates = coordsMapeadas_amarelo[i];
+    		                if (coordinates[0] == casa_x && coordinates[1] == casa_y) {
+    		                	indice_final_path = i;
+    		                    break;
+    		                }
+//    		                Busca o indice no array da reta_final_verde
+    		                coordinates = coordsMapeadas_verde[i];
+    		                if (coordinates[0] == casa_x && coordinates[1] == casa_y) {
+    		                	indice_final_path = i;
+    		                    break;
+    		                }
+    		            }
+
+		                System.out.println("PATH: Index of element with coordinates (" + casa_x + ", " + casa_y + "): " + indice_path);
+		                System.out.println("FINAL PATH: Index of element with coordinates (" + casa_x + ", " + casa_y + "): " + indice_final_path);
+
+                		// Use the captured coordinates as needed
+    		            // control.movimenta(pos, coord);
+    		            // control.imprimeTab();
+                	}
+                }
+            }
+        };
+
+        // Register the MouseListener with the panel
+        this.addMouseListener(mouseAdapter);
+        
 		setPreferredSize(new Dimension(1200, 700)); // Tamanho da janela
 		setLayout(null);
 		
@@ -148,13 +192,134 @@ public class LudoBoard extends JPanel{
 		launchDice.setFont(new Font("Arial", Font.PLAIN, 18));
 		launchDice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				launchDice();
+				lancarDado();
 			}
 		});
 		add(launchDice);
+		
+//		Selecioandor de dado manual para testes
+		String[] val = new String[] { "1", "2", "3", "4", "5", "6"};
+		dado1 = new JComboBox<String>(val);
+        dado1.setBounds(835, 640,250,50);
+        dado1.setFont(new Font("Arial", Font.PLAIN, 15));
+        dado1.setForeground(Color.decode("#000000"));
+        dado1.setBackground(Color.decode("#e9c28b"));
+        add(dado1);
+        // Adicionando o ActionListener ao combo box
+        dado1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtendo o valor selecionado no combo box
+                String selectedValue = (String) dado1.getSelectedItem();
+
+                // Exibindo o valor selecionado
+                System.out.println("Valor selecionado: " + selectedValue);
+            }
+        });
+        
+		
+		coordsMapeadas[0] = new int[] {1, 6};
+		coordsMapeadas[1] = new int[] {0, 6};
+		coordsMapeadas[2] = new int[] {0, 7};
+		coordsMapeadas[3] = new int[] {0, 8};
+		coordsMapeadas[4] = new int[] {1, 8};
+		coordsMapeadas[5] = new int[] {2, 8};
+		coordsMapeadas[6] = new int[] {3, 8};
+		coordsMapeadas[7] = new int[] {4, 8};
+		coordsMapeadas[8] = new int[] {5, 8};
+		coordsMapeadas[9] = new int[] {6, 9};
+		coordsMapeadas[10] = new int[] {6, 10};
+		coordsMapeadas[11] = new int[] {6, 11};
+		coordsMapeadas[12] = new int[] {6, 12};
+		coordsMapeadas[13] = new int[] {6, 13};
+		coordsMapeadas[14] = new int[] {6, 14};
+		coordsMapeadas[15] = new int[] {7, 14};
+		coordsMapeadas[16] = new int[] {8, 14};
+		coordsMapeadas[17] = new int[] {8, 13};
+		coordsMapeadas[18] = new int[] {8, 12};
+		coordsMapeadas[19] = new int[] {8, 11};
+		coordsMapeadas[20] = new int[] {8, 10};
+		coordsMapeadas[21] = new int[] {8, 9};
+		coordsMapeadas[22] = new int[] {9, 8};
+		coordsMapeadas[23] = new int[] {10, 8};
+		coordsMapeadas[24] = new int[] {11, 8};
+		coordsMapeadas[25] = new int[] {12, 8};
+		coordsMapeadas[26] = new int[] {13, 8};
+		coordsMapeadas[27] = new int[] {14, 8};
+		coordsMapeadas[28] = new int[] {14, 7};
+		coordsMapeadas[29] = new int[] {14, 6};
+		coordsMapeadas[30] = new int[] {13, 6};
+		coordsMapeadas[31] = new int[] {12, 6};
+		coordsMapeadas[32] = new int[] {11, 6};
+		coordsMapeadas[33] = new int[] {10, 6};
+		coordsMapeadas[34] = new int[] {9, 6};
+		coordsMapeadas[35] = new int[] {8, 5};
+		coordsMapeadas[36] = new int[] {8, 4};
+		coordsMapeadas[37] = new int[] {8, 3};
+		coordsMapeadas[38] = new int[] {8, 2};
+		coordsMapeadas[39] = new int[] {8, 1};
+		coordsMapeadas[40] = new int[] {8, 0};
+		coordsMapeadas[41] = new int[] {7, 0};
+		coordsMapeadas[42] = new int[] {6, 0};
+		coordsMapeadas[43] = new int[] {6, 1};
+		coordsMapeadas[44] = new int[] {6, 2};
+		coordsMapeadas[45] = new int[] {6, 3};
+		coordsMapeadas[46] = new int[] {6, 4};
+		coordsMapeadas[47] = new int[] {6, 5};
+		coordsMapeadas[48] = new int[] {5, 6};
+		coordsMapeadas[49] = new int[] {4, 6};
+		coordsMapeadas[50] = new int[] {3, 6};
+		coordsMapeadas[51] = new int[] {2, 6};
+		
+		coordsMapeadas_vermelho[0] = new int[] {1, 7};
+		coordsMapeadas_vermelho[1] = new int[] {2, 7};
+		coordsMapeadas_vermelho[2] = new int[] {3, 7};
+		coordsMapeadas_vermelho[3] = new int[] {4, 7};
+		coordsMapeadas_vermelho[4] = new int[] {5, 7};
+		coordsMapeadas_vermelho[5] = new int[] {6, 7};
+		
+		coordsMapeadas_azul[0] = new int[] {7, 13};
+		coordsMapeadas_azul[1] = new int[] {7, 12};
+		coordsMapeadas_azul[2] = new int[] {7, 11};
+		coordsMapeadas_azul[3] = new int[] {7, 10};
+		coordsMapeadas_azul[4] = new int[] {7, 9};
+		coordsMapeadas_azul[5] = new int[] {7, 8};
+		
+		coordsMapeadas_amarelo[0] = new int[] {13, 7};
+		coordsMapeadas_amarelo[1] = new int[] {12, 7};
+		coordsMapeadas_amarelo[2] = new int[] {11, 7};
+		coordsMapeadas_amarelo[3] = new int[] {10, 7};
+		coordsMapeadas_amarelo[4] = new int[] {9, 7};
+		coordsMapeadas_amarelo[5] = new int[] {8, 7};
+		
+		coordsMapeadas_verde[0] = new int[] {7, 1};
+		coordsMapeadas_verde[1] = new int[] {7, 2};
+		coordsMapeadas_verde[2] = new int[] {7, 3};
+		coordsMapeadas_verde[3] = new int[] {7, 4};
+		coordsMapeadas_verde[4] = new int[] {7, 5};
+		coordsMapeadas_verde[5] = new int[] {7, 6};
+		
+		
+		for(int i = 0; i < 52; i++) {
+			coordsMapeadasDesenho[i][0] += coordsMapeadas[i][0]*SIZE + 24;
+			coordsMapeadasDesenho[i][1] += coordsMapeadas[i][1]*SIZE + 24;
+		}
+	
+		for(int i = 0; i < 6; i++) {
+			coordsMapeadasDesenho_vermelho[i][0] += coordsMapeadas_vermelho[i][0]*SIZE + 24;
+			coordsMapeadasDesenho_vermelho[i][1] += coordsMapeadas_vermelho[i][1]*SIZE + 24;
+			coordsMapeadasDesenho_azul[i][0] += coordsMapeadas_azul[i][0]*SIZE + 24;
+			coordsMapeadasDesenho_azul[i][1] += coordsMapeadas_azul[i][1]*SIZE + 24;
+			coordsMapeadasDesenho_amarelo[i][0] += coordsMapeadas_amarelo[i][0]*SIZE + 24;
+			coordsMapeadasDesenho_amarelo[i][1] += coordsMapeadas_amarelo[i][1]*SIZE + 24;
+			coordsMapeadasDesenho_verde[i][0] += coordsMapeadas_verde[i][0]*SIZE + 24;
+			coordsMapeadasDesenho_verde[i][1] += coordsMapeadas_verde[i][1]*SIZE + 24;
+		}
 
 	}
 
+	
+//	Operacoes ---------------------------------------------
 	public void startNewGame() {
 		System.out.println("Iniciando nova partida...");
 	}
@@ -173,27 +338,25 @@ public class LudoBoard extends JPanel{
 		System.out.println("Jogo salvo! ");
 	}
 
-	public void launchDice() {
+	public void lancarDado() {
 		Modal_interface.getInstance().run_turn();
 		die_val = Modal_interface.getInstance().get_roll();
 		turn = Modal_interface.getInstance().get_player_turn(); // remover dps TODO
 		repaint();
 	}
 	
+	public void drawBarreira(Graphics g){
+			g.setColor(Color.BLACK);
+			g.drawOval(casa_x, casa_y, 35,35);
+			g.setColor(Color.GREEN);
+			g.fillOval(casa_x, casa_y, 35,35);
+			g.setColor(Color.RED);
+			g.fillOval(casa_x, casa_y, 25,25);
+		
+	}
 
 
-//public void drawAbrigo(Graphics g){
-//		g.setColor(Color.BLACK);
-//		g.drawOval(posX, posY, 35,35);
-//		g.setColor(Color.GREEN);
-//		g.fillOval(posX, posY, 35,35)
-//		g.setColor(Color.RED);
-//		g.fillOval(posX, posY, 25,25);
-//	
-//}
-
-
-public void drawPieces(Graphics g) {
+	public void drawPieces(Graphics g) {
 		
 		// Peças Vermelho
 		g.setColor(Color.BLACK);
@@ -697,8 +860,12 @@ public void drawPieces(Graphics g) {
 		int textX = 900; // Posição x do texto
 		int textY = 310; // Posição y do texto
 		g.drawString(text, textX, textY);
+		
+//		Desenha as pecas
+		drawPieces(g);
 	}
 	
+//	Implementacao da interface Observervavel ----------------
 	public void notify(Observavel o) {
 		obs = o;
 		lob = (Object []) obs.get();

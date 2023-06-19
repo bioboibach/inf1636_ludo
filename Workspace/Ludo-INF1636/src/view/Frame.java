@@ -1,11 +1,20 @@
 package view;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
 import javax.swing.JFrame;
 
-public class Frame extends JFrame {
+import controller.Observavel;
+
+public class Frame extends JFrame implements Observavel {
 
 	private static final long serialVersionUID = 1L;
 
-	public Frame() {
+	
+	List<Observador> observers = new ArrayList<Observador>();
+	
+	public Frame()  {
         JFrame frame = new JFrame("Ludo Board");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -17,10 +26,22 @@ public class Frame extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
-        // Acessando variáveis e métodos de LudoBoard
-//        board.startNewGame();
-//        board.loadSavedGame();
-//        board.saveGame();
-
+	}
+	public void addObservador(Observador o) {
+		observers.add(o);
+	}
+	public void removeObservador(Observador o) {
+		observers.remove(o);
+	}
+    public void notifyObservers() {
+        ListIterator<Observador> li = observers.listIterator();
+        while(li.hasNext()) {
+        	li.next().notify(this);
+        	repaint();
+        }
+    }
+    public Object[] get() {
+    	Object dados[] = new Object[6];
+    	return dados;
     }
 }

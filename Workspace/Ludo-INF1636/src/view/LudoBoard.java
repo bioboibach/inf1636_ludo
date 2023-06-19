@@ -217,7 +217,7 @@ public class LudoBoard extends JPanel{
                 System.out.println("Valor selecionado: " + selectedValue);
             }
         });
-        
+               
 	}
 
 	
@@ -252,7 +252,7 @@ public class LudoBoard extends JPanel{
 
 //	Desenhar -------------------------------------------------
 	
-		protected void start_draw(Graphics g) {
+	protected void start_draw(Graphics g) {
 		// Inicializacoes
 		
 		start_arr_pecas(g);			// Inicializa as pecas
@@ -260,10 +260,15 @@ public class LudoBoard extends JPanel{
 //		Desenhas as pecas na posicao inicial
 		for(int i = 0; i < 16; i++) {
 			arr_pecas.get(i).draw_inicio(g);
+			repaint();
 		}
 		
 		
-		arr_pecas.get(0).draw_peca(g, 4);
+		arr_pecas.get(0).draw_peca(g, 4, -1);
+		arr_pecas.get(9).draw_peca(g, 5, 4);
+		arr_pecas.get(11).draw_abrigo_stack(g, 0, arr_pecas.get(2));
+		arr_pecas.get(13).draw_barreira(g, 17);
+		arr_pecas.get(2).draw_finish(g, 2);
 	}
 
 	protected void start_arr_pecas(Graphics g) {
@@ -735,9 +740,6 @@ public class LudoBoard extends JPanel{
 	}
 	
 	
-	public void run_repaint() {
-		this.repaint();
-	}
 }
 
 

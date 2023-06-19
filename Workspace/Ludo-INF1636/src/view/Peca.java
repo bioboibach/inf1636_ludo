@@ -9,6 +9,7 @@ public class Peca {
 	private int cor;
 	private int x;
 	private int y;
+	private int tipo = 0;
 	
 //	Posicionamento
 	private static final int BOARD_SIZE = 720;			// Tamanho do lado do tabuleiro
@@ -30,8 +31,7 @@ public class Peca {
 	
 	protected int[][] coordInicial = new int[16][2];		// Coordenadas de todas as casas iniciais em ordem dos jogadores
 	
-	
-	
+
 	private static final Color[] COLORS = { Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.WHITE, Color.BLACK };
 
 	
@@ -57,16 +57,55 @@ public class Peca {
 	}
 
 
-	protected void draw_peca(Graphics g, int indice) {
-		x = coordsMapeadasDesenho[indice][0];
-		y = coordsMapeadasDesenho[indice][1];
+	protected void draw_peca(Graphics g, int indice_path, int indice_final_path) {
 		
+		if(tipo == 0) {
+			int a = coordInicial[4*cor + id][0];
+			int b = coordInicial[4*cor + id][1];
+			a = coordsMapeadasDesenho[indice_path][0];
+			b = coordsMapeadasDesenho[indice_path][1];
+			
+			g.setColor(Color.BLACK);
+			g.drawOval(a, b, 25, 25);
+			g.setColor(Color.RED);
+			g.fillOval(a, b, 250, 25);
+		}
+		else if(tipo == 1) {
+			g.setColor(Color.BLACK);
+			g.drawOval(this.x, this.y, 25, 25);
+			g.setColor(Color.BLACK);
+			g.fillOval(this.x, this.y, 25, 25);
+		}
+		
+		
+		if(indice_final_path != -1) {
+			if(cor == 0) {
+				x = coordsMapeadasDesenho_vermelho[indice_final_path][0];
+				y = coordsMapeadasDesenho_vermelho[indice_final_path][1];
+			}
+			else if(cor == 3){
+				x = coordsMapeadasDesenho_azul[indice_final_path][0];
+				y = coordsMapeadasDesenho_azul[indice_final_path][1];
+			}
+			else if(cor == 2) {
+				x = coordsMapeadasDesenho_amarelo[indice_final_path][0];
+				y = coordsMapeadasDesenho_amarelo[indice_final_path][1];
+			}
+			else if(cor == 1) {
+				x = coordsMapeadasDesenho_verde[indice_final_path][0];
+				y = coordsMapeadasDesenho_verde[indice_final_path][1];
+			}
+		
+		}
+		else {
+			x = coordsMapeadasDesenho[indice_path][0];
+			y = coordsMapeadasDesenho[indice_path][1];
+		}
 		g.setColor(Color.BLACK);
 		g.drawOval(x, y, 25, 25);
 		g.setColor(COLORS[cor]);
 		g.fillOval(x, y, 25, 25);
-		
-//		run_repaint();
+		tipo = 1;
 		
 	}
 	
@@ -75,9 +114,9 @@ public class Peca {
 		y = coordsMapeadasDesenho[indice][1];
 		
 		g.setColor(Color.BLACK);
-		g.drawOval(x, y, 35, 35);
+		g.drawOval(x - 5, y - 5, 35, 35);
 		g.setColor(COLORS[cor]);
-		g.fillOval(x, y, 35, 35);
+		g.fillOval(x - 5, y - 5, 35, 35);
 		
 		g.setColor(Color.BLACK);
 		g.drawOval(x, y, 25, 25);
@@ -90,9 +129,9 @@ public class Peca {
 		y = coordsMapeadasDesenho[indice][1];
 		
 		g.setColor(COLORS[cor]);
-		g.drawOval(x, y, 35, 35);
+		g.drawOval(x - 5, y - 5, 35, 35);
 		g.setColor(Color.white);
-		g.fillOval(x, y, 31, 31);
+		g.fillOval(x, y, 25, 25);
 		
 		g.setColor(Color.BLACK);
 		g.drawOval(x, y, 25, 25);
@@ -124,10 +163,11 @@ public class Peca {
 		g.fillOval(x, y, 25, 25);
 		
 		Font font = new Font("Arial", Font.BOLD, 14);
+		g.setColor(Color.BLACK);
 		g.setFont(font);
 		String text = Integer.toString(qtd);
-		int textX = x; // Posição x do texto
-		int textY = y; // Posição y do texto
+		int textX = x + 9; // Posição x do texto
+		int textY = y + 17; // Posição y do texto
 		g.drawString(text, textX, textY);
 		
 		
@@ -148,6 +188,12 @@ public class Peca {
 		coordInicial[6] = new int[] {632, 177};
 		coordInicial[7] = new int[] {492, 177};
 			
+		//	Amarelo
+		coordInicial[8] = new int[] {632, 612};
+		coordInicial[9] = new int[] {632, 492};
+		coordInicial[10] = new int[] {492, 492};
+		coordInicial[11] = new int[] {492, 612};
+
 		//	Azul
 		coordInicial[12] = new int[] {57, 492};
 		coordInicial[13] = new int[] {197, 492};
@@ -155,11 +201,6 @@ public class Peca {
 		coordInicial[15] = new int[] {197, 612};
 		
 			
-		//	Amarelo
-		coordInicial[8] = new int[] {632, 612};
-		coordInicial[9] = new int[] {632, 492};
-		coordInicial[10] = new int[] {492, 492};
-		coordInicial[11] = new int[] {492, 612};
 	}
 	protected void start_path_mapeado() {
 		coordsMapeadas[0] = new int[] {1, 6};
@@ -266,80 +307,3 @@ public class Peca {
 		return cor;
 	}
 }
-
-
-//
-//protected Peca(int cor, int x, int y) {
-//	
-//}
-//
-//protected void draw_inicio(int cor, int indice) {
-//	int x = coordInicial[indice + 4*cor][0];
-//	int y = coordInicial[indice + 4*cor][1];
-//	
-//	g.setColor(Color.BLACK);
-//	g.drawOval(x, y, 25, 25);
-//	g.setColor(COLORS[cor]);
-//	g.fillOval(x, y, 25, 25);
-//}
-//
-//
-//protected void draw_peca(int indice) {
-//	int x = coordsMapeadasDesenho[indice][0];
-//	int y = coordsMapeadasDesenho[indice][1];
-//	
-//	g.setColor(Color.BLACK);
-//	g.drawOval(x, y, 25, 25);
-//	g.setColor(COLORS[cor]);
-//	g.fillOval(x, y, 25, 25);
-//	
-//}
-//
-//protected void draw_abrigo_stack(int cor1, int cor2, int indice) {
-//	int x = coordsMapeadasDesenho[indice][0];
-//	int y = coordsMapeadasDesenho[indice][1];
-//	
-//	g.setColor(Color.BLACK);
-//	g.drawOval(x, y, 35, 35);
-//	g.setColor(COLORS[cor1]);
-//	g.fillOval(x, y, 35, 35);
-//	
-//	g.setColor(Color.BLACK);
-//	g.drawOval(x, y, 25, 25);
-//	g.setColor(COLORS[cor2]);
-//	g.fillOval(x, y, 25, 25);
-//}
-//
-//protected void draw_barreira(int indice, int cor) {
-//	int x = coordsMapeadasDesenho[indice][0];
-//	int y = coordsMapeadasDesenho[indice][1];
-//	
-//	g.setColor(COLORS[cor]);
-//	g.drawOval(x, y, 35, 35);
-//	g.setColor(Color.white);
-//	g.fillOval(x, y, 31, 31);
-//	
-//	g.setColor(Color.BLACK);
-//	g.drawOval(x, y, 25, 25);
-//	g.setColor(COLORS[cor]);
-//	g.fillOval(x, y, 25, 25);
-//}
-//
-//protected void draw_finish(int indice, int qtd) {
-//	int x = coordsMapeadasDesenho[indice][0];
-//	int y = coordsMapeadasDesenho[indice][1];
-//	
-//	g.setColor(Color.BLACK);
-//	g.drawOval(x, y, 25, 25);
-//	g.setColor(COLORS[cor]);
-//	g.fillOval(x, y, 25, 25);
-//	
-//	Font font = new Font("Arial", Font.BOLD, 14);
-//	g.setFont(font);
-//	String text = Integer.toString(qtd);
-//	int textX = 900; // Posição x do texto
-//	int textY = 310; // Posição y do texto
-//	g.drawString(text, textX, textY);
-//	
-//	
-//}

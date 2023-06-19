@@ -13,7 +13,7 @@ class Peca {
 		Tabuleiro t = Tabuleiro.getInstance();
 		Casa c;
 		if (t.is_in_path(this)) {
-			c = t.get_destination(t.get_path_current_casa(this), die_val, this, true);
+			c = t.get_destination(t.get_path_current_casa(this), die_val, this, false);
 
 			if (c.get_num_pecas() > 0) {
 				int cor;
@@ -36,11 +36,6 @@ class Peca {
 			current_casa.remove_peca(this);
 			current_casa = c;
 			current_casa.add_peca(this);
-			
-		}
-		else if (this.get_current_casa().is_casa_inicial()) {
-			move_to_casa_de_saida();
-			return;
 		}
 	}
 
@@ -143,7 +138,7 @@ class Peca {
 		}
 		
 		else if (current_casa.is_reta_final()) {
-			c = t.get_destination(i[0], val_die, this, false);
+			c = t.get_destination(i[0], val_die, this, true);
 			if (c == null) {
 				return false;
 			}

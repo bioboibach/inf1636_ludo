@@ -100,10 +100,22 @@ class Tabuleiro {
 		return true;
 	}
 	protected boolean is_in_reta_final(Peca p) {
-		if (p.get_cor() == 0) if (reta_final_vermelho.indexOf(p.get_current_casa()) == -1) return false;
-		else if (p.get_cor() == 1) if (reta_final_verde.indexOf(p.get_current_casa()) == -1) return false;
-		else if (p.get_cor() == 2) if (reta_final_amarelo.indexOf(p.get_current_casa()) == -1) return false;
-		else if (p.get_cor() == 3) if (reta_final_azul.indexOf(p.get_current_casa()) == -1) return false;
+		if (p.get_cor() == 0) {
+			if (reta_final_vermelho.indexOf(p.get_current_casa()) == -1) return false;
+			else return true;
+		}
+		else if (p.get_cor() == 1) {
+			if (reta_final_verde.indexOf(p.get_current_casa()) == -1) return false;
+			else return true;
+		}
+		else if (p.get_cor() == 2) {
+			if (reta_final_amarelo.indexOf(p.get_current_casa()) == -1) return false;
+			else return true;
+		}
+		else if (p.get_cor() == 3) {
+			if (reta_final_azul.indexOf(p.get_current_casa()) == -1) return false;
+			else return true;
+		}
 		return true;
 	}
 	
@@ -111,7 +123,7 @@ class Tabuleiro {
 	protected boolean check_path(int index, int num_moves, Peca p){
 		Casa c; 
 		if (this.check_for_barrier(index, num_moves, p)) return false;
-		c = get_destination(index, num_moves, p, is_in_path(p));
+		c = get_destination(index, num_moves, p, false);
 		return c.is_casa_vaga(p);
 	}
 	

@@ -77,16 +77,14 @@ class Jogo implements Observavel {
 		
 		switch(current_dado) {
 			case 5:
+				System.out.println("in 5");
 				c = t.get_casas_iniciais_index(ply.get_id());
 				
 	//			se tem peca na casa inicial
-				if (c.get_num_pecas() != 0) {
+				if (c.get_num_pecas() != 0 && t.get_casa_de_saida(ply.get_id()).is_casa_vaga(c.get_primeira_peca_player(ply))) {
 					p = c.get_primeira_peca_player(ply);
-	//				se casa (de saida) vaga
-					if (t.get_casa_de_saida(ply.get_id()).is_casa_vaga(p)) {
-						p.move_to_casa_de_saida();
-						update_last_moved_peca(p);
-					}
+					p.move_to_casa_de_saida();
+					update_last_moved_peca(p);
 				}
 	//			se pode mover alguma coisa
 				else if (ply.can_move(current_dado)) {
@@ -97,6 +95,7 @@ class Jogo implements Observavel {
 				break;
 				
 			case 6:
+				System.out.println("in 6");
 				qtd_6_rolados++;
 				if (qtd_6_rolados == 3) {
 					c = last_moved_peca.get_current_casa();
@@ -122,6 +121,7 @@ class Jogo implements Observavel {
 				break;
 	
 			default:
+				System.out.println("in default");
 				if (ply.can_move(current_dado)) {
 					p = ply.pick_peca(current_dado);
 					p.move(current_dado);

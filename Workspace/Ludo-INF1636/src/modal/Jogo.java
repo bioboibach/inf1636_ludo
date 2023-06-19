@@ -1,12 +1,12 @@
 package modal;
 import java.util.*;
-import controller.Observable;
-import view.ObserverView;
+import controller.Observavel;
+import view.Observador;
 import controller.Observer;
 
-class Jogo implements Observable {    
+class Jogo implements Observavel {    
 	private static Jogo instance;
-	List<Observer> observers = new ArrayList<Observer>();
+	List<Observador> observers = new ArrayList<Observador>();
 
 	private Player players[] = new Player[4];
 	private Tabuleiro t;
@@ -21,7 +21,7 @@ class Jogo implements Observable {
 	
 	protected Jogo() {
 		
-		this.addObserver(ObserverView.getInstance());
+		this.addObserver(Observador.getInstance());
 	}
 	
 //	Inicializacao --------------------------------------
@@ -223,10 +223,10 @@ class Jogo implements Observable {
 	
 	
 //	Implementacao da interface Observer ----------------
-	public void addObserver(Observer o) {
+	public void addObservador(Observador o) {
 		observers.add(o);
 	}
-	public void removeObserver(Observer o) {
+	public void removeObservador(Observador o) {
 		observers.remove(o);
 	}
     public void notifyObservers() {

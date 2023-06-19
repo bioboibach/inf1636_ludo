@@ -1,35 +1,34 @@
 package view;
 
-import controller.Observer;
-import controller.Observable;
+import controller.Observavel;
 
-public class ObserverView implements Observer {	
+public class Observador{	
 	
-	private static ObserverView viewInstace;
+	private static Observador viewInstace;
 
 	
-	protected ObserverView() {}
+	protected Observador() {}
 	
 	private int 	current_peca		;
 	private int 	current_player 		;
 	private int 	current_dado 		;
 	private int[]	podio				;
-	private int		valor0				;
-	private int		valor1				;
+	private int		indice_array_cor	;
+	private int		array_cor			;
 	
-    public void notify(Observable o) {
+    public void notify(Observavel o) {
     	Object[] dados = (Object[]) o.get();
     	this.current_peca 	=  (int) 		dados[0];
     	this.current_player =  (int) 		dados[1];
     	this.current_dado 	=  (int) 		dados[2];
     	this.podio			=  (int[])		dados[3];
-    	this.valor0			=  (int)		dados[4];
-    	this.valor1			=  (int)		dados[5];
+    	this.indice_array_cor			=  (int)		dados[4];
+    	this.array_cor			=  (int)		dados[5];
     }
     
     
 //	Singleton ------------------------------------------
-	public static ObserverView getInstance() {
+	public static Observador getInstance() {
 		return viewInstace;
 	}
 }

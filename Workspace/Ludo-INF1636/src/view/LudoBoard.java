@@ -705,8 +705,6 @@ public class LudoBoard extends JPanel{
 		int textY = 310; // Posição y do texto
 		g.drawString(text, textX, textY);
 		
-		
-		
 		start_draw(g);
 	}
 	
@@ -732,8 +730,6 @@ public class LudoBoard extends JPanel{
 		}
 		return instance;
 	}
-	
-	
 }
 
 

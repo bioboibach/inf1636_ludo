@@ -23,6 +23,8 @@ public class Modal_interface {
 		}
 		c.add_peca(p);
 		p.change_casa(c);
+		Jogo.getInstance().update_current_piece(Jogo.getInstance().get_player(p.get_cor()), p);
+		notify();
 	}
 	public void run_turn() {
 		Jogo.getInstance().turn();
@@ -67,7 +69,6 @@ public class Modal_interface {
 	public int get_roll() {
 		return Jogo.getInstance().get_val_dado();
 	}
-	
 	
 //	Singleton ------------------------------------------
 	public static Modal_interface getInstance() {

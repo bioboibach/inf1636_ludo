@@ -23,6 +23,10 @@ class Peca {
 	}
 	
 	protected void draw_finish(int id) {
+			
+	}
+	
+	protected void draw_casa_inicial(int id) {
 		
 	}
 	

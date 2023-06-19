@@ -42,6 +42,10 @@ class Jogo implements Observavel {
 		d = Dado.getInstance();
 	}
 	protected void start_game() {
+		update_capture(false);
+		set_turn(0);
+		current_dado = 5;
+		qtd_6_rolados = 0;
 //		Inicializa as casas iniciais de cada jogador com referencias as casas inicias respectivas no tabuleiro
 		for (int count = 0; count < 4; count++) {
 			for (int i = 0; i < 4; i++) {
@@ -55,7 +59,10 @@ class Jogo implements Observavel {
 		update_last_moved_peca(p);
 		end_turn();
 	}
-	
+	protected void new_game() {
+		t.clear_tabuleiro();
+		start_game();
+	}
 
 //	Operacoes -------------------------------------------
 	protected void turn() {
@@ -112,7 +119,6 @@ class Jogo implements Observavel {
 					p.move(current_dado);
 					update_last_moved_peca(p);
 				}
-				turn();
 				break;
 	
 			default:
@@ -135,6 +141,9 @@ class Jogo implements Observavel {
 		
 		if (check_end_game_condition() != -1) {
 			end_game();
+		}
+		if (current_dado == 6) {
+			turn();
 		}
 		end_turn();
 		return;		
@@ -213,11 +222,28 @@ class Jogo implements Observavel {
 //	Metodos Auxiliares ---------------------------------
 	protected void print_map() {
 		ArrayList<Casa> map = t.get_path();
+		ArrayList<Casa> r1 = t.get_r1();
+		ArrayList<Casa> r2= t.get_r2();
+		ArrayList<Casa> r3 = t.get_r3();
+		ArrayList<Casa> r4 = t.get_r4();
+		ArrayList<Casa> ini = t.get_ini();
 		
+		for (int i = 0; i < 4; i++) {
+		System.out.print(ini.get(i).get_num_pecas() + "\t\t");
+		}
+		System.out.println();
 		for (int i = 0; i < 52; i++) {
 			System.out.print(map.get(i).get_num_pecas() + " ");
 		}
 		System.out.println();
+		for (int i = 0; i < 6; i++) {
+			System.out.println(r1.get(i).get_num_pecas() + "\t\t" +
+							   r2.get(i).get_num_pecas() + "\t\t" +
+							   r3.get(i).get_num_pecas() + "\t\t" +
+							   r4.get(i).get_num_pecas());
+		}
+		
+
 	}
 	
 	

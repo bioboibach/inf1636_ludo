@@ -8,6 +8,36 @@ class Peca {
 		id_time = id;
 	}
 	
+	//
+//	protected void move(int die_val) {
+//		Tabuleiro t = Tabuleiro.getInstance();
+//		Casa c;
+//		if (t.is_in_path(this)) {
+//			c = t.get_destination(t.get_path_current_casa(this), die_val, this, true);
+//
+//			if (c.get_num_pecas() > 0) {
+//				int cor;
+//				if (c.get_peca(0) == null)
+//					cor = c.get_peca(1).get_cor();
+//				else
+//					cor = c.get_peca(0).get_cor();
+//
+//				if (cor != id_time && !c.is_abrigo() && !c.is_casa_de_saida()
+//						&& (c.is_casa_de_saida() && c.get_cor() != cor)) {
+//					Jogo.getInstance().captura(c);
+//				}
+//			}
+//		}
+//		else if (t.is_in_reat_final(this))
+//			c = t.get_destination(t.get_reta_final_current_casa(this), die_val, this, false);
+//		else return;
+//		current_casa.remove_peca(this);
+//		current_casa = c;
+//		current_casa.add_peca(this);
+//
+//	}
+
+	
 //	Operacoes -------------------------------------------
 	
 //	TODO
@@ -15,7 +45,9 @@ class Peca {
 //	verifica onde a peca ta, pra onde vai, se pode mover e atualiza-la
 	protected void move(int die_val) {
 		Tabuleiro t = Tabuleiro.getInstance();
+		
 		if (t.get_path_current_casa(this) == -1) return;
+		
 		Casa c = t.get_destination(t.get_path_current_casa(this), die_val, this, true);
 		
 		if (c.get_num_pecas() > 0) {
@@ -30,8 +62,38 @@ class Peca {
 		current_casa.remove_peca(this);
 		current_casa = c;
 		current_casa.add_peca(this);
-		
 	}
+	
+//	protected void move(int die_val) {
+//		Tabuleiro t = Tabuleiro.getInstance();
+//		Casa c;
+//		if (t.is_in_path(this)) {
+//			c = t.get_destination(t.get_path_current_casa(this), die_val, this, false);
+//
+//			if (c.get_num_pecas() > 0) {
+//				int cor;
+//				if (c.get_peca(0) == null)
+//					cor = c.get_peca(1).get_cor();
+//				else
+//					cor = c.get_peca(0).get_cor();
+//
+//				if (cor != id_time && !c.is_abrigo() && !c.is_casa_de_saida()
+//						&& (c.is_casa_de_saida() && c.get_cor() != cor)) {
+//					Jogo.getInstance().captura(c);
+//				}
+//			}
+//			current_casa.remove_peca(this);
+//			current_casa = c;
+//			current_casa.add_peca(this);
+//		}
+//		else if (t.is_in_reat_final(this)) {
+//			c = t.get_destination(t.get_reta_final_current_casa(this), die_val, this, true);
+//			current_casa.remove_peca(this);
+//			current_casa = c;
+//			current_casa.add_peca(this);
+//		}
+//	}
+	
 	protected void move_to_base() {
 		current_casa.remove_peca(this);
 		current_casa = Tabuleiro.getInstance().get_casas_iniciais_index(id_time);
@@ -39,15 +101,12 @@ class Peca {
 	}
 	protected void move_to_casa_de_saida() {
 		current_casa.remove_peca(this);
-		if 		(id_time == 0) current_casa = Tabuleiro.getInstance().get_path_index(0);
-		else if (id_time == 1) current_casa = Tabuleiro.getInstance().get_path_index(13);
-		else if (id_time == 2) current_casa = Tabuleiro.getInstance().get_path_index(26);			
-		else if (id_time == 3) current_casa = Tabuleiro.getInstance().get_path_index(39);
+		current_casa = Tabuleiro.getInstance().get_casa_de_saida(this.get_cor());
 		current_casa.add_peca(this);
 	}
 	protected void move_to_reta_final(int index) {
 		current_casa.remove_peca(this);
-		Tabuleiro.getInstance().get_reta_final_index(index, id_time);
+		current_casa = Tabuleiro.getInstance().get_reta_final_index(index, id_time);
 		current_casa.add_peca(this);
 	}
 	
@@ -78,7 +137,9 @@ class Peca {
 		
 		else if (current_casa.is_reta_final()) {
 			c = t.get_destination(i[0], val_die, this, false);
-			if (c == null) return false;
+			if (c == null) {
+				return false;
+			}
 			return c.is_casa_vaga(this);
 		}
 		return true;

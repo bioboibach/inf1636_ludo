@@ -143,7 +143,7 @@ public class LudoBoard extends JPanel{
         // Register the MouseListener with the panel
         this.addMouseListener(mouseAdapter);
         
-		setPreferredSize(new Dimension(1200, 700)); // Tamanho da janela
+		setPreferredSize(new Dimension(900, 600)); // Tamanho da janela
 		setLayout(null);
 		
 			try {
@@ -322,6 +322,7 @@ public class LudoBoard extends JPanel{
 	
 //	Operacoes ---------------------------------------------
 	public void startNewGame() {
+		Controller_interface.getInstance().new_game();
 		System.out.println("Iniciando nova partida...");
 	}
 

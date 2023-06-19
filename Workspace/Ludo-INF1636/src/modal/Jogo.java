@@ -81,7 +81,7 @@ class Jogo implements Observavel {
 
 //		System.out.println("player " + current_player + " turn");
 //		System.out.println("dado = " + current_dado);
-		print_map();
+//		print_map();
 		
 		switch(current_dado) {
 			case 5:

@@ -5,15 +5,22 @@ import java.io.IOException;
 
 public class Controller_interface {
 	
+	boolean dadosRolados = false;
+	
 	private static Controller_interface instance;
 
 	private Controller_interface() {}
+	
+	public int roll() {
+		dadosRolados = true;
+		return Modal_interface.getInstance().get_roll();
+	}
 	
 	public void save_game() throws IOException{
 		Save_game.getInstance().save();
 	}
 	
-	public void load_game() throws IOException{
+	public void load_game() {
 		Load_game.getInstance().load();
 	}
 	
@@ -22,5 +29,15 @@ public class Controller_interface {
 			instance = new Controller_interface();
 		}
 		return instance;
+	}
+
+
+//	Metdoos get --------------------------------------------
+	
+	
+//	TODO
+//	fazer o dadosRolados  voltar a ser false no final do turno
+	public boolean get_dadosRolados() {
+		return dadosRolados;
 	}
 }

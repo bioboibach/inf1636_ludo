@@ -212,7 +212,8 @@ public class LudoBoard extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 // Obtendo o valor selecionado no combo box
                 String selectedValue = (String) dado1.getSelectedItem();
-
+                Modal_interface.getInstance().set_dado(Integer.valueOf((String) dado1.getSelectedItem()));
+                Modal_interface.getInstance().run_turn(false);
                 // Exibindo o valor selecionado
                 System.out.println("Valor selecionado: " + selectedValue);
             }
@@ -243,9 +244,9 @@ public class LudoBoard extends JPanel{
 	}
 
 	public void lancarDado() {
-		Modal_interface.getInstance().run_turn();
+		Modal_interface.getInstance().run_turn(false);
 		die_val = Modal_interface.getInstance().get_roll();
-		turn = Modal_interface.getInstance().get_player_turn(); // remover dps TODO
+		turn = Modal_interface.getInstance().get_player_turn();
 		repaint();
 	}
 	

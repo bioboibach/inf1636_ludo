@@ -43,6 +43,8 @@ class Load_game {
 					}
 				}
 				m.set_turn(Integer.parseInt(s.next()));
+				s.close();
+				System.out.println("Jogo Carregado com sucesso");
 			} catch (Exception e) {
 				e.getStackTrace();
 			}

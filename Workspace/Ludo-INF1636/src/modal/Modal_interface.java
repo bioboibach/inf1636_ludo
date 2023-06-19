@@ -26,11 +26,15 @@ public class Modal_interface {
 		Jogo.getInstance().update_current_piece(Jogo.getInstance().get_player(p.get_cor()), p);
 		notify();
 	}
-	public void run_turn() {
-		Jogo.getInstance().turn();
+	public void run_turn(boolean t) {
+		Jogo.getInstance().turn(t);
 	}
 	public void set_turn(int t) {
 		Jogo.getInstance().set_turn(t);
+	}
+	
+	public void set_dado(int t) {
+		Jogo.getInstance().set_dado(t);
 	}
 	public void clear_tabuleiro() {
 		Tabuleiro.getInstance().clear_tabuleiro();

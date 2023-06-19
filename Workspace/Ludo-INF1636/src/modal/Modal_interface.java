@@ -22,6 +22,7 @@ public class Modal_interface {
 			c = Tabuleiro.getInstance().get_reta_final_index(index, list_id - 2);
 		}
 		c.add_peca(p);
+		p.change_casa(c);
 	}
 	public void run_turn() {
 		Jogo.getInstance().turn();

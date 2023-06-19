@@ -91,11 +91,16 @@ class Casa {
 		
 		
 //		TODO peca_arr[0]ta pegando so a primeira posicao, tem q ver se vai fazer update_casa pra sempre mover as pecas pra posicao 0 ou se so verifica qual index ta
-//		se tem 1 peca na casa e a cor dessa peca for igual a movimentada
-		else if (num_pecas == 1 && p.get_cor() == peca_arr[0].get_cor()) {
-//			se casa de saída
-			if (tipo == 2) return false;
-			else return true;
+//		se tem 1 peca na casa e a cor dessa peca for igual a da peca movimentada
+		else if (num_pecas == 1) {
+			Peca aux_p = peca_arr[0];
+			if (aux_p == null) aux_p = peca_arr[1];
+			
+			if(p.get_cor() == aux_p.get_cor()) {
+//				se casa de saída
+				if (is_casa_de_saida()) return false;
+				else return true;
+			 }
 		}
 //		se tem 1 ou 0 pecas, se tem mais de 2 (casa inicial e final), 
 		return true;

@@ -104,17 +104,19 @@ public class LudoBoard extends JPanel implements Observer{
 	}
 
 	public void loadSavedGame() {
-		File savedGameFile = new File("partida_salva.txt");
-		if (savedGameFile.exists()) {
-			System.out.println("Carregando partida salva...");
-		} else {
-			System.out.println("Nenhuma partida salva encontrada.");
+		try {
+			Controller_interface.getInstance().load_game();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	public void saveGame() {
-		// Salvar as posições do jogo com algo tipo fwrite sendo que vai ter que adicionar a opção de colocar esse jogo salvo na matriz de tabuleiro
-		System.out.println("Jogo salvo! ");
+		try {
+			Controller_interface.getInstance().save_game();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void launchDice() {

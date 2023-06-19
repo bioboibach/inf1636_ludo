@@ -17,27 +17,20 @@ class Peca {
 		Tabuleiro t = Tabuleiro.getInstance();
 		if (t.get_path_current_casa(this) == -1) return;
 		Casa c = t.get_destination(t.get_path_current_casa(this), die_val, this, true);
+		
+		if (c.get_num_pecas() > 0) {
+			int cor;
+			if (c.get_peca(0) == null) cor = c.get_peca(1).get_cor(); 
+			else cor = c.get_peca(0).get_cor();
+			
+			if (cor != id_time && !c.is_abrigo() && !c.is_casa_de_saida() && (c.is_casa_de_saida() && c.get_cor() != cor)) {
+				Jogo.getInstance().captura(c);
+			}
+		}
 		current_casa.remove_peca(this);
 		current_casa = c;
 		current_casa.add_peca(this);
-		return;
-//		Jogo j = Jogo.getInstance();
-//		
-////		se esta na casa inicial
-//		if (current_tile.get_tipo() == 1) {
-//			current_tile.casa_vaga(this);
-//			this.move_to_casa_de_saida();
-//		}
-//		
-////		se esta na casa de entrada
-//		else if (current_tile.get_tipo() == 6) {
-//			
-//			this.move_to_reta_fianl(die_val);
-//		}
-//		
-//		if (Tabuleiro.getInstance().check_path(die_val, this)) {
-//			
-//		}
+		
 	}
 	protected void move_to_base() {
 		current_casa.remove_peca(this);

@@ -13,7 +13,6 @@ class Tabuleiro {
 	private ArrayList<Casa> reta_final_amarelo 	= new ArrayList<Casa>();
 	private ArrayList<Casa> reta_final_azul 	= new ArrayList<Casa>();
 	
-	
 	protected static Tabuleiro getInstance() {
 		if (instance == null) {
 			instance = new Tabuleiro();
@@ -192,7 +191,7 @@ class Tabuleiro {
 
 	protected int[] get_index_current_casa(Peca p) {
 		int[] i = new int[2];
-		if(get_path_current_casa(p) != -1) {
+		if((i[0] = get_path_current_casa(p)) != -1) {
 			i[1] = 0;
 			return i;
 		}

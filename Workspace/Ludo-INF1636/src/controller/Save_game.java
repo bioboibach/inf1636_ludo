@@ -16,8 +16,8 @@ class Save_game {
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
 					aux = m.get_peca_indexes(i, j);
-					inputStream.write(aux[0] + "");
-					inputStream.write(aux[1] + "");
+					inputStream.write(aux[0] + " ");
+					inputStream.write(aux[1] + " ");
 				}
 			}
 			int turn = m.get_player_turn();

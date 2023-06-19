@@ -46,7 +46,8 @@ class Jogo implements Observable {
 //		Inicializa as casas iniciais de cada jogador com referencias as casas inicias respectivas no tabuleiro
 		for (int count = 0; count < 4; count++) {
 			for (int i = 0; i < 4; i++) {
-				instance.get_player(count).get_peca(i).change_casa(t.get_casas_iniciais_index(count));
+				get_player(count).get_peca(i).change_casa(t.get_casas_iniciais_index(count));
+				t.get_casas_iniciais_index(count).add_peca(get_player(count).get_peca(i));
 			}
 		}
 //		Move a primeira peca vermelha para a casa de saida
@@ -68,7 +69,7 @@ class Jogo implements Observable {
 		System.out.println("dado = " + current_dado);
 		print_map();
 		
-		switch(current_dado) {		
+		switch(current_dado) {
 			case 5:
 				c = t.get_casas_iniciais_index(ply.get_id());
 				
@@ -124,9 +125,10 @@ class Jogo implements Observable {
 		}
 		
 		while (last_moved_peca.get_current_casa().is_casa_final() || capture_flag == true) {
+			if (capture_flag == true) update_capture(false);
 			if(ply.can_move(6)) {
-				p = ply.pick_peca(current_dado);
-				p.move(current_dado);
+				p = ply.pick_peca(6);
+				p.move(6);
 				update_last_moved_peca(p);
 			}
 			else break;
@@ -143,6 +145,9 @@ class Jogo implements Observable {
 		qtd_6_rolados = 0;
 		capture_flag = false;
 	}
+	protected void set_turn(int t) {
+		current_player = t;
+	}
 
 //	TODO
 //	fazer retornar uma peca clickada pelo mouse
@@ -157,6 +162,8 @@ class Jogo implements Observable {
 //		TODO
 //		finaliza o jogo
 //		calcula 2o 3o e 4o lugar
+		System.out.print("\n\n\n ======================     FIM DE JOGO    ======================\n\n\n");
+		
 	}
 	protected int[] define_podio() {
 		TreeSet<Integer> pecas_count = new TreeSet<>();
@@ -182,9 +189,10 @@ class Jogo implements Observable {
 			p = c.get_peca(1);
 		}
 		p.move_to_base();
+		update_capture(true);
 	}
-	protected void update_capture() {
-		capture_flag = true;
+	protected void update_capture(boolean b) {
+		capture_flag = b;
 	}
 	
 

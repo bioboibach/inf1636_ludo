@@ -22,6 +22,8 @@ class Player {
 		int[] possible_pieces = new int[4];
 		possible_pieces = get_movable_pieces(val_die);
 		
+		for (int i = 0; i < 4; i++) if (possible_pieces[i] == 1) return pecas[i];
+		
 		return p;
 	}
 

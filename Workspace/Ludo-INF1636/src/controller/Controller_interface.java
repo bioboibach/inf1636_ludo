@@ -20,7 +20,7 @@ public class Controller_interface {
 		Save_game.getInstance().save();
 	}
 	
-	public void load_game() {
+	public void load_game() throws IOException{
 		Load_game.getInstance().load();
 	}
 	

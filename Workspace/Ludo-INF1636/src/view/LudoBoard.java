@@ -263,12 +263,6 @@ public class LudoBoard extends JPanel{
 			repaint();
 		}
 		
-		
-		arr_pecas.get(0).draw_peca(g, 4, -1);
-		arr_pecas.get(9).draw_peca(g, 5, 4);
-		arr_pecas.get(11).draw_abrigo_stack(g, 0, arr_pecas.get(2));
-		arr_pecas.get(13).draw_barreira(g, 17);
-		arr_pecas.get(2).draw_finish(g, 2);
 	}
 
 	protected void start_arr_pecas(Graphics g) {

@@ -40,6 +40,7 @@ public class Peca {
 		this.cor = cor;
 		x = coordInicial[4*cor + id][0];
 		y = coordInicial[4*cor + id][1];
+		tipo = 0;
 		start_arr_coordInicial();
 		start_path_mapeado(); 		// Inicializa as casas do path
 		start_final_path_mapeado(); // Inicializa as casas do final_path
@@ -59,22 +60,16 @@ public class Peca {
 
 	protected void draw_peca(Graphics g, int indice_path, int indice_final_path) {
 		
-		if(tipo == 0) {
-			int a = coordInicial[4*cor + id][0];
-			int b = coordInicial[4*cor + id][1];
-			a = coordsMapeadasDesenho[indice_path][0];
-			b = coordsMapeadasDesenho[indice_path][1];
-			
-			g.setColor(Color.BLACK);
-			g.drawOval(a, b, 25, 25);
-			g.setColor(Color.RED);
-			g.fillOval(a, b, 250, 25);
-		}
-		else if(tipo == 1) {
+		if(tipo == 1) {
 			g.setColor(Color.BLACK);
 			g.drawOval(this.x, this.y, 25, 25);
 			g.setColor(Color.BLACK);
 			g.fillOval(this.x, this.y, 25, 25);
+			
+			int a = coordInicial[4*cor + id][0];
+			int b = coordInicial[4*cor + id][1];			
+			g.setColor(Color.WHITE);
+			g.fillOval(a - 1, b - 1, 28, 28);
 		}
 		
 		
@@ -110,6 +105,19 @@ public class Peca {
 	}
 	
 	protected void draw_abrigo_stack(Graphics g, int indice, Peca p) {
+		
+		if(tipo == 1) {
+			g.setColor(Color.BLACK);
+			g.drawOval(this.x, this.y, 25, 25);
+			g.setColor(Color.BLACK);
+			g.fillOval(this.x, this.y, 25, 25);
+			
+			int a = coordInicial[4*cor + id][0];
+			int b = coordInicial[4*cor + id][1];			
+			g.setColor(Color.WHITE);
+			g.fillOval(a - 1, b - 1, 28, 28);
+		}
+		
 		x = coordsMapeadasDesenho[indice][0];
 		y = coordsMapeadasDesenho[indice][1];
 		
@@ -122,9 +130,24 @@ public class Peca {
 		g.drawOval(x, y, 25, 25);
 		g.setColor(COLORS[p.get_cor()]);
 		g.fillOval(x, y, 25, 25);
+		
+		tipo = 1;
 	}
 	
 	protected void draw_barreira(Graphics g, int indice) {
+		
+		if(tipo == 1) {
+			g.setColor(Color.BLACK);
+			g.drawOval(this.x, this.y, 25, 25);
+			g.setColor(Color.BLACK);
+			g.fillOval(this.x, this.y, 25, 25);
+			
+			int a = coordInicial[4*cor + id][0];
+			int b = coordInicial[4*cor + id][1];			
+			g.setColor(Color.WHITE);
+			g.fillOval(a - 1, b - 1, 28, 28);
+		}
+		
 		x = coordsMapeadasDesenho[indice][0];
 		y = coordsMapeadasDesenho[indice][1];
 		
@@ -137,9 +160,24 @@ public class Peca {
 		g.drawOval(x, y, 25, 25);
 		g.setColor(COLORS[cor]);
 		g.fillOval(x, y, 25, 25);
+		
+		tipo = 1;
 	}
 	
 	protected void draw_finish(Graphics g, int qtd) {
+		
+		if(tipo == 1) {
+			g.setColor(Color.BLACK);
+			g.drawOval(this.x, this.y, 25, 25);
+			g.setColor(Color.BLACK);
+			g.fillOval(this.x, this.y, 25, 25);
+			
+			int a = coordInicial[4*cor + id][0];
+			int b = coordInicial[4*cor + id][1];			
+			g.setColor(Color.WHITE);
+			g.fillOval(a - 1, b - 1, 28, 28);
+		}
+		
 		if(cor == 0) {
 			x = coordsMapeadasDesenho_vermelho[5][0];
 			y = coordsMapeadasDesenho_vermelho[5][1];
@@ -170,7 +208,7 @@ public class Peca {
 		int textY = y + 17; // Posição y do texto
 		g.drawString(text, textX, textY);
 		
-		
+		tipo = 1;	
 	}
 	
 	

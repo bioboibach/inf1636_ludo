@@ -15,7 +15,9 @@ import javax.swing.*;
 import javax.swing.JComboBox;
 
 public class LudoBoard extends JPanel{
-
+	
+	private static LudoBoard instance;
+	
 	private static final long serialVersionUID = 1L;
 	private static final int BOARD_SIZE = 720;			// Tamanho do lado do tabuleiro
 	private static final int SIZE = BOARD_SIZE / 15; 	// Tamanho de cada célula do tabuleiro
@@ -33,6 +35,9 @@ public class LudoBoard extends JPanel{
 	
 	private Controller_interface control = Controller_interface.getInstance();
 	
+	
+	private ArrayList<Peca> arr_pecas = new ArrayList<Peca>();		// array com todas as pecas em ordem de cor (4 vermelho, 4 azul, ...)
+	
 //	Posicionamento
 	int[][] coordsMapeadas = new int[52][2];				// Coordenadas do tabuleiros convertidas para a casa correspondente
 	int[][] coordsMapeadasDesenho = new int[52][2];			// Coordenadas do tabuleiros convertidas para a coordenada da casa correspondente
@@ -49,6 +54,10 @@ public class LudoBoard extends JPanel{
 	int[][] coordsMapeadas_verde = new int[6][2];			// Coordenadas do tabuleiros convertidas para a casa correspondente
 	int[][] coordsMapeadasDesenho_verde = new int[6][2];	// Coordenadas do tabuleiros convertidas para a coordenada da casa correspondente
 	
+	protected int[][] coordInicial = new int[16][2];		// Coordenadas das casas iniciais
+	
+	
+//	Posicao do click
 	private int coord_x;
 	private int coord_y;
 	private int casa_x;
@@ -143,7 +152,7 @@ public class LudoBoard extends JPanel{
         // Register the MouseListener with the panel
         this.addMouseListener(mouseAdapter);
         
-		setPreferredSize(new Dimension(900, 600)); // Tamanho da janela
+		setPreferredSize(new Dimension(1200, 700)); // Tamanho da janela
 		setLayout(null);
 		
 			try {
@@ -218,7 +227,84 @@ public class LudoBoard extends JPanel{
             }
         });
         
+	}
+
+	
+//	Operacoes ---------------------------------------------
+	public void startNewGame() {
+		System.out.println("Iniciando nova partida...");
+	}
+
+	public void loadSavedGame() {
+		try {
+			Controller_interface.getInstance().load_game();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void saveGame() {
+		try {
+			Controller_interface.getInstance().save_game();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void lancarDado() {
+		Modal_interface.getInstance().run_turn();
+		die_val = Modal_interface.getInstance().get_roll();
+		turn = Modal_interface.getInstance().get_player_turn(); // remover dps TODO
+		repaint();
+	}
+	
+
+//	Desenhar -------------------------------------------------
+	
+		protected void start_draw(Graphics g) {
+		// Inicializacoes
+		start_arr_coordInicial();	// Inicializa os valores das coordenadas das casas iniciais
+		start_path_mapeado(); 		// Inicializa as casas do path
+		start_final_path_mapeado(); // Inicializa as casas do final_path
+		start_arr_pecas(g);			// Inicializa as pecas
 		
+		for (int i = 0; i < coordInicial.length; i++) {
+			System.out.println("Piece " + i + " - x: " + coordInicial[i][0] + ", y: " + coordInicial[i][1]);
+		}
+		
+//		Desenhas as pecas na posicao inicial
+		for(int i = 0; i < 16; i++) {
+			arr_pecas.get(i).draw_inicio(g);
+			
+			System.out.println(arr_pecas.get(1));
+		}
+	}
+	protected void start_arr_coordInicial() {
+		//	Vermelho
+		coordInicial[0] = new int[] {57, 57};
+		coordInicial[1] = new int[] {197, 57};
+		coordInicial[2] = new int[] {57, 177};
+		coordInicial[3] = new int[] {197, 177};
+			
+		//	Verde
+		coordInicial[4] = new int[] {492, 57};
+		coordInicial[5] = new int[] {632, 57};
+		coordInicial[6] = new int[] {632, 177};
+		coordInicial[7] = new int[] {492, 177};
+			
+		//	Azul
+		coordInicial[8] = new int[] {57, 492};
+		coordInicial[9] = new int[] {197, 492};
+		coordInicial[10] = new int[] {57, 612};
+		coordInicial[11] = new int[] {197, 612};
+			
+		//	Amarelo
+		coordInicial[12] = new int[] {632, 312};
+		coordInicial[13] = new int[] {632, 492};
+		coordInicial[14] = new int[] {492, 492};
+		coordInicial[15] = new int[] {492, 612};
+	}
+	protected void start_path_mapeado() {
 		coordsMapeadas[0] = new int[] {1, 6};
 		coordsMapeadas[1] = new int[] {0, 6};
 		coordsMapeadas[2] = new int[] {0, 7};
@@ -272,6 +358,14 @@ public class LudoBoard extends JPanel{
 		coordsMapeadas[50] = new int[] {3, 6};
 		coordsMapeadas[51] = new int[] {2, 6};
 		
+		
+		
+		for(int i = 0; i < 52; i++) {
+			coordsMapeadasDesenho[i][0] += coordsMapeadas[i][0]*SIZE + 24;
+			coordsMapeadasDesenho[i][1] += coordsMapeadas[i][1]*SIZE + 24;
+		}
+	}
+	protected void start_final_path_mapeado() {
 		coordsMapeadas_vermelho[0] = new int[] {1, 7};
 		coordsMapeadas_vermelho[1] = new int[] {2, 7};
 		coordsMapeadas_vermelho[2] = new int[] {3, 7};
@@ -300,12 +394,6 @@ public class LudoBoard extends JPanel{
 		coordsMapeadas_verde[4] = new int[] {7, 5};
 		coordsMapeadas_verde[5] = new int[] {7, 6};
 		
-		
-		for(int i = 0; i < 52; i++) {
-			coordsMapeadasDesenho[i][0] += coordsMapeadas[i][0]*SIZE + 24;
-			coordsMapeadasDesenho[i][1] += coordsMapeadas[i][1]*SIZE + 24;
-		}
-	
 		for(int i = 0; i < 6; i++) {
 			coordsMapeadasDesenho_vermelho[i][0] += coordsMapeadas_vermelho[i][0]*SIZE + 24;
 			coordsMapeadasDesenho_vermelho[i][1] += coordsMapeadas_vermelho[i][1]*SIZE + 24;
@@ -316,125 +404,17 @@ public class LudoBoard extends JPanel{
 			coordsMapeadasDesenho_verde[i][0] += coordsMapeadas_verde[i][0]*SIZE + 24;
 			coordsMapeadasDesenho_verde[i][1] += coordsMapeadas_verde[i][1]*SIZE + 24;
 		}
-
 	}
-
-	
-//	Operacoes ---------------------------------------------
-	public void startNewGame() {
-		Controller_interface.getInstance().new_game();
-		System.out.println("Iniciando nova partida...");
-	}
-
-	public void loadSavedGame() {
-		try {
-			Controller_interface.getInstance().load_game();
-		} catch (IOException e) {
-			e.printStackTrace();
+	protected void start_arr_pecas(Graphics g) {
+		for(int cor = 0; cor < 4; cor++) {
+			for(int i = 0; i < 4; i++) {
+				arr_pecas.add(new Peca(g, i, cor));
+			}
 		}
 	}
-
-	public void saveGame() {
-		try {
-			Controller_interface.getInstance().save_game();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void lancarDado() {
-		Modal_interface.getInstance().run_turn();
-		die_val = Modal_interface.getInstance().get_roll();
-		turn = Modal_interface.getInstance().get_player_turn(); // remover dps TODO
-		repaint();
-	}
 	
-	public void drawBarreira(Graphics g){
-			g.setColor(Color.BLACK);
-			g.drawOval(casa_x, casa_y, 35,35);
-			g.setColor(Color.GREEN);
-			g.fillOval(casa_x, casa_y, 35,35);
-			g.setColor(Color.RED);
-			g.fillOval(casa_x, casa_y, 25,25);
-		
-	}
-
-
-	public void drawPieces(Graphics g) {
-		
-		// Peças Vermelho
-		g.setColor(Color.BLACK);
-		g.drawOval(57,57, 25, 25);
-		g.setColor(Color.RED);
-		g.fillOval(57, 57, 25, 25);
-		g.setColor(Color.BLACK);
-		g.drawOval(197, 57, 25, 25);
-		g.setColor(Color.RED);
-		g.fillOval(197, 57, 25, 25);
-		g.setColor(Color.BLACK);
-		g.drawOval(57, 177, 25, 25);
-		g.setColor(Color.RED);
-		g.fillOval(57, 177, 25, 25);		
-		g.setColor(Color.BLACK);
-		g.drawOval(197, 177, 25, 25);
-		g.setColor(Color.RED);
-		g.fillOval(197, 177, 25, 25);
-		
-		// Peças Verde
-		g.setColor(Color.BLACK);
-		g.drawOval(492,57, 25, 25);
-		g.setColor(Color.GREEN);
-		g.fillOval(492, 57, 25, 25);	
-		g.setColor(Color.BLACK);
-		g.drawOval(632, 57, 25, 25);
-		g.setColor(Color.GREEN);
-		g.fillOval(632, 57, 25, 25);
-		g.setColor(Color.BLACK);
-		g.drawOval(632, 177, 25, 25);
-		g.setColor(Color.GREEN);
-		g.fillOval(632, 177, 25, 25);				
-		g.setColor(Color.BLACK);
-		g.drawOval(492, 177, 25, 25);
-		g.setColor(Color.GREEN);
-		g.fillOval(492, 177, 25, 25);
-		
-		// Peças Azul
-		g.setColor(Color.BLACK);
-		g.drawOval(57,492, 25, 25);
-		g.setColor(Color.BLUE);
-		g.fillOval(57, 492, 25, 25);	
-		g.setColor(Color.BLACK);
-		g.drawOval(197, 492, 25, 25);
-		g.setColor(Color.BLUE);
-		g.fillOval(197, 492, 25, 25);
-		g.setColor(Color.BLACK);
-		g.drawOval(57, 612, 25, 25);
-		g.setColor(Color.BLUE);
-		g.fillOval(57, 612, 25, 25);
-		g.setColor(Color.BLACK);
-		g.drawOval(197, 612, 25, 25);
-		g.setColor(Color.BLUE);
-		g.fillOval(197, 612, 25, 25);
-		
-		// Pecas amarelo
-		g.setColor(Color.BLACK);
-		g.drawOval(632, 612, 25, 25);
-		g.setColor(Color.YELLOW);
-		g.fillOval(632, 612, 25, 25);
-		g.setColor(Color.BLACK);
-		g.drawOval(632, 492, 25, 25);
-		g.setColor(Color.YELLOW);
-		g.fillOval(632, 492, 25, 25);
-		g.setColor(Color.BLACK);
-		g.drawOval(492, 492, 25, 25);
-		g.setColor(Color.YELLOW);
-		g.fillOval(492, 492, 25, 25);
-		g.setColor(Color.BLACK);
-		g.drawOval(492, 612, 25, 25);
-		g.setColor(Color.YELLOW);
-		g.fillOval(492, 612, 25, 25);
-				
-	}
+	
+//	------------------------------
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -865,10 +845,31 @@ public class LudoBoard extends JPanel{
 		int textY = 310; // Posição y do texto
 		g.drawString(text, textX, textY);
 		
-//		Desenha as pecas
-		drawPieces(g);
+		
+		
+		start_draw(g);
 	}
 	
+//	Funcoes get ----------------------------------------------
+	protected int[][] get_coordInicial(){
+		return coordInicial;
+	}
+	protected int[][] get_coordsMapeadasDesenho(){
+		return coordsMapeadasDesenho;
+	}
+	protected int[][] get_coordsMapeadasDesenho_vermelho() {
+		return coordsMapeadasDesenho_vermelho;
+	}
+	protected int[][] get_coordsMapeadasDesenho_azul() {
+		return coordsMapeadasDesenho_azul;
+	}
+	protected int[][] get_coordsMapeadasDesenho_amarelo() {
+		return coordsMapeadasDesenho_amarelo;
+	}
+	protected int[][] get_coordsMapeadasDesenho_verde() {
+		return coordsMapeadasDesenho_verde;
+	}
+
 //	Implementacao da interface Observervavel ----------------
 	public void notify(Observavel o) {
 		obs = o;
@@ -881,6 +882,15 @@ public class LudoBoard extends JPanel{
 		qual_array = (Integer) lob[5];
 		index_do_array = (Integer) lob[6];
 	}
+	
+//	Implementacao Singleton ------------------------------------	
+	protected static LudoBoard getInstance() {
+		if (instance == null) {
+			instance = new LudoBoard();
+		}
+		return instance;
+	}
+	
 }
 
 

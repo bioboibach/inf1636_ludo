@@ -3,7 +3,7 @@ package modal;
 
 public class Modal_interface {
 	private static Modal_interface instance;
-
+	
 	private Modal_interface() {}
 	
 //	Operacoes -------------------------------------------
@@ -32,6 +32,9 @@ public class Modal_interface {
 	}
 	public void clear_tabuleiro() {
 		Tabuleiro.getInstance().clear_tabuleiro();
+	}
+	public void new_game() {
+		Jogo.getInstance().new_game();
 	}
 	
 //	Metodos get ----------------------------------------

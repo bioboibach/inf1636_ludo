@@ -24,6 +24,10 @@ public class Controller_interface {
 		Load_game.getInstance().load();
 	}
 	
+	public void new_game(){
+		Modal_interface.getInstance().new_game();
+	}
+	
 	public static Controller_interface getInstance() {
 		if (instance == null) {
 			instance = new Controller_interface();

@@ -79,13 +79,14 @@ class Casa {
 		if (tipo == 6) return true;
 		return false;
 	}
+	
 	protected boolean is_casa_vaga(Peca p) {
 //		se casa de final
-		if (tipo == 5) return true;
+		if (is_casa_final()) return true;
 		
 //		se ta na reta final e vai para outra casa da reta final (nao tirou o numero exato para chegar no final)
-		else if (p.get_current_casa().tipo == 4 && this.tipo == 4) return false;
-
+		else if (p.get_current_casa().is_reta_final() && this.is_reta_final()) return false;
+		
 //		se tem 2 pecas na casa
 		else if(num_pecas == 2) return false;
 		
@@ -100,12 +101,13 @@ class Casa {
 //				se casa de saída
 				if (is_casa_de_saida()) return false;
 				else return true;
-			 }
+			}
 		}
 //		se tem 1 ou 0 pecas, se tem mais de 2 (casa inicial e final), 
 		return true;
 	}
 	protected boolean is_barreira() {
+		if (is_casa_inicial() || is_casa_de_saida() || is_abrigo()) return false;
 		if (num_pecas < 2) return false;
 		else if (peca_arr[0].get_cor() == peca_arr[1].get_cor()) return true;
 		return false;

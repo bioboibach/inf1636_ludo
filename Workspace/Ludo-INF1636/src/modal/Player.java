@@ -54,17 +54,23 @@ class Player {
 //	retorna null se nao tem barreira
 	protected Peca get_barrier() {
 		int i, j;
+		Casa ci, cj;
+		
 		for(i = 0; i < 3; i++) {
-			if (pecas[i].get_current_casa().is_casa_inicial() 	|| 
-				pecas[i].get_current_casa().is_casa_final() 	|| 
-				pecas[i].get_current_casa().is_casa_de_saida()
+			ci = pecas[i].get_current_casa();
+			if (ci.is_casa_inicial() || 
+				ci.is_casa_final() 	 || 
+				ci.is_casa_de_saida()
 				)continue;
+			
 			for (j = i + 1; j < 4; j++) {
-				if (pecas[j].get_current_casa().is_casa_inicial() 	||
-					pecas[j].get_current_casa().is_casa_final() 	||
-					pecas[j].get_current_casa().is_casa_de_saida()
+				cj = pecas[j].get_current_casa();
+				if (cj.is_casa_inicial() ||
+					cj.is_casa_final() 	 ||
+					cj.is_casa_de_saida()
 					)continue;
-				else if (pecas[i].get_current_casa().equals(pecas[j].get_current_casa()))
+				
+				else if (ci.equals(cj))
 					return pecas[i];
 			}
 		}

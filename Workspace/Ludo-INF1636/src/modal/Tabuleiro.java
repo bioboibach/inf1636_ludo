@@ -99,7 +99,7 @@ class Tabuleiro {
 		if (path.indexOf(p.get_current_casa()) == -1) return false;
 		return true;
 	}
-	protected boolean is_in_reat_final(Peca p) {
+	protected boolean is_in_reta_final(Peca p) {
 		if (p.get_cor() == 0) if (reta_final_vermelho.indexOf(p.get_current_casa()) == -1) return false;
 		else if (p.get_cor() == 1) if (reta_final_verde.indexOf(p.get_current_casa()) == -1) return false;
 		else if (p.get_cor() == 2) if (reta_final_amarelo.indexOf(p.get_current_casa()) == -1) return false;

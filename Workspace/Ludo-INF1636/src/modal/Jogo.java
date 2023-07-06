@@ -70,7 +70,9 @@ class Jogo implements Observavel {
 		Player ply = players[current_player];
 		Peca p;
 		Casa c;
-
+		
+		// TODO
+		// Notify observer a partir do uso dos dados
 		System.out.println("player " + current_player + " turn");
 		System.out.println("dado = " + current_dado);
 		print_map();

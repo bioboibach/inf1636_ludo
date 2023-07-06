@@ -7,7 +7,8 @@ class Dado {
 	private static Dado instance;
 	
 	protected int roll() {
-		return ThreadLocalRandom.current().nextInt(1, 7);
+		int roll = ThreadLocalRandom.current().nextInt(1, 7); 
+		return roll;
 	}
 	
 	protected int set_roll_value(int v1) {

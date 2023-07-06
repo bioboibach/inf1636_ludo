@@ -224,10 +224,14 @@ public class LudoBoard extends JPanel{
 	
 //	Operacoes ---------------------------------------------
 	public void startNewGame() {
+		// TODO
+		// Chamada da funcao do Model de Comecar um jogo novo
 		System.out.println("Iniciando nova partida...");
 	}
 
 	public void loadSavedGame() {
+		// TODO
+		// Chamar a funcao de carregador jogo do model
 		try {
 			Controller_interface.getInstance().load_game();
 		} catch (IOException e) {
@@ -236,6 +240,8 @@ public class LudoBoard extends JPanel{
 	}
 
 	public void saveGame() {
+		// TODO
+		// Chamar a funcao do Model de salvar o jogo
 		try {
 			Controller_interface.getInstance().save_game();
 		} catch (IOException e) {
@@ -243,10 +249,11 @@ public class LudoBoard extends JPanel{
 		}
 	}
 
+	// TODO a funcao recebe o valor do dado e a partir do valor do dado 
 	public void lancarDado() {
-		Modal_interface.getInstance().run_turn(false);
-		die_val = Modal_interface.getInstance().get_roll();
-		turn = Modal_interface.getInstance().get_player_turn();
+		// TODO
+		// Chamar a funcao de rodar dado do modal 
+		// Modal.Dado.roll();
 		repaint();
 	}
 	

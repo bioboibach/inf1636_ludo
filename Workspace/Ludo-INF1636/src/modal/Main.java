@@ -1,7 +1,4 @@
 package modal;
-
-import controller.*;
-
 import view.Frame;
 import java.io.IOException;
 

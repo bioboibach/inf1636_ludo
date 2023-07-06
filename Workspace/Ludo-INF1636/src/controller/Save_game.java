@@ -1,7 +1,6 @@
 package controller;
 
 import modal.Modal_interface;
-import java.io.File;
 import java.io.*;
 
 class Save_game {

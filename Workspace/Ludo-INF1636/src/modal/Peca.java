@@ -121,7 +121,6 @@ class Peca {
 		Tabuleiro t = Tabuleiro.getInstance();
 		Casa c;
 		int[] i = new int[2];
-		int count;
 		i = t.get_index_current_casa(this);
 		
 		if (t.is_in_path(this)) {

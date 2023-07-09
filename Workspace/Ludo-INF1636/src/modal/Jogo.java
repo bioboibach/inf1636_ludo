@@ -65,8 +65,8 @@ class Jogo implements Observavel {
 	}
 
 //	Operacoes -------------------------------------------
-	protected void turn(boolean b) {
-		if (b) current_dado = d.roll();
+	protected void turn() {
+		current_dado = d.roll();
 		Player ply = players[current_player];
 		Peca p;
 		Casa c;
@@ -146,7 +146,7 @@ class Jogo implements Observavel {
 			end_game();
 		}
 		if (current_dado == 6) {
-			turn(true);
+			turn();
 		}
 		end_turn();
 		return;		

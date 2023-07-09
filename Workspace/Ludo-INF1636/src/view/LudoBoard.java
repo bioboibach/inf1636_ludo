@@ -213,7 +213,7 @@ public class LudoBoard extends JPanel{
                 // Obtendo o valor selecionado no combo box
                 String selectedValue = (String) dado1.getSelectedItem();
                 Modal_interface.getInstance().set_dado(Integer.valueOf((String) dado1.getSelectedItem()));
-                Modal_interface.getInstance().run_turn(false);
+                Modal_interface.getInstance().run_turn();
                 // Exibindo o valor selecionado
                 System.out.println("Valor selecionado: " + selectedValue);
             }

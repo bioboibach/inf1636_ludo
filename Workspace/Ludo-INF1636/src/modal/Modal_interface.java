@@ -24,10 +24,9 @@ public class Modal_interface {
 		c.add_peca(p);
 		p.change_casa(c);
 		Jogo.getInstance().update_current_piece(Jogo.getInstance().get_player(p.get_cor()), p);
-		notify();
 	}
-	public void run_turn(boolean t) {
-		Jogo.getInstance().turn(t);
+	public void run_turn() {
+		Jogo.getInstance().turn();
 	}
 	public void set_turn(int t) {
 		Jogo.getInstance().set_turn(t);

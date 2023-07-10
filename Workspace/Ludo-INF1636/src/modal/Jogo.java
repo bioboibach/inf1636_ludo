@@ -18,8 +18,7 @@ class Jogo implements Observavel {
 	private int 	current_dado 		= 5;
 	private int 	qtd_6_rolados 		= 0;
 	
-	protected Jogo() {
-		
+	protected Jogo() {	
 		this.addObservador(Observador.getInstance());
 	}
 	
@@ -159,12 +158,14 @@ class Jogo implements Observavel {
 	protected void set_turn(int t) {
 		current_player = t;
 	}
+	protected void next_turn() {
+		current_player = (current_player + 1)%4;
+	}
 	protected void set_dado(int t) {
 		current_dado = t;
 	}
 
-//	TODO
-//	fazer retornar uma peca clickada pelo mouse
+
 	protected int check_end_game_condition() {
 		if 		(t.get_casa_final(0).get_num_pecas() == 4) return 0;
 		else if	(t.get_casa_final(1).get_num_pecas() == 4) return 1;
@@ -269,7 +270,7 @@ class Jogo implements Observavel {
 	public void removeObservador(Observador o) {
 		observers.remove(o);
 	}
-    public void notifyObservers() {
+    public void atualizaObservadores() {
         ListIterator<Observador> li = observers.listIterator();
         while(li.hasNext()) {
         	li.next().notify(this);

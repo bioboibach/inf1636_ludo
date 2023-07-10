@@ -5,6 +5,6 @@ import view.Observador;
 public interface Observavel {
     void addObservador(Observador observer);
     void removeObservador(Observador observer);
-    void notifyObservers();
+    void atualizaObservadores();
     public Object get();
 }

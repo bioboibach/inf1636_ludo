@@ -1,6 +1,6 @@
 package controller;
 
-import modal.Modal_interface;
+import modal.ModalAPI;
 
 import java.util.Scanner;
 
@@ -20,7 +20,7 @@ class Load_game {
 	}
 
 	protected void load() throws IOException {
-		Modal_interface m = Modal_interface.getInstance();
+		ModalAPI m = ModalAPI.getInstance();
 		JFileChooser f_chooser = new JFileChooser();
 
 		int list_index, index;

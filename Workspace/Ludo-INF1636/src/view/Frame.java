@@ -33,7 +33,7 @@ public class Frame extends JFrame implements Observavel {
 	public void removeObservador(Observador o) {
 		observers.remove(o);
 	}
-    public void notifyObservers() {
+    public void atualizaObservadores() {
         ListIterator<Observador> li = observers.listIterator();
         while(li.hasNext()) {
         	li.next().notify(this);

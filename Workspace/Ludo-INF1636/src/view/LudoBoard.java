@@ -1,6 +1,5 @@
 package view;
 
-import modal.*;
 import controller.*;
 
 import javax.imageio.*;
@@ -14,9 +13,10 @@ import javax.swing.*;
 
 import javax.swing.JComboBox;
 
-public class LudoBoard extends JPanel{
+public class LudoBoard extends JPanel implements BoardSubscriber{
 	
 	private static LudoBoard instance;
+	private ControllerAPI control = ControllerAPI.getInstance(); 
 	
 	private static final long serialVersionUID = 1L;
 	private static final int BOARD_SIZE = 720;			// Tamanho do lado do tabuleiro
@@ -33,9 +33,6 @@ public class LudoBoard extends JPanel{
 	private JButton saveButton;
 	private JButton launchDice;
 	
-	private Controller_interface control = Controller_interface.getInstance();
-	
-	
 	private ArrayList<Peca> arr_pecas = new ArrayList<Peca>();		// array com todas as pecas em ordem de cor (4 vermelho, 4 azul, ...)
 	
 //	Posicionamento
@@ -46,14 +43,11 @@ public class LudoBoard extends JPanel{
 	int[][] coordsMapeadas_amarelo = new int[6][2];			
 	int[][] coordsMapeadas_verde = new int[6][2];		
 	
-	
-	
 //	Posicao do click
 	private int coord_x;
 	private int coord_y;
 	private int casa_x;
 	private int casa_y;
-	
 	
 	Image i[] = new Image[6];
 	int die_val = 1;
@@ -62,7 +56,7 @@ public class LudoBoard extends JPanel{
 	Observavel obs;
 	Object lob[];
 
-	int vez;
+	int player;
 	int val_dado;
 	int res; 
 	
@@ -70,7 +64,6 @@ public class LudoBoard extends JPanel{
 	int id_peca;
 	int qual_array;
 	int index_do_array;
-	
 	
 
 	public LudoBoard() {
@@ -83,9 +76,9 @@ public class LudoBoard extends JPanel{
                 coord_y = e.getY();
                 casa_x = (int) (coord_x / SIZE);
                 casa_y = (int) (coord_y / SIZE);
-//                System.out.printf("Coordenadas: %d - %d\nPosicao: %d - %d\n", coord_x, coord_y, casa_x, casa_y);
+                
                 if (coord_x > 0 && coord_x < BOARD_SIZE && coord_y > 0 && coord_y < BOARD_SIZE) {
-                	if(control.get_dadosRolados() == true) {
+                	if(ViewAPI.getInstance().get_dadosRolados() == false) {
                 		JOptionPane.showMessageDialog(null, "Jogue os dados antes de escolher o peao!");
                 	}
                 	else {
@@ -132,9 +125,10 @@ public class LudoBoard extends JPanel{
 		                System.out.println("PATH: Index of element with coordinates (" + casa_x + ", " + casa_y + "): " + indice_path);
 		                System.out.println("FINAL PATH: Index of element with coordinates (" + casa_x + ", " + casa_y + "): " + indice_final_path);
 
-                		// Use the captured coordinates as needed
-    		            // control.movimenta(pos, coord);
+//		                Envia o valor do dado e o peao selecionado ao Controller
+    		             control.executaTurno(indice_path, indice_final_path, die_val);
     		            // control.imprimeTab();
+		                
                 	}
                 }
             }
@@ -146,18 +140,18 @@ public class LudoBoard extends JPanel{
 		setPreferredSize(new Dimension(1200, 700)); // Tamanho da janela
 		setLayout(null);
 		
-			try {
-				i[0] = ImageIO.read(new File("res/images/Dado1.png"));
-				i[1] = ImageIO.read(new File("res/images/Dado2.png"));
-				i[2] = ImageIO.read(new File("res/images/Dado3.png"));
-				i[3] = ImageIO.read(new File("res/images/Dado4.png"));
-				i[4] = ImageIO.read(new File("res/images/Dado5.png"));
-				i[5] = ImageIO.read(new File("res/images/Dado6.png"));
-			}
-			catch(IOException e){
-				System.out.println(e.getMessage());
-				System.exit(1);
-			}
+		try {
+			i[0] = ImageIO.read(new File("res/images/Dado1.png"));
+			i[1] = ImageIO.read(new File("res/images/Dado2.png"));
+			i[2] = ImageIO.read(new File("res/images/Dado3.png"));
+			i[3] = ImageIO.read(new File("res/images/Dado4.png"));
+			i[4] = ImageIO.read(new File("res/images/Dado5.png"));
+			i[5] = ImageIO.read(new File("res/images/Dado6.png"));
+		}
+		catch(IOException e){
+			System.out.println(e.getMessage());
+			System.exit(1);
+		}
 		
 		newGameButton = new JButton("Nova Partida");
 		newGameButton.setBounds(835, 25, 250, 50); // Cordenada dos botoes
@@ -193,12 +187,12 @@ public class LudoBoard extends JPanel{
 		launchDice.setFont(new Font("Arial", Font.PLAIN, 18));
 		launchDice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lancarDado();
+				alterarImgDado();
 			}
 		});
 		add(launchDice);
 		
-//		Selecioandor de dado manual para testes
+//		Selecionador de dado manual para testes
 		String[] val = new String[] { "1", "2", "3", "4", "5", "6"};
 		dado1 = new JComboBox<String>(val);
         dado1.setBounds(835, 640,250,50);
@@ -212,16 +206,16 @@ public class LudoBoard extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 // Obtendo o valor selecionado no combo box
                 String selectedValue = (String) dado1.getSelectedItem();
-                Modal_interface.getInstance().set_dado(Integer.valueOf((String) dado1.getSelectedItem()));
-                Modal_interface.getInstance().run_turn(false);
-                // Exibindo o valor selecionado
-                System.out.println("Valor selecionado: " + selectedValue);
+                alterarImgDado(Integer.valueOf(selectedValue));
+                
+                ViewAPI.getInstance().set_dadosRolados(true);
+//                // Exibindo o valor selecionado
+//                System.out.println("Valor selecionado: " + selectedValue);
             }
         });
                
 	}
 
-	
 //	Operacoes ---------------------------------------------
 	public void startNewGame() {
 		// TODO
@@ -233,7 +227,7 @@ public class LudoBoard extends JPanel{
 		// TODO
 		// Chamar a funcao de carregador jogo do model
 		try {
-			Controller_interface.getInstance().load_game();
+			control.load_game();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -243,27 +237,30 @@ public class LudoBoard extends JPanel{
 		// TODO
 		// Chamar a funcao do Model de salvar o jogo
 		try {
-			Controller_interface.getInstance().save_game();
+			control.save_game();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	// TODO a funcao recebe o valor do dado e a partir do valor do dado 
-	public void lancarDado() {
-		// TODO
-		// Chamar a funcao de rodar dado do modal 
-		// Modal.Dado.roll();
+//	Lancamento e escolha manual
+	public void alterarImgDado() {
+		die_val = control.roll();
+		ViewAPI.getInstance().set_dadosRolados(true);
+		repaint();
+	}
+	public void alterarImgDado(int valor_escolhido) {
+		die_val = valor_escolhido;
+		ViewAPI.getInstance().set_dadosRolados(true);
 		repaint();
 	}
 	
 
 //	Desenhar -------------------------------------------------
-	
 	protected void start_draw(Graphics g) {
 		// Inicializacoes
 		
-		start_arr_pecas(g);			// Inicializa as pecas
+		start_arr_pecas(g);
 		
 //		Desenhas as pecas na posicao inicial
 		for(int i = 0; i < 16; i++) {
@@ -281,8 +278,6 @@ public class LudoBoard extends JPanel{
 		}
 	}
 	
-	
-//	------------------------------
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -718,11 +713,12 @@ public class LudoBoard extends JPanel{
 	
 //	Funcoes get ----------------------------------------------
 
-//	Implementacao da interface Observervavel ----------------
+
+//	Implementacao da interface Observador ----------------
 	public void notify(Observavel o) {
 		obs = o;
 		lob = (Object []) obs.get();
-		vez = (Integer) lob[0];
+		player = (Integer) lob[0];
 		val_dado = (Integer) lob[1];
 		res = (Integer) lob[2];
 		id_jogador = (Integer) lob[3];
@@ -731,13 +727,25 @@ public class LudoBoard extends JPanel{
 		index_do_array = (Integer) lob[6];
 	}
 	
+	public void updateBoard() {}
+	
+//	public void notify(Object o){
+//		// Volta o dadosRolados para 'false'
+//		ViewAPI.getInstance().set_dadosRolados(false);
+//		ViewAPI.getInstance().get_currentPlayer();
+//	
+//		this.valor1 = o.get_valor1();
+//	}
+	
+
 //	Implementacao Singleton ------------------------------------	
-	protected static LudoBoard getInstance() {
+	public static LudoBoard getInstance() {
 		if (instance == null) {
 			instance = new LudoBoard();
 		}
 		return instance;
 	}
+
 }
 
 

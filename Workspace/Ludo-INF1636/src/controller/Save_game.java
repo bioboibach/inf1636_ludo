@@ -1,13 +1,13 @@
 package controller;
 
-import modal.Modal_interface;
+import modal.ModalAPI;
 import java.io.*;
 
 class Save_game {
 	private static Save_game instance = null;
 	
 	protected void save() throws IOException{
-		Modal_interface m = Modal_interface.getInstance();
+		ModalAPI m = ModalAPI.getInstance();
 		int[] aux = new int[2];
 		FileWriter inputStream = new FileWriter("res/save_data/save_file.txt");
 		

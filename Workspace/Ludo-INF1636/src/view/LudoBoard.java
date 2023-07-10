@@ -211,6 +211,7 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
                 ViewAPI.getInstance().set_dadosRolados(true);
 //                // Exibindo o valor selecionado
 //                System.out.println("Valor selecionado: " + selectedValue);
+
             }
         });
                

@@ -45,7 +45,7 @@ public class AbstractPublisher implements MenuPublisher, BoardPublisher{
 
     protected void notifyBoardUpdate(){
         for (BoardSubscriber boardSubscriber : boardSubscribers) {
-            boardSubscriber.updateBoard();
+//            boardSubscriber.updateBoard();
         }
     }
 }

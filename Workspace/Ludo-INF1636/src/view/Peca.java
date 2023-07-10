@@ -344,4 +344,11 @@ public class Peca {
 	protected int get_cor() {
 		return cor;
 	}
+
+//	Alteracao de atributos -----------------------
+	protected void update_coord(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 }

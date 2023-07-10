@@ -180,17 +180,17 @@ class Jogo implements Observavel {
 		System.out.print("\n\n\n ======================     FIM DE JOGO    ======================\n\n\n");
 		
 	}
-	protected int[] define_podio() {
+	protected int[][] define_podio() {
 		TreeSet<Integer> pecas_count = new TreeSet<>();
 		List<Integer> pecas_count_lst = new ArrayList<>(pecas_count);
-		int[] podio = new int[4]; 		//Colocacao de cada player
+		int[][] podio = new int[4][2]; 		//Colocacao de cada player
 		
-		for(int i = 0; i < 4; i++)
-			pecas_count.add(t.get_casa_final(i).get_num_pecas());
-		
-		for(int i = 0; i < 4; i++)
-			podio[i] = pecas_count_lst.indexOf(t.get_casa_final(i).get_num_pecas());
-		
+//		for(int i = 0; i < 4; i++)
+//			pecas_count.add(t.get_casa_final(i).get_num_pecas());
+//		
+//		for(int i = 0; i < 4; i++)
+//			podio[i] = pecas_count_lst.indexOf(t.get_casa_final(i).get_num_pecas());
+//		
 		return podio;
 	}
 	

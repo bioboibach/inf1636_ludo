@@ -64,7 +64,17 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 	int qual_array;
 	int index_do_array;
 	
-
+	
+//	Atributos de referencia para o paint
+	private int[] 	casas_iniciais 		= new int[4];
+	private int[][] path 				= new int[52][2];
+	private int[] 	reta_final_vermelho = new int[6];
+	private int[] 	reta_final_azul 	= new int[6];
+	private int[] 	reta_final_amarelo 	= new int[6];
+	private int[] 	reta_final_verde 	= new int[6];
+	private int[][]	podio 				= new int[4][2];
+	
+	
 	public LudoBoard() {
 
 		MouseAdapter mouseAdapter = new MouseAdapter() {
@@ -216,6 +226,7 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
                
 	}
 
+	
 //	Operacoes ---------------------------------------------
 	public void startNewGame() {
 		// TODO
@@ -262,11 +273,11 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 		
 		start_arr_pecas(g);
 		
-//		Desenhas as pecas na posicao inicial
-		for(int i = 0; i < 16; i++) {
-			arr_pecas.get(i).draw_inicio(g);
-			repaint();
-		}
+////		Desenhas as pecas na posicao inicial
+//		for(int i = 0; i < 16; i++) {
+//			arr_pecas.get(i).draw_inicio(g);
+//			repaint();
+//		}
 		
 	}
 
@@ -281,7 +292,26 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Color color;
+		Color color;		
+		
+//		TESTES---------------------------------------------
+		casas_iniciais[0] = 1;
+		casas_iniciais[1] = 4;
+		casas_iniciais[2] = 2;
+		casas_iniciais[3] = 3;
+		
+		
+		path[0][0] = 0; path[0][1] = 1;
+		
+		
+		podio[0][0] = 0; podio[0][1] = 10;
+		podio[1][0] = 2; podio[1][1] = 5;
+		podio[2][0] = 1; podio[2][1] = 8;
+		podio[3][0] = 3; podio[3][1] = 3;
+		
+		
+//		TESTES---------------------------------------------	
+		
 		
 		Graphics2D g2D = (Graphics2D) g;
 		
@@ -709,38 +739,65 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 		g.drawString(text, textX, textY);
 		
 		start_draw(g);
+		update_board(g);		
 	}
-	
+
 //	Funcoes get ----------------------------------------------
 
 
 //	Implementacao da interface Observador ----------------
+	public void notify(Observavel o) {
+		Object[] info = (Object[]) o.get();
+		
+		casas_iniciais 		= (int[]) 	info[0];
+		path 				= (int[][]) info[1];
+		reta_final_vermelho = (int[]) 	info[2];
+		reta_final_azul 	= (int[]) 	info[3];
+		reta_final_amarelo 	= (int[]) 	info[4];
+		reta_final_verde 	= (int[]) 	info[5];
+		podio 				= (int[][]) info[6];
+		
+		if(podio != null) exibePodio();
+		
+		repaint();
+	}
 	
-	
-//	Em ordem: [1 lugar, 2 lugar, 3 lugar, 4 lugar]
-	
-
-	
-	
-	private int[] 	casas_iniciais 		= new int[4];
-	private int[][] path 				= new int[52][2];
-	private int[] 	reta_final_vermelho = new int[6];
-	private int[] 	reta_final_azul 	= new int[6];
-	private int[] 	reta_final_amarelo 	= new int[6];
-	private int[] 	reta_final_verde 	= new int[6];
-	private int[]	podio 				= new int[4];
-	
-	
-//	Pinta as casas iniciais atualizadas de cada jogador
-	public void paint_casas_iniciais() {}
-	
-//	Pinta as casas do path atualizadas
-	public void paint_path() {
+//	Pinta as casas do tabuleiro atualizadas
+	public void update_board(Graphics g) {
+//		Quantos peoes de cada jogador ja foram pintados		
+		int[] count_peoes = {0, 0, 0, 0};
+		
+		paint_casas_iniciais(g, count_peoes);
+		paint_path(g, count_peoes);
+		paint_reta_final(g, count_peoes);	
+	}
+			
+	public void paint_casas_iniciais(Graphics g, int[] count_peoes) {
+		for(int k = 0; k < 4; k++) {
+			for(int i = 4*k + count_peoes[k]; i < 4*k + casas_iniciais[k]; i++) {
+				arr_pecas.get(i).draw_inicio(g);
+				count_peoes[k]++;
+				repaint();
+			}
+		}
+	}
+	public void paint_path(Graphics g, int[] count_peoes) {
+		int[] nova_coord = new int[2];
+		
 		for(int k = 0; k < 52; k++) {
+			nova_coord = coordsMapeadas[k];
+			
 			int[] casa = path[k];
 			if(casa[0] != -1) {
 				if(casa[1] != -1) {
 //					pinta base e secundario
+//					arr_pecas
+					arr_pecas.get(4*casa[0] + count_peoes[casa[0]]).update_coord(nova_coord[0], nova_coord[1]);
+					arr_pecas.get(4*casa[1] + count_peoes[casa[1]]).update_coord(nova_coord[0], nova_coord[1]);
+					
+					arr_pecas.get(4*casa[0] + count_peoes[casa[0]]).draw_abrigo_stack(g, k, arr_pecas.get(4*casa[1] + count_peoes[casa[1]]));
+					count_peoes[casa[0]]++;
+					count_peoes[casa[1]]++;
 				}
 				else {
 //					pinta base apenas
@@ -751,41 +808,19 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 			}
 		}
 	}
-	
-//	Pinta as casas das retas finais atualizadas de cada jogador
-	public void paint_reta_final(){}
-	
-//	Exibe o podio da partida
-	
-	
-//	
-//    public void notify(Observavel o) {
-//    	Object[] dados = (Object[]) o.get();
-//    	this.podio			=  (int[])		dados[3];
-//    	this.indice_array_cor =(int)		dados[4];
-//    	this.array_cor		=  (int)		dados[5];
-//    }
-//    
-//    
-//	public void notify(Observavel o) {
-//		obs = o;
-//		lob = (Object []) obs.get();
-//		id_jogador = (Integer) lob[3];
-//		id_peca = (Integer) lob[4];
-//		qual_array = (Integer) lob[5];
-//		index_do_array = (Integer) lob[6];
-//	}
-//	
-//	public void updateBoard() {}
-	
-//	public void notify(Object o){
-//		// Volta o dadosRolados para 'false'
-//		ViewAPI.getInstance().set_dadosRolados(false);
-//		ViewAPI.getInstance().get_currentPlayer();
-//	
-//		this.valor1 = o.get_valor1();
-//	}
-	
+	public void paint_reta_final(Graphics g, int[] count_peoes){}
+	public void exibePodio() {
+		String[] jogadores = {"vermelho", "azul", "amarelo", "verde"};
+		if(podio != null) {
+	        StringBuilder message = new StringBuilder("Podio:\n");
+	        for (int i = 0; i < podio.length; i++) {
+	        	int jog = podio[i][0];
+	        	System.out.println("\njog: "+ jog + "\n");
+	        	message.append("#").append(i + 1).append(": Player ").append(jogadores[jog]).append("  ---  ").append(podio[i][1]).append("\n");
+	        }
+	        JOptionPane.showMessageDialog(null, message.toString());
+		}
+	}
 
 //	Implementacao Singleton ------------------------------------	
 	public static LudoBoard getInstance() {

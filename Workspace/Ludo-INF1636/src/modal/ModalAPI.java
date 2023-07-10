@@ -27,19 +27,16 @@ public class ModalAPI {
 		}
 		c.add_peca(p);
 		p.change_casa(c);
-<<<<<<< HEAD:Workspace/Ludo-INF1636/src/modal/ModalAPI.java
+		
+
 		jogoInst.update_current_piece(jogoInst.get_player(p.get_cor()), p);
 		notify();
 	}
-	public void run_turn(boolean t) {
-		jogoInst.turn(t);
-=======
-		Jogo.getInstance().update_current_piece(Jogo.getInstance().get_player(p.get_cor()), p);
-	}
+	
 	public void run_turn() {
-		Jogo.getInstance().turn();
->>>>>>> a17d2e70308331790844cf6ded05e8b0063d1660:Workspace/Ludo-INF1636/src/modal/Modal_interface.java
+		jogoInst.turn();
 	}
+
 	public void set_turn(int t) {
 		jogoInst.set_turn(t);
 	}

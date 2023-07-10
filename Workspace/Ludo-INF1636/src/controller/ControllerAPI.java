@@ -55,7 +55,7 @@ public class ControllerAPI {
 		instance.nextPlayer();
 		
 		modalInst.set_turn(2);
-		modalInst.run_turn(true);
+		modalInst.run_turn();
 	}
 	
 	

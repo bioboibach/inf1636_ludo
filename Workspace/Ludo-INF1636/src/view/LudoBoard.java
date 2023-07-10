@@ -223,7 +223,13 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 
             }
         });
-               
+        
+        
+        
+//        TESTEEEEEEE---------------------------
+        
+
+//		update_board(g);
 	}
 
 	
@@ -289,10 +295,190 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 		}
 	}
 	
+	
+	
+	// Draw auxiliares
+	private void draw_base(Graphics g, Color color) {
+		int[][] rows = {{0, 6}, {0, 6}, {9, 15}, {9, 15} };
+		int[][] cols = {{0, 6}, {9, 15}, {9, 15}, {0, 6}};
+		int[][] vals = {{0, 0}, {432, 0}, {432, 432}, {0, 432}};
+	
+		for(int k = 0; k < 4; k++) {
+			for (int row = rows[k][0]; row < rows[k][1]; row++) { // Vermelho base
+				for (int col = cols[k][0]; col < cols[k][1]; col++) {
+					int x = col * SIZE;
+					int y = row * SIZE;
+					color = COLORS[k];
+					g.setColor(color);
+
+					// Desenha a célula
+					g.fillRect(x, y, SIZE, SIZE);
+
+					// Desenha a borda da célula
+					g.drawRect(x, y, SIZE, SIZE);
+
+				}
+			}
+		g.setColor(Color.BLACK);
+		g.drawRect(vals[k][0], vals[k][1], 6 * SIZE, 6 * SIZE);
+		}
+	}
+	private void draw_caminho_vitoria(Graphics g, Color color) {
+		
+		// Caminho vitoria Vermelho e Amarelo
+		for(int k = 0; k < 2; k++) {
+			int row = 7;
+			int[] cols = {1, 9};
+			int[] vals = {0, 2};
+			
+			for (int col = cols[k]; col < cols[k] + 5; col++) { 
+
+				int x = col * SIZE;
+				int y = row * SIZE;
+				color = COLORS[vals[k]];
+				g.setColor(color);
+
+				// Desenha a célula
+				g.fillRect(x, y, SIZE, SIZE);
+
+				// Desenha a borda da célula
+				g.setColor(Color.BLACK);
+				g.drawRect(x, y, SIZE, SIZE);
+			}
+		}
+		
+		// Caminho vitoria Azul e Verde
+		for(int k = 0; k < 2; k++) {
+			int col = 7;
+			int[] rows = {1, 9};
+			int[] vals = {1, 3};
+			
+			for (int row2 = rows[k]; row2 < rows[k] + 5; row2++) { // Caminho vitoria Amarelo
+
+				int x = col * SIZE;
+				int y = row2 * SIZE;
+				color = COLORS[vals[k]];
+				g.setColor(color);
+
+				// Desenha a célula
+				g.fillRect(x, y, SIZE, SIZE);
+
+				// Desenha a borda da célula
+
+				g.setColor(Color.BLACK);
+				g.drawRect(x, y, SIZE, SIZE);
+
+			}
+		}
+	}
+	private void draw_bolas_brancas_bases(Graphics g, Color color){
+		
+		Graphics2D g2d = (Graphics2D) g;
+		int circleSize = 50; // Tamanho do círculo
+
+		
+		int[][] circle = {{45, 45}, {45 + 435, 45}, {45, 45 + 435}, {45 + 435, 45 + 435}};
+		int[][] circle_v2 = {{45, 165}, {45 + 435, 165}, {45, 45 + 435 + 120}, {45 + 435, 45 + 435 + 120}};
+		
+		for(int k = 0; k < 4; k++) {
+			int circleX = circle[k][0]; // Posição x do círculo
+			int circleY = circle[k][1]; // Posição y do círculo
+
+			for (int i = 0; i < 5; i++) {
+				// Desenha o círculo preenchido
+				g2d.setColor(Color.WHITE);
+				g2d.fillOval(circleX, circleY, circleSize, circleSize);
+				// Desenha o contorno do círculo
+				g2d.setColor(Color.BLACK);
+				g2d.drawOval(circleX, circleY, circleSize, circleSize);
+
+				if (i == 1) {
+					circleX += 140;
+				}
+				if (i == 2) {
+					circleY += 120;
+				}
+
+				if (i == 3) {
+					circleX = circle_v2[k][0];
+					circleY = circle_v2[k][1];
+				}
+
+			}
+		}
+	}
+	private void draw_casa_inicio(Graphics g, Color color){
+		int[][] coords = {{1, 6}, {8, 1}, {13, 8}, {6, 13}};
+		
+		int col = 1;
+		int row = 6;
+		for(int k = 0; k < 4; k++) {
+			int x = coords[k][0] * SIZE;
+			int y = coords[k][1] * SIZE;
+			color = COLORS[k];
+			g.setColor(color);
+			g.fillRect(x, y, SIZE, SIZE);
+			g.setColor(Color.BLACK);
+			g.drawRect(x, y, SIZE, SIZE);
+		}
+		
+	}
+	private void draw_barreira(Graphics g, Color color) {
+		int[][] coords = {{1, 8}, {13, 6}, {6, 1}, {8, 13}};
+		
+		for(int k = 0; k < 4; k++) {
+			int col = coords[k][0];
+			int row = coords[k][1];
+			int x = col * SIZE;
+			int y = row * SIZE;
+			color = COLORS[5];
+			g.setColor(color);
+			g.fillRect(x, y, SIZE, SIZE);
+			g.setColor(Color.BLACK);
+			g.drawRect(x, y, SIZE, SIZE);
+		}
+	}
+	private void draw_triangulo_inicio(Graphics g, Color color) {
+		int[][][] coords = {
+				{{394,409,424}, {58,85,58}},
+				{{60,90,60}, {300,315,330}},
+				{{663,633,663}, {394,409,424}},
+				{{295,310,325}, {663,633,663}}		
+		};
+		for(int k = 0; k < 4; k++) {
+			int[] xs = coords[k][0];
+			int[] ys = coords[k][1];
+			g.setColor(Color.WHITE);
+			g.fillPolygon(xs,ys,3);
+			g.setColor(Color.BLACK);
+			g.drawPolygon(xs,ys,3);
+		}
+	}
+	private void draw_triangulo_meio(Graphics g, Color color) {
+		int[][][] coords = {
+				{{287,360,287}, {287,356,432}}, // red
+				{{287,360,432}, {287,356,287}}, // green
+				{{432,360,432}, {432,356,287}}, // yellow
+				{{287,360,432}, {432,356,432}} 	// blue
+		};
+		
+		for(int k = 0; k < 4; k++) {
+			int[] xs = coords[k][0];
+			int[] ys = coords[k][1];
+			
+			g.setColor(COLORS[k]);
+			g.fillPolygon(xs,ys,3);
+			g.setColor(Color.BLACK);
+			g.drawPolygon(xs,ys,3);
+		}
+	}
+	
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Color color;		
+		Color color = null;		
+		
 		
 //		TESTES---------------------------------------------
 		casas_iniciais[0] = 1;
@@ -301,7 +487,7 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 		casas_iniciais[3] = 3;
 		
 		
-		path[0][0] = 0; path[0][1] = 1;
+		path[3][0] = 1; path[3][1] = -1;
 		
 		
 		podio[0][0] = 0; podio[0][1] = 10;
@@ -322,7 +508,6 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 		g2D.drawImage(i[die_val-1], 915, 375, null);
 		
 		
-		
 		// Desenha o tabuleiro
 		for (int row = 0; row < HEIGHT; row++) { // Branco
 			for (int col = 0; col < WIDTH; col++) {
@@ -341,394 +526,16 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 				g.drawRect(x, y, SIZE, SIZE);
 			}
 		}
-
-		for (int row = 0; row < 6; row++) { // Vermelho base
-			for (int col = 0; col < 6; col++) {
-				int x = col * SIZE;
-				int y = row * SIZE;
-				color = COLORS[0];
-				g.setColor(color);
-
-				// Desenha a célula
-				g.fillRect(x, y, SIZE, SIZE);
-
-				// Desenha a borda da célula
-				g.drawRect(x, y, SIZE, SIZE);
-
-			}
-		}
-		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, 6 * SIZE, 6 * SIZE);
-
-		for (int row = 0; row < 6; row++) { // Verde base
-			for (int col = 9; col < 15; col++) {
-				int x = col * SIZE;
-				int y = row * SIZE;
-				color = COLORS[1];
-				g.setColor(color);
-				// Desenha a célula
-				g.fillRect(x, y, SIZE, SIZE);
-				// Desenha a borda da célula
-				g.drawRect(x, y, SIZE, SIZE);
-			}
-
-		}
-
-		g.setColor(Color.BLACK);
-		g.drawRect(432, 0, 6 * SIZE, 6 * SIZE);
-
-		for (int row = 9; row < 15; row++) { // Azul base
-			for (int col = 0; col < 6; col++) {
-				int x = col * SIZE;
-				int y = row * SIZE;
-				color = COLORS[3];
-				g.setColor(color);
-
-				// Desenha a célula
-				g.fillRect(x, y, SIZE, SIZE);
-
-				// Desenha a borda da célula
-				g.drawRect(x, y, SIZE, SIZE);
-
-			}
-		}
-		g.setColor(Color.BLACK);
-		g.drawRect(0, 432, 6 * SIZE, 6 * SIZE);
-
-		for (int row = 9; row < 15; row++) { // Amarelo base
-			for (int col = 9; col < 15; col++) {
-				int x = col * SIZE;
-				int y = row * SIZE;
-				color = COLORS[2];
-				g.setColor(color);
-
-				// Desenha a célula
-				g.fillRect(x, y, SIZE, SIZE);
-
-				// Desenha a borda da célula
-				g.drawRect(x, y, SIZE, SIZE);
-
-			}
-		}
-
-		g.setColor(Color.BLACK);
-		g.drawRect(432, 432, 6 * SIZE, 6 * SIZE);
-
-		int row = 7;
-		for (int col = 1; col < 6; col++) { // Caminho vitoria Vermelho
-
-			int x = col * SIZE;
-			int y = row * SIZE;
-			color = COLORS[0];
-			g.setColor(color);
-
-			// Desenha a célula
-			g.fillRect(x, y, SIZE, SIZE);
-
-			// Desenha a borda da célula
-			g.setColor(Color.BLACK);
-			g.drawRect(x, y, SIZE, SIZE);
-		}
-
-		for (int col = 9; col < 14; col++) { // Caminho vitoria Amarelo
-			int x = col * SIZE;
-			int y = row * SIZE;
-			color = COLORS[2];
-			g.setColor(color);
-
-			// Desenha a célula
-			g.fillRect(x, y, SIZE, SIZE);
-
-			// Desenha a borda da célula
-
-			g.setColor(Color.BLACK);
-			g.drawRect(x, y, SIZE, SIZE);
-
-		}
-		int col = 7;
-
-		for (int row2 = 1; row2 < 6; row2++) { // Caminho vitoria Amarelo
-
-			int x = col * SIZE;
-			int y = row2 * SIZE;
-			color = COLORS[1];
-			g.setColor(color);
-
-			// Desenha a célula
-			g.fillRect(x, y, SIZE, SIZE);
-
-			// Desenha a borda da célula
-
-			g.setColor(Color.BLACK);
-			g.drawRect(x, y, SIZE, SIZE);
-
-		}
-		for (int row2 = 9; row2 < 14; row2++) { // Caminho vitoria Azul
-
-			int x = col * SIZE;
-			int y = row2 * SIZE;
-			color = COLORS[3];
-			g.setColor(color);
-
-			// Desenha a célula
-			g.fillRect(x, y, SIZE, SIZE);
-
-			// Desenha a borda da célula
-
-			g.setColor(Color.BLACK);
-			g.drawRect(x, y, SIZE, SIZE);
-
-		}
-		// Bolas base vermelho
-		Graphics2D g2d = (Graphics2D) g;
-		int circleX = 45; // Posição x do círculo
-		int circleY = 45; // Posição y do círculo
-		int circleSize = 50; // Tamanho do círculo
-
-		for (int i = 0; i < 5; i++) {
-			// Desenha o círculo preenchido
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(circleX, circleY, circleSize, circleSize);
-			// Desenha o contorno do círculo
-			g2d.setColor(Color.BLACK);
-			g2d.drawOval(circleX, circleY, circleSize, circleSize);
-
-			if (i == 1) {
-				circleX += 140;
-			}
-			if (i == 2) {
-				circleY += 120;
-			}
-
-			if (i == 3) {
-				circleX = 45;
-				circleY = 165;
-			}
-
-		}
-
-		// Bolas base verde
-		circleX = 45 + 435; // Posição x do círculo
-		circleY = 45; // Posição y do círculo
-		for (int i = 0; i < 5; i++) {
-			// Desenha o círculo preenchido
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(circleX, circleY, circleSize, circleSize);
-			// Desenha o contorno do círculo
-			g2d.setColor(Color.BLACK);
-			g2d.drawOval(circleX, circleY, circleSize, circleSize);
-
-			if (i == 1) {
-				circleX += 140;
-			}
-			if (i == 2) {
-				circleY += 120;
-			}
-
-			if (i == 3) {
-				circleX = 480;
-				circleY = 165;
-			}
-
-		}
-		// Bolas base verde
-		circleX = 45; // Posição x do círculo
-		circleY = 45 + 435; // Posição y do círculo
-		for (int i = 0; i < 5; i++) {
-			// Desenha o círculo preenchido
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(circleX, circleY, circleSize, circleSize);
-			// Desenha o contorno do círculo
-			g2d.setColor(Color.BLACK);
-			g2d.drawOval(circleX, circleY, circleSize, circleSize);
-
-			if (i == 1) {
-				circleX += 140;
-			}
-			if (i == 2) {
-				circleY += 120;
-			}
-
-			if (i == 3) {
-				circleX = 45;
-				circleY = 480 + 120;
-			}
-
-		}
-		// Bolas base amarelo
-		circleX = 45 + 435; // Posição x do círculo
-		circleY = 45 + 435; // Posição y do círculo
-		for (int i = 0; i < 5; i++) {
-			// Desenha o círculo preenchido
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(circleX, circleY, circleSize, circleSize);
-			// Desenha o contorno do círculo
-			g2d.setColor(Color.BLACK);
-			g2d.drawOval(circleX, circleY, circleSize, circleSize);
-
-			if (i == 1) {
-				circleX += 140;
-			}
-			if (i == 2) {
-				circleY += 120;
-			}
-
-			if (i == 3) {
-				circleX = 480;
-				circleY = 480 + 120;
-			}
-
-		}
-
-		// Casa inicio vermelho
-		col = 1;
-		row = 6;
-		int x = col * SIZE;
-		int y = row * SIZE;
-		color = COLORS[0];
-		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, SIZE, SIZE);
-
-		// Barreira Esq
-		col = 1;
-		row = 8;
-		x = col * SIZE;
-		y = row * SIZE;
-		color = COLORS[5];
-		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, SIZE, SIZE);
-
-		// Casa inicio amarelo
-		col = 13;
-		row = 8;
-		x = col * SIZE;
-		y = row * SIZE;
-		color = COLORS[2];
-		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, SIZE, SIZE);
-
-		// Barreira Dir
-		col = 13;
-		row = 6;
-		x = col * SIZE;
-		y = row * SIZE;
-		color = COLORS[5];
-		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, SIZE, SIZE);
-
-		// Casa inicio verde
-		col = 8;
-		row = 1;
-		x = col * SIZE;
-		y = row * SIZE;
-		color = COLORS[1];
-		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, SIZE, SIZE);
-		// Barreira Cima
-		col = 6;
-		row = 1;
-		x = col * SIZE;
-		y = row * SIZE;
-		color = COLORS[5];
-		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, SIZE, SIZE);
-		// Casa inicio azul
-		col = 6;
-		row = 13;
-		x = col * SIZE;
-		y = row * SIZE;
-		color = COLORS[3];
-		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, SIZE, SIZE);
-		// Barreira Baixo
-		col = 8;
-		row = 13;
-		x = col * SIZE;
-		y = row * SIZE;
-		color = COLORS[5];
-		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, SIZE, SIZE);
 		
-		
-		// Triangulos casa inicio verde
-		int[] xs = {394,409,424};
-		int[] ys = {58,85,58};
-		g.setColor(Color.WHITE);
-		g.fillPolygon(xs,ys,3);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(xs,ys,3);
-		
-		// Triangulos casa inicio vermelho
-		int[] xs2 = {60,90,60};
-		int[] ys2 = {300,315,330};
-		g.setColor(Color.WHITE);
-		g.fillPolygon(xs2,ys2,3);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(xs2,ys2,3);
-		
-		// Triangulos casa inicio amarelo
-		int[] xs3 = {663,633,663};
-		int[] ys3 = {394,409,424};
-		g.setColor(Color.WHITE);
-		g.fillPolygon(xs3,ys3,3);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(xs3,ys3,3);
-		
-		// Triangulos casa inicio azul
-		int[] xs4 = {295,310,325};
-		int[] ys4 = {663,633,663};
-		g.setColor(Color.WHITE);
-		g.fillPolygon(xs4,ys4,3);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(xs4,ys4,3);
-		
-		//Triangulo meio verde
-		int[] xs5 = {287,360,432};
-		int[] ys5 = {287,356,287};
-		g.setColor(Color.GREEN);
-		g.fillPolygon(xs5,ys5,3);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(xs5,ys5,3);
-		
-		//Triangulo meio azul
-		int[] xs6 = {287,360,432};
-		int[] ys6 = {432,356,432};
-		g.setColor(Color.BLUE);
-		g.fillPolygon(xs6,ys6,3);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(xs6,ys6,3);
-		
-		//Triangulo meio vermelho
-		int[] xs7 = {287,360,287};
-		int[] ys7 = {287,356,432};
-		g.setColor(Color.RED);
-		g.fillPolygon(xs7,ys7,3);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(xs7,ys7,3);
+		// Executando as auxiliares		
+		draw_base(g, color);
+		draw_caminho_vitoria(g, color);
+		draw_bolas_brancas_bases(g, color);
+		draw_casa_inicio(g, color);
+		draw_barreira(g, color);
+		draw_triangulo_inicio(g, color);
+		draw_triangulo_meio(g, color);
 
-		//Triangulo meio amarelo
-		int[] xs8 = {432,360,432};
-		int[] ys8 = {432,356,287};
-		g.setColor(Color.YELLOW);
-		g.fillPolygon(xs8,ys8,3);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(xs8,ys8,3);
 
 		Font font = new Font("Arial", Font.BOLD, 32);
 		g.setFont(font);
@@ -739,7 +546,6 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 		g.drawString(text, textX, textY);
 		
 		start_draw(g);
-		update_board(g);		
 	}
 
 //	Funcoes get ----------------------------------------------
@@ -777,7 +583,7 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 			for(int i = 4*k + count_peoes[k]; i < 4*k + casas_iniciais[k]; i++) {
 				arr_pecas.get(i).draw_inicio(g);
 				count_peoes[k]++;
-				repaint();
+//				repaint();
 			}
 		}
 	}
@@ -790,21 +596,37 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 			int[] casa = path[k];
 			if(casa[0] != -1) {
 				if(casa[1] != -1) {
-//					pinta base e secundario
-//					arr_pecas
+//					2 peoes na casa
 					arr_pecas.get(4*casa[0] + count_peoes[casa[0]]).update_coord(nova_coord[0], nova_coord[1]);
 					arr_pecas.get(4*casa[1] + count_peoes[casa[1]]).update_coord(nova_coord[0], nova_coord[1]);
 					
-					arr_pecas.get(4*casa[0] + count_peoes[casa[0]]).draw_abrigo_stack(g, k, arr_pecas.get(4*casa[1] + count_peoes[casa[1]]));
+					if(casa[0] == casa[1]) {
+						if(1 == 2) {
+//							Peoes iguais e a casa eh um abrigo
+							arr_pecas.get(4*casa[0] + count_peoes[casa[0]]).draw_abrigo_stack(g, k, arr_pecas.get(4*casa[1] + count_peoes[casa[1]]));						
+						}
+						else {
+//							Peoes iguais e a casa eh nao eh um abrigo
+						}
+						
+					}
+					else {
+//						Peoes diferentes (soh pode ser abrigo porque conflitos ja foram verificados)
+						arr_pecas.get(4*casa[0] + count_peoes[casa[0]]).draw_abrigo_stack(g, k, arr_pecas.get(4*casa[1] + count_peoes[casa[1]]));						
+					}
 					count_peoes[casa[0]]++;
 					count_peoes[casa[1]]++;
 				}
 				else {
-//					pinta base apenas
+//					Um peao na casa
+					System.out.println("count_peoes[casa[0]] = " + count_peoes[casa[0]] + "\n");
+					arr_pecas.get(4*casa[0] + count_peoes[casa[0]]).update_coord(nova_coord[0], nova_coord[1]);
+					arr_pecas.get(4*casa[0] + count_peoes[casa[0]]).draw_peca(g, k, -1);
+					count_peoes[casa[0]]++;
 				}
 			}
 			else {
-//				pinta nada
+//				Nenhum peao na casa
 			}
 		}
 	}

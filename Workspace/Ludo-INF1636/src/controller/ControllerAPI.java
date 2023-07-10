@@ -50,11 +50,10 @@ public class ControllerAPI {
 			list_id = 1;	// casa inicial
 		}
 		
-//		modalInst.set_positions(currentPlayer, index, 1);
+		modalInst.set_positions(currentPlayer, 1, index, list_id);
 		
 		instance.nextPlayer();
 		
-		modalInst.set_turn(2);
 		modalInst.run_turn();
 	}
 	

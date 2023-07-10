@@ -58,7 +58,6 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 
 	int player;
 	int val_dado;
-	int res; 
 	
 	int id_jogador;
 	int id_peca;
@@ -716,19 +715,68 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 
 
 //	Implementacao da interface Observador ----------------
-	public void notify(Observavel o) {
-		obs = o;
-		lob = (Object []) obs.get();
-		player = (Integer) lob[0];
-		val_dado = (Integer) lob[1];
-		res = (Integer) lob[2];
-		id_jogador = (Integer) lob[3];
-		id_peca = (Integer) lob[4];
-		qual_array = (Integer) lob[5];
-		index_do_array = (Integer) lob[6];
+	
+	
+//	Em ordem: [1 lugar, 2 lugar, 3 lugar, 4 lugar]
+	
+
+	
+	
+	private int[] 	casas_iniciais 		= new int[4];
+	private int[][] path 				= new int[52][2];
+	private int[] 	reta_final_vermelho = new int[6];
+	private int[] 	reta_final_azul 	= new int[6];
+	private int[] 	reta_final_amarelo 	= new int[6];
+	private int[] 	reta_final_verde 	= new int[6];
+	private int[]	podio 				= new int[4];
+	
+	
+//	Pinta as casas iniciais atualizadas de cada jogador
+	public void paint_casas_iniciais() {}
+	
+//	Pinta as casas do path atualizadas
+	public void paint_path() {
+		for(int k = 0; k < 52; k++) {
+			int[] casa = path[k];
+			if(casa[0] != -1) {
+				if(casa[1] != -1) {
+//					pinta base e secundario
+				}
+				else {
+//					pinta base apenas
+				}
+			}
+			else {
+//				pinta nada
+			}
+		}
 	}
 	
-	public void updateBoard() {}
+//	Pinta as casas das retas finais atualizadas de cada jogador
+	public void paint_reta_final(){}
+	
+//	Exibe o podio da partida
+	
+	
+//	
+//    public void notify(Observavel o) {
+//    	Object[] dados = (Object[]) o.get();
+//    	this.podio			=  (int[])		dados[3];
+//    	this.indice_array_cor =(int)		dados[4];
+//    	this.array_cor		=  (int)		dados[5];
+//    }
+//    
+//    
+//	public void notify(Observavel o) {
+//		obs = o;
+//		lob = (Object []) obs.get();
+//		id_jogador = (Integer) lob[3];
+//		id_peca = (Integer) lob[4];
+//		qual_array = (Integer) lob[5];
+//		index_do_array = (Integer) lob[6];
+//	}
+//	
+//	public void updateBoard() {}
 	
 //	public void notify(Object o){
 //		// Volta o dadosRolados para 'false'
@@ -746,7 +794,6 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 		}
 		return instance;
 	}
-
 }
 
 

@@ -173,22 +173,22 @@ class Tabuleiro {
 	}
 
 //	========================= TODO remove
-	protected ArrayList<Casa> get_ini(){
+	protected ArrayList<Casa> get_casas_iniciais(){
 		return casas_iniciais;
 	}	
 	protected ArrayList<Casa> get_path(){
 		return path;
 	}
-	protected ArrayList<Casa> get_r1(){
+	protected ArrayList<Casa> get_rf_vermelho(){
 		return reta_final_vermelho;
 	}
-	protected ArrayList<Casa> get_r2(){
+	protected ArrayList<Casa> get_rf_verde(){
 		return reta_final_verde;
 	}
-	protected ArrayList<Casa> get_r3(){
+	protected ArrayList<Casa> get_rf_amarelo(){
 		return reta_final_amarelo;
 	}
-	protected ArrayList<Casa> get_r4(){
+	protected ArrayList<Casa> get_rf_azul(){
 		return reta_final_azul;
 	}
 //	=======================================
@@ -252,4 +252,83 @@ class Tabuleiro {
 			return i;
 		}
 	}
+
+//	Metodos get para o Observador -----------------------------------
+	protected int[] getObs_casas_iniciais(){
+//		obs_casas_iniciais[0] -> qtd de peoes nas casas iniciais do vermelho...
+		int[] obs_casas_iniciais = new int[4];
+		
+		for (int i = 0; i < casas_iniciais.size(); i++) {
+    	    Casa casa = casas_iniciais.get(i);
+    	    
+    	    obs_casas_iniciais[i] = casa.get_num_pecas();    	    
+		}
+		return obs_casas_iniciais;
+	}	
+	protected int[][] getObs_path(){
+//    	Cada casa de path eh representada por um int[2]
+//    	Obs: int[x][0] -> peao principal (fica embaixo no abrigo)
+//    	Obs: int[x][1] -> peao secundario (fica em cima no abrigo)
+    	int[][] obs_path = new int[52][2];
+    	
+    	for (int i = 0; i < path.size(); i++) {
+    	    Casa casa = path.get(i);
+    	    
+    	    switch(casa.get_num_pecas()) {
+    	    case 0:
+    	    	obs_path[i][0] = -1;
+    	    	obs_path[i][1] = -1;
+    	    	break;
+    	    case 1:
+    	    	obs_path[i][0] = casa.get_peca(0).get_cor();
+    	    	break;
+    	    case 2:
+    	    	obs_path[i][0] = casa.get_peca(0).get_cor();
+    	    	obs_path[i][1] = casa.get_peca(1).get_cor();
+    	    	break;
+    	    }
+    	}
+    	
+    	return obs_path;
+
+	}
+	
+	protected int[] getObs_rf_vermelho(){
+//		obs_rf_vermelho[0] -> qtd de peoes na primeira casa da reta final do vermelho
+		int[] obs_rf_vermelho = new int[6];
+		for (int i = 0; i < reta_final_vermelho.size(); i++) {
+    	    Casa casa = reta_final_vermelho.get(i);
+    	    obs_rf_vermelho[i] = casa.get_num_pecas();
+		}
+		return obs_rf_vermelho;
+	}
+	protected int[] getObs_rf_verde(){
+//		obs_rf_verde[0] -> qtd de peoes na primeira casa da reta final do verde
+		int[] obs_rf_verde = new int[6];
+		for (int i = 0; i < reta_final_verde.size(); i++) {
+    	    Casa casa = reta_final_verde.get(i);
+    	    obs_rf_verde[i] = casa.get_num_pecas();
+		}
+		return obs_rf_verde;
+	}
+	protected int[] getObs_rf_amarelo(){
+//		obs_rf_amarelo[0] -> qtd de peoes na primeira casa da reta final do amarelo
+		int[] obs_rf_amarelo = new int[6];
+		for (int i = 0; i < reta_final_amarelo.size(); i++) {
+    	    Casa casa = reta_final_amarelo.get(i);
+    	    obs_rf_amarelo[i] = casa.get_num_pecas();
+		}
+		return obs_rf_amarelo;
+	}
+	protected int[] getObs_rf_azul(){
+//		obs_rf_azul[0] -> qtd de peoes na primeira casa da reta final do azul
+		int[] obs_rf_azul = new int[6];
+		for (int i = 0; i < reta_final_amarelo.size(); i++) {
+    	    Casa casa = reta_final_amarelo.get(i);
+    	    obs_rf_azul[i] = casa.get_num_pecas();
+		}
+		return obs_rf_azul;
+	}
+
+
 }

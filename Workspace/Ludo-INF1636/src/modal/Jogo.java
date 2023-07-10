@@ -239,11 +239,11 @@ class Jogo implements Observavel {
 //	TODO remover==============================================
 	protected void print_map() {
 		ArrayList<Casa> map = t.get_path();
-		ArrayList<Casa> r1 = t.get_r1();
-		ArrayList<Casa> r2= t.get_r2();
-		ArrayList<Casa> r3 = t.get_r3();
-		ArrayList<Casa> r4 = t.get_r4();
-		ArrayList<Casa> ini = t.get_ini();
+		ArrayList<Casa> r1 = t.get_rf_vermelho();
+		ArrayList<Casa> r2= t.get_rf_verde();
+		ArrayList<Casa> r3 = t.get_rf_amarelo();
+		ArrayList<Casa> r4 = t.get_rf_azul();
+		ArrayList<Casa> ini = t.get_casas_iniciais();
 		
 		for (int i = 0; i < 4; i++) {
 		System.out.print(ini.get(i).get_num_pecas() + "\t\t");
@@ -276,19 +276,25 @@ class Jogo implements Observavel {
         	li.next().notify(this);
         }
     }
+
+    
     public Object[] get() {
-    	Object dados[] = new Object[6];
-    	dados[0] = Integer.valueOf(current_peca);
-    	dados[1] = Integer.valueOf(current_player);
-    	dados[2] = Integer.valueOf(current_dado);
-    	dados[3] = define_podio();
-    	dados[4] = Integer.valueOf(Tabuleiro.getInstance().get_index_current_casa(players[current_player].get_peca(current_peca))[0]);
-    	dados[5] = Integer.valueOf(Tabuleiro.getInstance().get_index_current_casa(players[current_player].get_peca(current_peca))[1]);
-    	return dados;
+    	Tabuleiro tabuleiro = Tabuleiro.getInstance();
+    	Object info[] = new Object[7];
+    	
+    	info[0] = tabuleiro.getObs_casas_iniciais();	// int[4] 		-> qtd de peoes nas casas iniciais de cada jogador
+    	info[1] = tabuleiro.getObs_path();				// int[52][2] 	-> peoes que ocupam cada casa e qual eh o principal (2 por casa)
+    	info[2] = tabuleiro.getObs_rf_vermelho();		// int[6]		-> qtd de peoes em cada casa da reta fina do vermelho
+    	info[3] = tabuleiro.getObs_rf_verde();			// int[6]		-> qtd de peoes em cada casa da reta fina do verde
+    	info[4] = tabuleiro.getObs_rf_amarelo();		// int[6]		-> qtd de peoes em cada casa da reta fina do amarelo
+    	info[5] = tabuleiro.getObs_rf_azul();			// int[6]		-> qtd de peoes em cada casa da reta fina do azul
+    	info[6] = define_podio();						// int[4]		-> [1 lugar, 2 lugar, 3 lugar, 4 lugar]
+    	
+    	return info;
     }
     
 //	Singleton ------------------------------------------
-	protected static Jogo getInstance() {
+   	protected static Jogo getInstance() {
 		if (instance == null) {
 			instance = new Jogo();
 		}

@@ -5,14 +5,11 @@ import java.util.ListIterator;
 
 import javax.swing.JFrame;
 
-import controller.Observavel;
+import controller.ObservadoIF;
 
-public class Frame extends JFrame implements Observavel {
+public class Frame extends JFrame{
 
 	private static final long serialVersionUID = 1L;
-
-	
-	List<Observador> observers = new ArrayList<Observador>();
 	
 	public Frame()  {
         JFrame frame = new JFrame("Ludo Board");
@@ -27,21 +24,4 @@ public class Frame extends JFrame implements Observavel {
         frame.setVisible(true);
         
 	}
-	public void addObservador(Observador o) {
-		observers.add(o);
-	}
-	public void removeObservador(Observador o) {
-		observers.remove(o);
-	}
-    public void atualizaObservadores() {
-        ListIterator<Observador> li = observers.listIterator();
-        while(li.hasNext()) {
-        	li.next().notify(this);
-        	repaint();
-        }
-    }
-    public Object[] get() {
-    	Object dados[] = new Object[6];
-    	return dados;
-    }
 }

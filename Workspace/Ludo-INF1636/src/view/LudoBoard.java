@@ -13,7 +13,7 @@ import javax.swing.*;
 
 import javax.swing.JComboBox;
 
-public class LudoBoard extends JPanel implements BoardSubscriber{
+public class LudoBoard extends JPanel implements ObservadorIF{
 	
 	private static LudoBoard instance;
 	private ControllerAPI control = ControllerAPI.getInstance(); 
@@ -37,11 +37,11 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 	
 //	Posicionamento
 	// Coordenadas do tabuleiros convertidas para a casa correspondente
-	int[][] coordsMapeadas = new int[52][2];				
+	int[][] coordsMapeadas 			= new int[52][2];				
 	int[][] coordsMapeadas_vermelho = new int[6][2];		
-	int[][] coordsMapeadas_azul = new int[6][2];			
-	int[][] coordsMapeadas_amarelo = new int[6][2];			
-	int[][] coordsMapeadas_verde = new int[6][2];		
+	int[][] coordsMapeadas_azul 	= new int[6][2];			
+	int[][] coordsMapeadas_amarelo 	= new int[6][2];			
+	int[][] coordsMapeadas_verde 	= new int[6][2];		
 	
 //	Posicao do click
 	private int coord_x;
@@ -50,19 +50,8 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 	private int casa_y;
 	
 	Image i[] = new Image[6];
-	int die_val = 1;
+	int die_val = 1;			// valor do dado
 	int turn = 0;
-	
-	Observavel obs;
-	Object lob[];
-
-	int player;
-	int val_dado;
-	
-	int id_jogador;
-	int id_peca;
-	int qual_array;
-	int index_do_array;
 	
 	
 //	Atributos de referencia para o paint
@@ -552,7 +541,7 @@ public class LudoBoard extends JPanel implements BoardSubscriber{
 
 
 //	Implementacao da interface Observador ----------------
-	public void notify(Observavel o) {
+	public void notify(ObservadoIF o) {
 		Object[] info = (Object[]) o.get();
 		
 		casas_iniciais 		= (int[]) 	info[0];

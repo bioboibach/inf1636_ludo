@@ -1,11 +1,13 @@
 package modal;
 import java.util.*;
-import controller.Observavel;
-import view.Observador;
 
-class Jogo implements Observavel {    
+import controller.ObservadoIF;
+import controller.ObservadorIF;
+import view.LudoBoard;
+
+class Jogo implements ObservadoIF {    
 	private static Jogo instance;
-	List<Observador> observers = new ArrayList<Observador>();
+	List<ObservadorIF> observadores = new ArrayList<ObservadorIF>();
 
 	private Player players[] = new Player[4];
 	private Tabuleiro t;
@@ -19,7 +21,7 @@ class Jogo implements Observavel {
 	private int 	qtd_6_rolados 		= 0;
 	
 	protected Jogo() {	
-		this.addObservador(Observador.getInstance());
+		this.addObservador(LudoBoard.getInstance());
 	}
 	
 //	Inicializacao --------------------------------------
@@ -263,21 +265,21 @@ class Jogo implements Observavel {
 	}
 //	=============================================================
 	
-//	Implementacao da interface Observer ----------------
-	public void addObservador(Observador o) {
-		observers.add(o);
+//	Implementacao da interface ObservadoIF ----------------
+	
+	public void addObservador(ObservadorIF o) {
+		observadores.add(o);
 	}
-	public void removeObservador(Observador o) {
-		observers.remove(o);
+	public void removeObservador(ObservadorIF o) {
+		observadores.remove(o);
 	}
-    public void atualizaObservadores() {
-        ListIterator<Observador> li = observers.listIterator();
-        while(li.hasNext()) {
-        	li.next().notify(this);
-        }
-    }
+	public void atualizaObservadores() {
+		ListIterator<ObservadorIF> li = observadores.listIterator();
+		while(li.hasNext()) {
+			li.next().notify(this);
+		}
+	}
 
-    
     public Object[] get() {
     	Tabuleiro tabuleiro = Tabuleiro.getInstance();
     	Object info[] = new Object[7];

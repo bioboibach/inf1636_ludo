@@ -36,14 +36,18 @@ public class Peca {
 
 	
 	protected Peca(Graphics g, int id, int cor){
+		start_arr_coordInicial();
+		start_path_mapeado(); 		// Inicializa as casas do path
+		start_final_path_mapeado(); // Inicializa as casas do final_path
+		
 		this.id = id;
 		this.cor = cor;
 		x = coordInicial[4*cor + id][0];
 		y = coordInicial[4*cor + id][1];
 		tipo = 0;
-		start_arr_coordInicial();
-		start_path_mapeado(); 		// Inicializa as casas do path
-		start_final_path_mapeado(); // Inicializa as casas do final_path
+	}
+	
+	protected void draw(Graphics g) {
 		
 	}
 	

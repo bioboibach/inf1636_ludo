@@ -4,6 +4,7 @@ import java.util.*;
 import controller.ObservadoIF;
 import controller.ObservadorIF;
 import view.LudoBoard;
+import view.ViewAPI;
 
 class Jogo implements ObservadoIF {    
 	private static Jogo instance;
@@ -20,8 +21,8 @@ class Jogo implements ObservadoIF {
 	private int 	current_dado 		= 5;
 	private int 	qtd_6_rolados 		= 0;
 	
-	protected Jogo() {	
-		this.addObservador(LudoBoard.getInstance());
+	protected Jogo() {
+		this.addObservador(ViewAPI.getInstance());
 	}
 	
 //	Inicializacao --------------------------------------
@@ -296,7 +297,7 @@ class Jogo implements ObservadoIF {
     }
     
 //	Singleton ------------------------------------------
-   	protected static Jogo getInstance() {
+   	public static Jogo getInstance() {
 		if (instance == null) {
 			instance = new Jogo();
 		}

@@ -23,11 +23,11 @@ public class ControllerAPI {
 	}
 	
 	public void new_game(){
-		ModalAPI.getInstance().new_game();
+		modalInst.new_game();
 	}
 	
 	public int roll() {
-		return ModalAPI.getInstance().roll();
+		return modalInst.roll();
 	}
 	
 	public void executaTurno(int indice_path, int indice_final_path, int die_val){

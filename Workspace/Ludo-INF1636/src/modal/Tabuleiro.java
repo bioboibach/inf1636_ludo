@@ -316,6 +316,7 @@ class Tabuleiro {
 		int[] obs_rf_amarelo = new int[6];
 		for (int i = 0; i < reta_final_amarelo.size(); i++) {
     	    Casa casa = reta_final_amarelo.get(i);
+    	    
     	    obs_rf_amarelo[i] = casa.get_num_pecas();
 		}
 		return obs_rf_amarelo;
@@ -325,7 +326,8 @@ class Tabuleiro {
 		int[] obs_rf_azul = new int[6];
 		for (int i = 0; i < reta_final_amarelo.size(); i++) {
     	    Casa casa = reta_final_amarelo.get(i);
-    	    obs_rf_azul[i] = casa.get_num_pecas();
+    	    
+	    	obs_rf_azul[i] = casa.get_num_pecas();
 		}
 		return obs_rf_azul;
 	}

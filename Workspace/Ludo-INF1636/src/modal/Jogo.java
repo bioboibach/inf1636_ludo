@@ -163,6 +163,7 @@ class Jogo implements ObservadoIF {
 	}
 	protected void next_turn() {
 		current_player = (current_player + 1)%4;
+		turn();
 	}
 	protected void set_dado(int t) {
 		current_dado = t;
@@ -283,7 +284,7 @@ class Jogo implements ObservadoIF {
 
     public Object[] get() {
     	Tabuleiro tabuleiro = Tabuleiro.getInstance();
-    	Object info[] = new Object[7];
+    	Object info[] = new Object[8];
     	
     	info[0] = tabuleiro.getObs_casas_iniciais();	// int[4] 		-> qtd de peoes nas casas iniciais de cada jogador
     	info[1] = tabuleiro.getObs_path();				// int[52][2] 	-> peoes que ocupam cada casa e qual eh o principal (2 por casa)
@@ -292,6 +293,7 @@ class Jogo implements ObservadoIF {
     	info[4] = tabuleiro.getObs_rf_amarelo();		// int[6]		-> qtd de peoes em cada casa da reta fina do amarelo
     	info[5] = tabuleiro.getObs_rf_azul();			// int[6]		-> qtd de peoes em cada casa da reta fina do azul
     	info[6] = define_podio();						// int[4]		-> [1 lugar, 2 lugar, 3 lugar, 4 lugar]
+    	info[7] = get_turn();
     	
     	return info;
     }

@@ -83,7 +83,7 @@ public class LudoBoard extends JPanel{
 //		podio[3][0] = 3; podio[3][1] = 3;
 		
 		//Turno
-		turno  = 2;
+//		turno  = 2;
 	}
 //	------------------------------------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ public class LudoBoard extends JPanel{
 		
 		initialize_boardInfo();
 		
-		teste(); // ---------------------------------------------------------------------------------->>>>>> TIRAR <<<<<<<<
+//		teste(); // ---------------------------------------------------------------------------------->>>>>> TIRAR <<<<<<<<
 
 		setPreferredSize(new Dimension(1200, 700)); // Tamanho da janela
 		setLayout(null);

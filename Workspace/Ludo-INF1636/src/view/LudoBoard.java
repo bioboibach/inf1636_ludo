@@ -13,7 +13,6 @@ import javax.swing.*;
 
 public class LudoBoard extends JPanel{	
 	private static 	LudoBoard 		instance;
-	private static 	ViewAPI 		viewAPI = ViewAPI.getInstance();
 	private 		Desenho 		desenho = Desenho.getInstance();
 	private 		Menu 			menu 	= Menu.getInstance();
 	private 		Moment 			moment 	= Moment.getInstance();
@@ -25,21 +24,6 @@ public class LudoBoard extends JPanel{
 	private static final int 	WIDTH 				= 15; 				// Largura do tabuleiro em células
 	private static final int 	HEIGHT 				= 15; 				// Altura do tabuleiro em células
 
-	// Botoes
-	private JButton newGameButton;
-	private JButton loadButton;
-	private JButton saveButton;
-	private JButton launchDice;
-	
-	private JButton[] botoes = {
-		newGameButton,
-		loadButton,
-		saveButton,
-		launchDice
-	};
-	
-	private JComboBox<String> dado;
-	
  
 // ____________________________________________________________________________________________________________________________
 //
@@ -110,43 +94,14 @@ public class LudoBoard extends JPanel{
         desenho.setValues(HEIGHT, WIDTH, SIZE);
                 
         // Menu
-        menu.set(SIZE, BOARD_SIZE, botoes, this);
+        menu.setAll(SIZE, BOARD_SIZE, this);
         menu.botoes();
         
-        dadoManual();
+//        dadoManual();
 	}
 
 	
 	//	Operacoes ---------------------------------------------
-	private void dadoManual() {
-		// Selecionador de dado manual para testes
-			String[] val = new String[] { "1", "2", "3", "4", "5", "6"};
-			dado = new JComboBox<String>(val);
-	        dado.setBounds(835, 640,250,50);
-	        dado.setFont(new Font("Arial", Font.PLAIN, 15));
-	        dado.setForeground(Color.decode("#000000"));
-	        dado.setBackground(Color.decode("#e9c28b"));
-	        
-	        add(dado);
-	        // Adicionando o ActionListener ao combo box
-	        dado.addActionListener(
-	        		new ActionListener() {
-			            @Override
-			            public void actionPerformed(ActionEvent e) {
-			                // Obtendo o valor selecionado no combo box
-			                String selectedValue = (String) dado.getSelectedItem();
-		                	menu.alterarImgDado(Integer.valueOf(selectedValue));
-		                
-			                viewAPI.set_dadosRolados(true);
-//		                	// Exibindo o valor selecionado
-		                	System.out.println("Valor selecionado: " + selectedValue);
-	
-			            }
-	        		}
-    		);
-	        
-//	        return dado;
-	}
 	
 	
 	
@@ -158,7 +113,7 @@ public class LudoBoard extends JPanel{
 		int turno = moment.getTurno();
 		
 		menu.addToPanel(this);
-		menu.carrega_img_dado(g, turno);
+		menu.drawDiceImg(g, turno);
         
 		// Executando as auxiliares
 		desenho.draw_tabuleiro(g);

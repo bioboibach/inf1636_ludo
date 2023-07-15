@@ -37,6 +37,10 @@ public class ViewAPI implements ObservadorIF{
 //		control.save_game();
 	}
 	
+	
+	protected void executaTurno(int indice_path, int indice_final_path, int color) {
+//		control.executaTurno(indice_path, indice_final_path, color);
+	}
 //	Metodos get --------------------------------------------
 	public boolean get_dadosRolados() {
 		return dadosRolados;

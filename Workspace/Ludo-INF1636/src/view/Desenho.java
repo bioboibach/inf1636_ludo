@@ -126,7 +126,7 @@ public class Desenho {
 		arrPathIndex = arr;
 	}
 	private void start_arr_path_bruto		() {
-		int[][] arr = arrPathIndex;
+		int[][] arr = new int[52][2];
 		for(int i = 0; i < 52; i++) {
 			arr[i][0] = arrPathIndex[i][0]*SIZE + 12;
 			arr[i][1] = arrPathIndex[i][1]*SIZE + 12;

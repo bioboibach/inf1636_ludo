@@ -5,62 +5,36 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import controller.Moment;
+
 public class Desenho {
 	
 	private static Desenho instance;
-	
-	
-	//	Atributos de referencia para o paint
-	private int[] 		casas_iniciais 		= new int[4];
-	private int[][] 	path 				= new int[52][2];
-	private int[] 		reta_final_vermelho = new int[6];
-	private int[] 		reta_final_verde 	= new int[6];
-	private int[] 		reta_final_amarelo 	= new int[6];
-	private int[] 		reta_final_azul 	= new int[6];
-	private int[][]		podio 				= new int[4][2];
-	private int			turno				;
-	
-	private static final Color[] COLORS = { Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.WHITE, Color.BLACK };
-	int HEIGHT;
-	int WIDTH;
-	int SIZE;
-	
+	private static final Color[] COLORS = ViewAPI.get_colors();
+	private Moment moment = Moment.getInstance();
 
-	int[][][] 	arr_casas_iniciais 	= new int[4][4][2];
-	int[][] 	arr_path 			= new int[52][2];
-	int[][] 	arr_path_bruto 		= new int[52][2];
-	int[][][] 	arr_retas_finais 	= new int[4][6][2];
+	// Dimensoes do tabuleiro
+	private int HEIGHT;
+	private int WIDTH;
+	private int SIZE;		// Comprimento do lado de cada casa
 	
-	int[] 		qtds_finais			= new int[4];			// quantidade de pecas na casa final de cada jogador
+	// Mapeamento das posicoes das casas
+	private int[][][] 	arrCasasIniciais 	= new int[4][4][2];		// Cordenadas cartesianas das casas iniciais - Ex: (230, 480)
+	private int[][] 	arrPathIndex 		= new int[52][2];		// Coordenadas de indices das casas do path - Ex: (5, 20)
+	private int[][] 	arrPath		 		= new int[52][2];		// Coordenadas cartesianas das casas do path
+	private int[][][] 	arrRetasFinais	 	= new int[4][6][2];		// Coordenadas cartesianas das casas da reta final de todos os jogadores
 	
-	public Desenho() {} 
-	
-	
-	public void setValues(int HEIGHT, int WIDTH, int SIZE) {
-		this.HEIGHT = HEIGHT;
-		this.WIDTH = WIDTH;
-		this.SIZE = SIZE;
+	// Quantidade de pecas na casa final de cada jogador
+	private int[] 		qtds_finais			= new int[4];			
 		
-		start_arr_casas_iniciais();
-		start_arr_path();
-		start_arr_path_bruto();
-		start_arr_retas_finais();
 		
-		start_qtds_finais();
-	} 
+// ____________________________________________________________________________________________________________________________
+//
+
+	protected Desenho() {} 
 	
-	public void setCasas(Object[] info) {
-		casas_iniciais 		= (int[]) 	info[0];
-		path				= (int[][]) info[1];
-		reta_final_vermelho	= (int[]) 	info[2];
-		reta_final_verde	= (int[]) 	info[3];
-		reta_final_amarelo	= (int[]) 	info[4];
-		reta_final_azul		= (int[]) 	info[5];
-		podio				= (int[][]) info[6];
-		turno 				= (int)		info[7];		
-	}
-	
-	protected void start_arr_casas_iniciais() {
+	// Inicializacao padrao de todas as casas do tabuleiro 
+	private void start_arr_casas_iniciais	() {
 		int[][][] arr = {
 			//	Vermelho
 			{
@@ -78,10 +52,10 @@ public class Desenho {
 			},
 			//	Amarelo
 			{
-			{632, 612},
-			{632, 492},
-			{492, 492},
-			{492, 612}
+				{632, 612},
+				{632, 492},
+				{492, 492},
+				{492, 612}
 			},
 			//	Azul
 			{
@@ -91,9 +65,9 @@ public class Desenho {
 				{197, 612}
 			}			
 		};
-		arr_casas_iniciais = arr;
+		arrCasasIniciais = arr;
 	}
-	protected void start_arr_path() {
+	private void start_arr_path				() {
 		int[][] arr = {
 				{1, 6},
 				{0, 6},
@@ -149,17 +123,17 @@ public class Desenho {
 				{2, 6}
 		};
 		
-		arr_path = arr;
+		arrPathIndex = arr;
 	}
-	protected void start_arr_path_bruto() {
-		int[][] arr = arr_path;
+	private void start_arr_path_bruto		() {
+		int[][] arr = arrPathIndex;
 		for(int i = 0; i < 52; i++) {
-			arr[i][0] = arr_path[i][0]*SIZE + 12;
-			arr[i][1] = arr_path[i][1]*SIZE + 12;
+			arr[i][0] = arrPathIndex[i][0]*SIZE + 12;
+			arr[i][1] = arrPathIndex[i][1]*SIZE + 12;
 		}
-		arr_path_bruto = arr;
+		arrPath = arr;
 	}
-	protected void start_arr_retas_finais() {
+	private void start_arr_retas_finais		() {
 		int[][][] arr = {
 			// Vermelho
 			{
@@ -206,21 +180,32 @@ public class Desenho {
 			}
 		}
 		
-		arr_retas_finais = arr;
+		arrRetasFinais = arr;
 	}
-	
-	
-	
-	
-	// Auxiliares do paintComponent
-	
-	protected void start_qtds_finais() {
+	private void start_qtds_finais			() {
 		for(int i = 0; i < qtds_finais.length; i++) {
 			qtds_finais[i] = 0;
 		}
 	}
 	
-	protected void draw_tabuleiro(Graphics g) {
+	// Define as dimensoes do tabuleiro
+	protected void setValues(int HEIGHT, int WIDTH, int SIZE) {
+		this.HEIGHT = HEIGHT;
+		this.WIDTH = WIDTH;
+		this.SIZE = SIZE;
+		
+		start_arr_casas_iniciais();
+		start_arr_path();
+		start_arr_path_bruto();
+		start_arr_retas_finais();
+		
+		start_qtds_finais();
+	} 
+	// Define os valores para os atributos de referencia para o paint
+
+	
+	// Auxiliares do paintComponent()
+	protected void draw_tabuleiro			(Graphics g) {
 		// Desenha o tabuleiro
 		Color color = Color.WHITE;
 		for (int row = 0; row < HEIGHT; row++) { // Branco
@@ -241,7 +226,7 @@ public class Desenho {
 			}
 		}
 		}
-	protected void draw_base(Graphics g) {
+	protected void draw_base				(Graphics g) {
 		Color color;
 		int[][] rows = {{0, 6}, {0, 6}, {9, 15}, {9, 15} };
 		int[][] cols = {{0, 6}, {9, 15}, {9, 15}, {0, 6}};
@@ -267,7 +252,7 @@ public class Desenho {
 		g.drawRect(vals[k][0], vals[k][1], 6 * SIZE, 6 * SIZE);
 		}
 	}
-	protected void draw_caminho_vitoria(Graphics g) {
+	protected void draw_caminho_vitoria		(Graphics g) {
 		Color color;
 		// Caminho vitoria Vermelho e Amarelo
 		for(int k = 0; k < 2; k++) {
@@ -315,7 +300,7 @@ public class Desenho {
 			}
 		}
 	}
-	protected void draw_bolas_brancas_bases(Graphics g){
+	protected void draw_bolas_brancas_bases	(Graphics g){
 		Graphics2D g2d = (Graphics2D) g;
 		int circleSize = 50; // Tamanho do círculo
 
@@ -350,12 +335,9 @@ public class Desenho {
 			}
 		}
 	}
-	protected void draw_casa_inicio(Graphics g){
+	protected void draw_casa_inicio			(Graphics g){
 		Color color;
 		int[][] coords = {{1, 6}, {8, 1}, {13, 8}, {6, 13}};
-		
-		int col = 1;
-		int row = 6;
 		for(int k = 0; k < 4; k++) {
 			int x = coords[k][0] * SIZE;
 			int y = coords[k][1] * SIZE;
@@ -367,7 +349,7 @@ public class Desenho {
 		}
 		
 	}
-	protected void draw_barreira(Graphics g) {
+	protected void draw_barreira			(Graphics g) {
 		Color color;
 		int[][] coords = {{1, 8}, {13, 6}, {6, 1}, {8, 13}};
 		
@@ -383,7 +365,7 @@ public class Desenho {
 			g.drawRect(x, y, SIZE, SIZE);
 		}
 	}
-	protected void draw_triangulo_inicio(Graphics g) {
+	protected void draw_triangulo_inicio	(Graphics g) {
 		int[][][] coords = {
 				{{394,409,424}, {58,85,58}},
 				{{60,90,60}, {300,315,330}},
@@ -399,7 +381,7 @@ public class Desenho {
 			g.drawPolygon(xs,ys,3);
 		}
 	}
-	protected void draw_triangulo_meio(Graphics g) {
+	protected void draw_triangulo_meio		(Graphics g) {
 		int[][][] coords = {
 				{{287,360,287}, {287,356,432}}, // red
 				{{287,360,432}, {287,356,287}}, // green
@@ -417,7 +399,7 @@ public class Desenho {
 			g.drawPolygon(xs,ys,3);
 		}
 	}
-	protected void draw_msg_turno_atual(Graphics g) {
+	protected void draw_msg_turno_atual		(Graphics g) {
 		Font font = new Font("Arial", Font.BOLD, 32);
 		g.setFont(font);
 		// Desenha o texto "A jogar"
@@ -427,11 +409,8 @@ public class Desenho {
 		g.drawString(text, textX, textY);
 	}
 
-	
-	// Parte 2
-	protected void draw_peoes(Graphics g) {
+	protected void draw_peoes				(Graphics g) {
 		// Desenha os peoes durante o jogo
-		Color color = Color.WHITE;
 		draw_casas_iniciais(g);
 		draw_path(g);
 		draw_retas_finais(g);
@@ -439,20 +418,22 @@ public class Desenho {
 	}
 
 	
-
-//	System.out.println("arr_retas_finais[k][" + i + "] = " + arr_retas_finais[k][i][0] + ", " + arr_retas_finais[k][i][1] + "\n");
-	private void draw_casas_iniciais(Graphics g) {
+	// Auxiliares de draw_peoes()
+	private void draw_casas_iniciais	(Graphics g) {
 		Color color;
+		int[] casas_iniciais = moment.getCasasIniciais();
+		
 		for(int i = 0; i < casas_iniciais.length; i++) {
 			color = COLORS[i];
 			
 			for(int k = 0; k < casas_iniciais[i]; k++) {
-				drawPeca(g, arr_casas_iniciais[i][k], color, 0);
+				draw_peca(g, arrCasasIniciais[i][k], color, 0);
 			}
 		}
 	}
-	private void draw_path(Graphics g) {
+	private void draw_path				(Graphics g) {
 		Color color;
+		int[][] path = moment.getPath();
 		
 		for(int i = 0; i < path.length; i++) {
 			
@@ -464,7 +445,7 @@ public class Desenho {
 			else {
 				// Se houver, desenha o principal
 				color = COLORS[path[i][0]];
-				drawPeca(g, arr_path_bruto[i], color, 0);
+				draw_peca(g, arrPath[i], color, 0);
 			}
 			
 			// Peao secundario
@@ -476,35 +457,40 @@ public class Desenho {
 				if(path[i][0] != path[i][1]) {
 					// Caso nao seja da mesma cor, desenha ele como stack 
 					color = COLORS[path[i][1]];
-					drawPeca(g, arr_path_bruto[i], color, 1);					
+					draw_peca(g, arrPath[i], color, 1);					
 				}
 				else {
 					// Se houver e ele for da mesma cor que o principal, desenha ele como barreira
 					color = COLORS[path[i][1]];
-					drawPeca(g, arr_path_bruto[i], color, 2);
+					draw_peca(g, arrPath[i], color, 2);
 				}
 				// Redesenha o peao principal
 				color = COLORS[path[i][0]];
-				drawPeca(g, arr_path_bruto[i], color, 0);
+				draw_peca(g, arrPath[i], color, 0);
 			}
 			
 			
 		}
 	}
-	private void draw_retas_finais(Graphics g) {
+	private void draw_retas_finais		(Graphics g) {
 		Color color;
-			int[][] reta_final = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul};
-			for(int k = 0; k < 4; k++) {
-				color = COLORS[k].darker();
-				for(int i = 0; i < reta_final[k].length; i++) {
-					if(reta_final[k][i] >= 1) {
-						qtds_finais[k] = reta_final[k][5];
-						drawPeca(g, arr_retas_finais[k][i], color, 0);
-					}
+		int[] reta_final_vermelho 	= moment.getRetaFinalVermelho();
+		int[] reta_final_verde 		= moment.getRetaFinalVerde();
+		int[] reta_final_amarelo 	= moment.getRetaFinalAmarelo();
+		int[] reta_final_azul 		= moment.getRetaFinalAzul();
+		
+		int[][] reta_final = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul};
+		for(int k = 0; k < 4; k++) {
+			color = COLORS[k].darker();
+			for(int i = 0; i < reta_final[k].length; i++) {
+				if(reta_final[k][i] >= 1) {
+					qtds_finais[k] = reta_final[k][5];
+					draw_peca(g, arrRetasFinais[k][i], color, 0);
 				}
 			}
+		}
 	}
-	private void drawPeca(Graphics g, int[] coords, Color cor, int tipo){
+	private void draw_peca				(Graphics g, int[] coords, Color cor, int tipo){
 		// coords 	-> 	coordenadas brutas
 		// tipo		-> 	tipo da casa:
 		//				0 - nao eh peao secundario de stack nem barreira,
@@ -532,10 +518,7 @@ public class Desenho {
 		}
 				
 	}
-	
-//	Singleton ------------------------------------------
-   	
-	private void draw_qtds_finais(Graphics g) {
+	private void draw_qtds_finais		(Graphics g) {
 		// Imprime a quantidade de pecas na casa final
 		Font font = new Font("Arial", Font.BOLD, 16);
 		g.setFont(font);
@@ -545,13 +528,15 @@ public class Desenho {
 				continue;
 			}
 			String text = String.valueOf(qtds_finais[i]);
-			int textX = arr_retas_finais[i][5][0] + 8;
-			int textY = arr_retas_finais[i][5][1] + 17;
+			int textX = arrRetasFinais[i][5][0] + 8;
+			int textY = arrRetasFinais[i][5][1] + 17;
 			g.drawString(text, textX, textY);
 		}
 	}
 
 	
+	// Singelton ------------------------------------------
+//	Singleton ------------------------------------------
 	public static Desenho getInstance() {
 		if (instance == null) {
 			instance = new Desenho();

@@ -24,34 +24,41 @@ import controller.ControllerAPI;
 
 public class Menu{
 	
+	private static Menu instance;
 	private static ControllerAPI control = ControllerAPI.getInstance(); 
 	private static ViewAPI viewAPI = ViewAPI.getInstance(); 
-	private static Menu instance;
 	
 	
 	private static JPanel ludoBoard;
 	
-	private static final Color[] COLORS = { Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.WHITE, Color.BLACK };
+	private static final Color[] COLORS = ViewAPI.get_colors();
+	
 	static int SIZE;
 	static int BOARD_SIZE;
 	
 	
-//	Posicionamento
-	// Coordenadas do tabuleiros convertidas para a casa correspondente
+	//	Posicionamento
+	// 	Coordenadas do tabuleiros convertidas para a casa correspondente
 	static int[][] coordsMapeadas 			= new int[52][2];				
 	static int[][] coordsMapeadas_vermelho 	= new int[6][2];		
 	static int[][] coordsMapeadas_verde 	= new int[6][2];		
 	static int[][] coordsMapeadas_amarelo 	= new int[6][2];			
 	static int[][] coordsMapeadas_azul 		= new int[6][2];			
 	
-//	Posicao do click
+//	private int[][][] 	arrCasasIniciais 	= new int[4][4][2];		// Cordenadas cartesianas das casas iniciais - Ex: (230, 480)
+//	private int[][] 	arrPathIndex 		= new int[52][2];		// Coordenadas de indices das casas do path - Ex: (5, 20)
+//	private int[][] 	arrPath		 		= new int[52][2];		// Coordenadas cartesianas das casas do path
+//	private int[][][] 	arrRetasFinais	 	= new int[4][6][2];		// Coordenadas cartesianas das casas da reta final de todos os jogadores
+//	
+	
+	//	Posicao do click
 	private static int coord_x;
 	private static int coord_y;
 	private static int casa_x;
 	private static int casa_y;
 	
 	
-	Image i[] = new Image[6];
+	private Image i[] = new Image[6];
 	static int die_val = 1;			// valor do dado
 	
 	
@@ -62,8 +69,15 @@ public class Menu{
 	private static JButton launchDice;
 	
 	
-	public Menu() {}
-	
+// ____________________________________________________________________________________________________________________________
+//
+			
+	public Menu() {
+//		start_arr_casas_iniciais();
+//		start_arr_path();
+//		start_arr_path_bruto();
+//		start_arr_retas_finais();
+	}
 	
 	
 	
@@ -213,7 +227,7 @@ public class Menu{
 
 	}
 	
-//	Lancamento e escolha manual
+	//	Lancamento e escolha manual
 	public void alterarImgDado() {
 		die_val = control.roll();
 		viewAPI.set_dadosRolados(true);
@@ -226,36 +240,21 @@ public class Menu{
 	}
 	
 
+
 	
-//	Operacoes
-	
+	//	Operacoes
  	private void startNewGame() {
-		// TODO
-		// Chamada da funcao do Model de Comecar um jogo novo
-		System.out.println("Iniciando nova partida...");
+ 		viewAPI.newGame();
 	}
-
 	private void loadSavedGame() {
-		// TODO
-		// Chamar a funcao de carregador jogo do model
-		try {
-			control.load_game();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		viewAPI.loadSavedGame();
 	}
-
 	private void saveGame() {
-		// TODO
-		// Chamar a funcao do Model de salvar o jogo
-		try {
-			control.save_game();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		viewAPI.SaveGame();
 	}
 
-	
+
+	// SET ---------------------------------
 	protected void set(int SIZE, int BOARD_SIZE, JButton[] botoes, JPanel panel) {
 		Menu.SIZE = SIZE;
 		Menu.BOARD_SIZE = BOARD_SIZE;
@@ -271,7 +270,7 @@ public class Menu{
 	}
 	
 	
-	
+	// REFERENCIAS -----------------------
     public static void addToPanel(JPanel panel) {
     	panel.add(newGameButton);
     	panel.add(loadButton);
@@ -281,8 +280,159 @@ public class Menu{
     	panel.addMouseListener(gera_mouseAdapter());
     }
 	
+    
+	// Inicializacao padrao de todas as casas do tabuleiro 
+//	private void start_arr_casas_iniciais	() {
+//		int[][][] arr = {
+//			//	Vermelho
+//			{
+//				{57, 57},
+//				{197, 57},
+//				{57, 177},
+//				{197, 177}
+//			},
+//			//	Verde
+//			{
+//				{492, 57},
+//				{632, 57},
+//				{632, 177},
+//				{492, 177}
+//			},
+//			//	Amarelo
+//			{
+//				{632, 612},
+//				{632, 492},
+//				{492, 492},
+//				{492, 612}
+//			},
+//			//	Azul
+//			{
+//				{57, 492},
+//				{197, 492},
+//				{57, 612},
+//				{197, 612}
+//			}			
+//		};
+//		arrCasasIniciais = arr;
+//	}
+//	private void start_arr_path				() {
+//		int[][] arr = {
+//				{1, 6},
+//				{0, 6},
+//				{0, 7},
+//				{0, 8},
+//				{1, 8},
+//				{2, 8},
+//				{3, 8},
+//				{4, 8},
+//				{5, 8},
+//				{6, 9},
+//				{6, 10},
+//				{6, 11},
+//				{6, 12},
+//				{6, 13},
+//				{6, 14},
+//				{7, 14},
+//				{8, 14},
+//				{8, 13},
+//				{8, 12},
+//				{8, 11},
+//				{8, 10},
+//				{8, 9},
+//				{9, 8},
+//				{10, 8},
+//				{11, 8},
+//				{12, 8},
+//				{13, 8},
+//				{14, 8},
+//				{14, 7},
+//				{14, 6},
+//				{13, 6},
+//				{12, 6},
+//				{11, 6},
+//				{10, 6},
+//				{9, 6},
+//				{8, 5},
+//				{8, 4},
+//				{8, 3},
+//				{8, 2},
+//				{8, 1},
+//				{8, 0},
+//				{7, 0},
+//				{6, 0},
+//				{6, 1},
+//				{6, 2},
+//				{6, 3},
+//				{6, 4},
+//				{6, 5},
+//				{5, 6},
+//				{4, 6},
+//				{3, 6},
+//				{2, 6}
+//		};
+//		
+//		arrPathIndex = arr;
+//	}
+//	private void start_arr_path_bruto		() {
+//		int[][] arr = arrPathIndex;
+//		for(int i = 0; i < 52; i++) {
+//			arr[i][0] = arrPathIndex[i][0]*SIZE + 12;
+//			arr[i][1] = arrPathIndex[i][1]*SIZE + 12;
+//		}
+//		arrPath = arr;
+//	}
+//	private void start_arr_retas_finais		() {
+//		int[][][] arr = {
+//			// Vermelho
+//			{
+//				{1, 7},
+//				{2, 7},
+//				{3, 7},
+//				{4, 7},
+//				{5, 7},
+//				{6, 7}
+//			},
+//			// Verde
+//			{
+//				{7, 1},
+//				{7, 2},
+//				{7, 3},
+//				{7, 4},
+//				{7, 5},
+//				{7, 6}
+//			},
+//			// Amarelo
+//			{
+//				{13, 7},
+//				{12, 7},
+//				{11, 7},
+//				{10, 7},
+//				{9, 7},
+//				{8, 7},
+//			},
+//			// Azul
+//			{
+//				{7, 13},
+//				{7, 12},
+//				{7, 11},
+//				{7, 10},
+//				{7, 9},
+//				{7, 8}
+//			}			
+//		};
+//		
+//		for(int k = 0; k < arr.length; k++) {
+//			for(int i = 0; i < arr[k].length; i++) {
+//				arr[k][i][0] = arr[k][i][0]*SIZE + 12;
+//				arr[k][i][1] = arr[k][i][1]*SIZE + 12;
+//			}
+//		}
+//		
+//		arrRetasFinais = arr;
+//	}
+//	
 	
-//	Singleton ------------------------------------------
+    //	Singleton ------------------------------------------
    	public static Menu getInstance() {
 		if (instance == null) {
 			instance = new Menu();

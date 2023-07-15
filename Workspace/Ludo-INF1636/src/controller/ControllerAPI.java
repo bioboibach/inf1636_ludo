@@ -14,15 +14,27 @@ public class ControllerAPI {
 	
 	
 //	Operacoes -------------------------------------------	
-	public void save_game() throws IOException{
-		Save_game.getInstance().save();
+	
+	// throws IOException
+	public void save_game() {
+		try {
+	        Save_game.getInstance().save();
+	    } catch (IOException e) {
+	        e.printStackTrace(); 
+	    }
 	}
 	
-	public void load_game() throws IOException{
-		Load_game.getInstance().load();
+	// throws IOException
+	public void load_game() {
+	    try {
+	        Load_game.getInstance().load();
+	    } catch (IOException e) {
+	        e.printStackTrace(); 
+	    }
 	}
-	
+
 	public void new_game(){
+		System.out.println("Iniciando nova partida...");
 		modalInst.new_game();
 	}
 	

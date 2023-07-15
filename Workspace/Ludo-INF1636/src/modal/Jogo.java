@@ -3,7 +3,6 @@ import java.util.*;
 
 import controller.ObservadoIF;
 import controller.ObservadorIF;
-import view.LudoBoard;
 import view.ViewAPI;
 
 class Jogo implements ObservadoIF {    

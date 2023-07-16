@@ -12,6 +12,7 @@ public class Desenho {
 	private static Desenho instance;
 	private static final Color[] COLORS = ViewAPI.get_colors();
 	private Moment moment = Moment.getInstance();
+	private static LudoBoard ludoboard = LudoBoard.getInstance();
 
 	// Dimensoes do tabuleiro
 	private int HEIGHT;
@@ -19,10 +20,9 @@ public class Desenho {
 	private int SIZE;		// Comprimento do lado de cada casa
 	
 	// Mapeamento das posicoes das casas
-	private int[][][] 	arrCasasIniciais 	= new int[4][4][2];		// Cordenadas cartesianas das casas iniciais - Ex: (230, 480)
-	private int[][] 	arrPathIndex 		= new int[52][2];		// Coordenadas de indices das casas do path - Ex: (5, 20)
-	private int[][] 	arrPath		 		= new int[52][2];		// Coordenadas cartesianas das casas do path
-	private int[][][] 	arrRetasFinais	 	= new int[4][6][2];		// Coordenadas cartesianas das casas da reta final de todos os jogadores
+	private static int[][][] 	arrCasasIniciais 	= ludoboard.get_arrCasasIniciais();
+	private static int[][] 		arrPath		 		= ludoboard.get_arrPath();
+	private static int[][][] 	arrRetasFinais	 	= ludoboard.get_arrRetasFinais();
 	
 	// Quantidade de pecas na casa final de cada jogador
 	private int[] 		qtds_finais			= new int[4];			
@@ -33,155 +33,7 @@ public class Desenho {
 
 	protected Desenho() {} 
 	
-	// Inicializacao padrao de todas as casas do tabuleiro 
-	private void start_arr_casas_iniciais	() {
-		int[][][] arr = {
-			//	Vermelho
-			{
-				{57, 57},
-				{197, 57},
-				{57, 177},
-				{197, 177}
-			},
-			//	Verde
-			{
-				{492, 57},
-				{632, 57},
-				{632, 177},
-				{492, 177}
-			},
-			//	Amarelo
-			{
-				{632, 612},
-				{632, 492},
-				{492, 492},
-				{492, 612}
-			},
-			//	Azul
-			{
-				{57, 492},
-				{197, 492},
-				{57, 612},
-				{197, 612}
-			}			
-		};
-		arrCasasIniciais = arr;
-	}
-	private void start_arr_path				() {
-		int[][] arr = {
-				{1, 6},
-				{0, 6},
-				{0, 7},
-				{0, 8},
-				{1, 8},
-				{2, 8},
-				{3, 8},
-				{4, 8},
-				{5, 8},
-				{6, 9},
-				{6, 10},
-				{6, 11},
-				{6, 12},
-				{6, 13},
-				{6, 14},
-				{7, 14},
-				{8, 14},
-				{8, 13},
-				{8, 12},
-				{8, 11},
-				{8, 10},
-				{8, 9},
-				{9, 8},
-				{10, 8},
-				{11, 8},
-				{12, 8},
-				{13, 8},
-				{14, 8},
-				{14, 7},
-				{14, 6},
-				{13, 6},
-				{12, 6},
-				{11, 6},
-				{10, 6},
-				{9, 6},
-				{8, 5},
-				{8, 4},
-				{8, 3},
-				{8, 2},
-				{8, 1},
-				{8, 0},
-				{7, 0},
-				{6, 0},
-				{6, 1},
-				{6, 2},
-				{6, 3},
-				{6, 4},
-				{6, 5},
-				{5, 6},
-				{4, 6},
-				{3, 6},
-				{2, 6}
-		};
-		
-		arrPathIndex = arr;
-	}
-	private void start_arr_path_bruto		() {
-		int[][] arr = new int[52][2];
-		for(int i = 0; i < 52; i++) {
-			arr[i][0] = arrPathIndex[i][0]*SIZE + 12;
-			arr[i][1] = arrPathIndex[i][1]*SIZE + 12;
-		}
-		arrPath = arr;
-	}
-	private void start_arr_retas_finais		() {
-		int[][][] arr = {
-			// Vermelho
-			{
-				{1, 7},
-				{2, 7},
-				{3, 7},
-				{4, 7},
-				{5, 7},
-				{6, 7}
-			},
-			// Verde
-			{
-				{7, 1},
-				{7, 2},
-				{7, 3},
-				{7, 4},
-				{7, 5},
-				{7, 6}
-			},
-			// Amarelo
-			{
-				{13, 7},
-				{12, 7},
-				{11, 7},
-				{10, 7},
-				{9, 7},
-				{8, 7},
-			},
-			// Azul
-			{
-				{7, 13},
-				{7, 12},
-				{7, 11},
-				{7, 10},
-				{7, 9},
-				{7, 8}
-			}			
-		};
-		
-		for(int k = 0; k < arr.length; k++) {
-			for(int i = 0; i < arr[k].length; i++) {
-				arr[k][i][0] = arr[k][i][0]*SIZE + 12;
-				arr[k][i][1] = arr[k][i][1]*SIZE + 12;
-			}
-		}
-		
-		arrRetasFinais = arr;
-	}
+	
 	private void start_qtds_finais			() {
 		for(int i = 0; i < qtds_finais.length; i++) {
 			qtds_finais[i] = 0;
@@ -193,11 +45,6 @@ public class Desenho {
 		this.HEIGHT = HEIGHT;
 		this.WIDTH = WIDTH;
 		this.SIZE = SIZE;
-		
-		start_arr_casas_iniciais();
-		start_arr_path();
-		start_arr_path_bruto();
-		start_arr_retas_finais();
 		
 		start_qtds_finais();
 	} 
@@ -491,7 +338,7 @@ public class Desenho {
 		}
 	}
 	private void draw_peca				(Graphics g, int[] coords, Color cor, int tipo){
-		// coords 	-> 	coordenadas brutas
+		// coords 	-> 	coordenadas cartesianas
 		// tipo		-> 	tipo da casa:
 		//				0 - nao eh peao secundario de stack nem barreira,
 		//				1 - peao secundario de stack,
@@ -536,7 +383,6 @@ public class Desenho {
 
 	
 	// Singelton ------------------------------------------
-//	Singleton ------------------------------------------
 	public static Desenho getInstance() {
 		if (instance == null) {
 			instance = new Desenho();

@@ -41,6 +41,13 @@ public class ViewAPI implements ObservadorIF{
 	protected void executaTurno(int indice_path, int indice_final_path, int color) {
 //		control.executaTurno(indice_path, indice_final_path, color);
 	}
+	
+	
+	protected int roll() {
+//		return control.roll();
+		return 4;
+	}
+	
 //	Metodos get --------------------------------------------
 	public boolean get_dadosRolados() {
 		return dadosRolados;

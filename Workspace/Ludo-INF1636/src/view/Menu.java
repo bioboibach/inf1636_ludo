@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,20 +15,16 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
-import controller.ControllerAPI;
 
 public class Menu{
 	
 	private static Menu instance;
-	private static ControllerAPI control = ControllerAPI.getInstance(); 
 	private static ViewAPI viewAPI = ViewAPI.getInstance(); 
+	private static LudoBoard ludoBoard = LudoBoard.getInstance();
 	
-	
-	private static JPanel ludoBoard;
+	private static LudoBoard panel;
 	
 	private static final Color[] COLORS = ViewAPI.get_colors();
 	
@@ -38,12 +33,8 @@ public class Menu{
 	
 	
 	//	Posicionamento
-	private static int[][][] 	arrCasasIniciais 	= new int[4][4][2];		// Cordenadas cartesianas das casas iniciais - Ex: (230, 480)
-	private static int[][] 		arrPathIndex 		= new int[52][2];		// Coordenadas de indices das casas do path - Ex: (5, 20)
-	private static int[][] 		arrPath		 		= new int[52][2];		// Coordenadas cartesianas das casas do path
-	private static int[][][] 	arrRetasFinaisIndex	= new int[4][6][2];		// Coordenadas de indices das casas da reta final de todos os jogadores
-	private static int[][][] 	arrRetasFinais	 	= new int[4][6][2];		// Coordenadas cartesianas das casas da reta final de todos os jogadores
-	
+	private static int[][] 		arrPathIndex 		= ludoBoard.get_arrPathIndex();
+	private static int[][][] 	arrRetasFinaisIndex	= ludoBoard.get_arrRetasFinaisIndex();	
 	
 	//	Posicao do click
 	private static int coord_x;
@@ -51,30 +42,35 @@ public class Menu{
 	private static int casa_x;
 	private static int casa_y;
 	
-	
+	//	Imagens do dado
 	private Image diceImgs[] = new Image[6];
-	private static int die_val = 1;			// valor do dado
+	private static int diceValue = 1;
 	
-	
-	
+	//	Botoes 
 	private static JButton newGameButton;
 	private static JButton loadButton;
 	private static JButton saveButton;
 	private static JButton launchDiceButton;
+	private static JButton diceManual1;
+	private static JButton diceManual2;
+	private static JButton diceManual3;
+	private static JButton diceManual4;
+	private static JButton diceManual5;
+	private static JButton diceManual6;
+	private static JButton[] manualDie;
 	
-	
-	private static String[] val = new String[] { "1", "2", "3", "4", "5", "6"};
-	private static JComboBox<String> dadoManual = new JComboBox<String>(val);
 	
 // ____________________________________________________________________________________________________________________________
 //
 			
 	public Menu() {
-		start_arr_casas_iniciais();
-		start_arr_path();
-		start_arr_path_bruto();
-		start_arr_retas_finais_index();
-		start_arr_retas_finais();
+		manualDie = new JButton[6];
+		manualDie[0] = diceManual1;
+		manualDie[1] = diceManual2;
+		manualDie[2] = diceManual3;
+		manualDie[3] = diceManual4;
+		manualDie[4] = diceManual5;
+		manualDie[5] = diceManual6;
 	}
 	
 	
@@ -89,7 +85,7 @@ public class Menu{
 		Rectangle2D rt = new Rectangle2D.Double(890.0,350.0,150.0,150.0);
 		g2D.fill(rt);
 		
-		g2D.drawImage(diceImgs[die_val-1], 915, 375, null);
+		g2D.drawImage(diceImgs[diceValue-1], 915, 375, null);
 	}
 	private void loadDiceImgs(){
 		try {
@@ -105,8 +101,19 @@ public class Menu{
 			System.exit(1);
 		}
 	}
+
+	public void alterarImgDado() {
+		diceValue = viewAPI.roll();
+		viewAPI.set_dadosRolados(true);
+		panel.repaint();
+	}
+	public static void alterarImgDado(int valor_escolhido) {
+		diceValue = valor_escolhido;
+		viewAPI.set_dadosRolados(true);
+		panel.repaint();
+	}
 	
-	
+	//	Botoes
 	protected void botoes() {        
 		//	Botoes do menu
 		newGameButton = new JButton("Nova Partida");
@@ -146,42 +153,33 @@ public class Menu{
 			}
 		});
 		
+		
 		//	Selecionador manual do dado
-		dadoManual.setBounds(835, 640,250,50);
-        dadoManual.setFont(new Font("Arial", Font.PLAIN, 15));
-        dadoManual.setForeground(Color.decode("#000000"));
-        dadoManual.setBackground(Color.decode("#e9c28b"));
-        dadoManual.addActionListener(new ActionListener() {
-        	//@Override
-	        public void actionPerformed(ActionEvent e) {
-	            // Obtendo o valor selecionado no combo box
-	            String selectedValue = (String) dadoManual.getSelectedItem();
-	        	alterarImgDado(Integer.valueOf(selectedValue));
-	        
-	            viewAPI.set_dadosRolados(true);
-	        	// Exibindo o valor selecionado
-	        	System.out.println("Valor selecionado: " + selectedValue);
-	        	System.out.println("Ok!");
-	
-	            }
-		});
-        
-        
+		for (int i = 0; i < manualDie.length; i++) {
+		    final int index = i + 1; // Create a final variable to capture the value of 'i'
+		    manualDie[i] = new JButton(String.valueOf(i + 1));
+		    manualDie[i].setBounds(790 + 60 * i, 640, 50, 50);
+		    manualDie[i].setFont(new Font("Arial", Font.PLAIN, 18));
+		    manualDie[i].addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent e) {
+		            alterarImgDado(index);
+		        }
+		    });
+		}
+  
 	}
 
-
-
+	//	Leitura do mouseclick no tabuleiro
 	private static MouseAdapter gera_mouseAdapter() {
 		MouseAdapter mouseAdapter = new MouseAdapter() {
-            @Override
             public void mouseClicked(MouseEvent e) {            	            	
                 coord_x = e.getX();
                 coord_y = e.getY();
                 casa_x = (int) (coord_x / SIZE);
                 casa_y = (int) (coord_y / SIZE);
                 
-                //	TODO: criar metodo para converter de coordenadas de indices para coordenadas cartesianas
-                
+                System.out.println("CLICK!");
+               
                 if (coord_x > 0 && coord_x < BOARD_SIZE && coord_y > 0 && coord_y < BOARD_SIZE) {
                 	if(viewAPI.get_dadosRolados() == false) {
                 		JOptionPane.showMessageDialog(null, "Jogue os dados antes de escolher o peao!");
@@ -205,13 +203,13 @@ public class Menu{
     		            }
     		            
     		            //	Retas finais
-    		            for(int i = 0; i < arrRetasFinaisIndex.length; i++) {
+    		            outerLoop: for(int i = 0; i < arrRetasFinaisIndex.length; i++) {
     		            	for(int k = 0; k < arrRetasFinaisIndex[i].length; k++) {
     		            		coords = arrRetasFinaisIndex[i][k];
     		            		if (coords[0] == casa_x && coords[1] == casa_y) {
     		            			color = i;
         		                	indice_final_path = k;
-        		                    break;
+        		                    break outerLoop;
         		                }
     		            	}
     		            }
@@ -230,18 +228,6 @@ public class Menu{
         return mouseAdapter;
 	}
 	
-	//	Lancamento e escolha manual
-	public void alterarImgDado() {
-		die_val = control.roll();
-		viewAPI.set_dadosRolados(true);
-		ludoBoard.repaint();
-	}
-	public static void alterarImgDado(int valor_escolhido) {
-		die_val = valor_escolhido;
-		viewAPI.set_dadosRolados(true);
-		ludoBoard.repaint();
-	}
-	
 	
 	//	Operacoes
  	private void startNewGame() {
@@ -255,181 +241,29 @@ public class Menu{
 	}
 
 
-	// SET ---------------------------------
+	// REFERENCIAS -----------------------
+	public static void addButtonsToPanel() {
+		panel.add(newGameButton);
+		panel.add(loadButton);
+		panel.add(saveButton);
+		panel.add(launchDiceButton);
+		for(int i = 0; i < manualDie.length; i++) {
+			panel.add(manualDie[i]);
+		}
+		panel.addMouseListener(gera_mouseAdapter());
+	}
 	
-
-	//	SET
-	protected void setAll(int SIZE, int BOARD_SIZE, JPanel panel) {
+	// SET ---------------------------------
+	protected void setAll(int SIZE, int BOARD_SIZE, LudoBoard panel) {
 		Menu.SIZE = SIZE;
-		Menu.BOARD_SIZE = BOARD_SIZE;	
+		Menu.BOARD_SIZE = BOARD_SIZE;
 		
-		ludoBoard = panel; // tirarrr??????? -----------------------------------------<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>
+		Menu.panel = panel;
 	}
 	
 	
-	// REFERENCIAS -----------------------
-    public static void addToPanel(LudoBoard panel) {
-    	panel.add(newGameButton);
-    	panel.add(loadButton);
-    	panel.add(saveButton);
-    	panel.add(launchDiceButton);
-    	panel.add(dadoManual);
-    	panel.addMouseListener(gera_mouseAdapter());
-    }
 
     
-	// Inicializacao padrao de todas as casas do tabuleiro 
-	private void start_arr_casas_iniciais	() {
-		int[][][] arr = {
-			//	Vermelho
-			{
-				{57, 57},
-				{197, 57},
-				{57, 177},
-				{197, 177}
-			},
-			//	Verde
-			{
-				{492, 57},
-				{632, 57},
-				{632, 177},
-				{492, 177}
-			},
-			//	Amarelo
-			{
-				{632, 612},
-				{632, 492},
-				{492, 492},
-				{492, 612}
-			},
-			//	Azul
-			{
-				{57, 492},
-				{197, 492},
-				{57, 612},
-				{197, 612}
-			}			
-		};
-		arrCasasIniciais = arr;
-	}
-	private void start_arr_path				() {
-		int[][] arr = {
-				{1, 6},
-				{0, 6},
-				{0, 7},
-				{0, 8},
-				{1, 8},
-				{2, 8},
-				{3, 8},
-				{4, 8},
-				{5, 8},
-				{6, 9},
-				{6, 10},
-				{6, 11},
-				{6, 12},
-				{6, 13},
-				{6, 14},
-				{7, 14},
-				{8, 14},
-				{8, 13},
-				{8, 12},
-				{8, 11},
-				{8, 10},
-				{8, 9},
-				{9, 8},
-				{10, 8},
-				{11, 8},
-				{12, 8},
-				{13, 8},
-				{14, 8},
-				{14, 7},
-				{14, 6},
-				{13, 6},
-				{12, 6},
-				{11, 6},
-				{10, 6},
-				{9, 6},
-				{8, 5},
-				{8, 4},
-				{8, 3},
-				{8, 2},
-				{8, 1},
-				{8, 0},
-				{7, 0},
-				{6, 0},
-				{6, 1},
-				{6, 2},
-				{6, 3},
-				{6, 4},
-				{6, 5},
-				{5, 6},
-				{4, 6},
-				{3, 6},
-				{2, 6}
-		};
-		
-		arrPathIndex = arr;
-	}
-	private void start_arr_path_bruto		() {
-		int[][] arr = new int[52][2];
-		for(int i = 0; i < 52; i++) {
-			arr[i][0] = arrPathIndex[i][0]*SIZE + 12;
-			arr[i][1] = arrPathIndex[i][1]*SIZE + 12;
-		}
-		arrPath = arr;
-	}
-	private void start_arr_retas_finais		() {
-		int[][][] arr = new int[4][6][2];
-		for(int k = 0; k < arr.length; k++) {
-			for(int i = 0; i < arr[k].length; i++) {
-				arr[k][i][0] = arr[k][i][0]*SIZE + 12;
-				arr[k][i][1] = arr[k][i][1]*SIZE + 12;
-			}
-		}
-		arrRetasFinais = arr;
-	}
-	private void start_arr_retas_finais_index() {
-		int[][][] arr = {
-				// Vermelho
-				{
-					{1, 7},
-					{2, 7},
-					{3, 7},
-					{4, 7},
-					{5, 7},
-					{6, 7}
-				},
-				// Verde
-				{
-					{7, 1},
-					{7, 2},
-					{7, 3},
-					{7, 4},
-					{7, 5},
-					{7, 6}
-				},
-				// Amarelo
-				{
-					{13, 7},
-					{12, 7},
-					{11, 7},
-					{10, 7},
-					{9, 7},
-					{8, 7},
-				},
-				// Azul
-				{
-					{7, 13},
-					{7, 12},
-					{7, 11},
-					{7, 10},
-					{7, 9},
-					{7, 8}
-				}			
-			};
-		arrRetasFinaisIndex = arr;
-	}
-	
     //	Singleton ------------------------------------------
    	public static Menu getInstance() {
 		if (instance == null) {

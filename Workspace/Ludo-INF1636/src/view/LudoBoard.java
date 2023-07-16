@@ -84,7 +84,7 @@ public class LudoBoard extends JPanel{
 	}
 	//	------------------------------------------------------------------------------------------------
 
-	protected LudoBoard() {
+	private LudoBoard() {
 		
 		//	Inicializando as arrarys de mapeamento
 		start_arr_casas_iniciais();
@@ -148,8 +148,8 @@ public class LudoBoard extends JPanel{
 	
 
 	//	Atualizacao do Board apos a execucao de um turno
-	public void updateBoardInfo(Moment moment) {		
-		this.moment = moment;
+	public void updateBoardInfo() {		
+		this.moment = Moment.getInstance();
 		repaint();
 	}
 	

@@ -1,6 +1,5 @@
 package modal;
 import view.Frame;
-import view.LudoBoard;
 
 import java.io.IOException;
 

@@ -13,35 +13,28 @@ public class ControllerAPI {
 	private ControllerAPI() {}
 	
 	
-//	Operacoes -------------------------------------------	
-	
-	// throws IOException
-	public void save_game() {
-		try {
-	        Save_game.getInstance().save();
-	    } catch (IOException e) {
-	        e.printStackTrace(); 
-	    }
-	}
-	
-	// throws IOException
-	public void load_game() {
+	//	Operacoes -------------------------------------------	
+	public void newGame(){
+		System.out.println("Iniciando nova partida...");
+		modalInst.new_game();
+	}	
+	public void load_game() {	// throws IOException
+		System.out.println("Carregando a partida salva...");
 	    try {
 	        Load_game.getInstance().load();
 	    } catch (IOException e) {
 	        e.printStackTrace(); 
 	    }
 	}
+	public void save_game() {	// throws IOException
+		System.out.println("Salvando a partida...");
+		try {
+	        Save_game.getInstance().save();
+	    } catch (IOException e) {
+	        e.printStackTrace(); 
+	    }
+	}
 
-	public void new_game(){
-		System.out.println("Iniciando nova partida...");
-		modalInst.new_game();
-	}
-	
-	public int roll() {
-		return modalInst.roll();
-	}
-	
 	public void executaTurno(int indice_path, int indice_final_path, int die_val){
 		modalInst.next_turn();
 		modalInst.set_dado(die_val);
@@ -69,15 +62,22 @@ public class ControllerAPI {
 		modalInst.run_turn();
 	}
 	
+	public int roll() {
+		return modalInst.roll();
+	}
 	
 	public void nextPlayer() {
 		currentPlayer = (currentPlayer + 1) % 4;
 	}
 
-	//	Metodos get --------------------------------------------
+	//	GET --------------------------------------------
+	protected int get_currentPlayer() {
+		return currentPlayer;
+	}
+
+	//	Singleton ------------------------------------------
 
 
-//	Singleton ------------------------------------------
 	public static ControllerAPI getInstance() {
 		if (instance == null) {
 			instance = new ControllerAPI();

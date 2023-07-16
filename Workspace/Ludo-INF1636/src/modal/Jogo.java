@@ -281,21 +281,23 @@ class Jogo implements ObservadoIF {
 		}
 	}
 
-    public Object[] get() {
-    	Tabuleiro tabuleiro = Tabuleiro.getInstance();
-    	Object info[] = new Object[8];
-    	
-    	info[0] = tabuleiro.getObs_casas_iniciais();	// int[4] 		-> qtd de peoes nas casas iniciais de cada jogador
-    	info[1] = tabuleiro.getObs_path();				// int[52][2] 	-> peoes que ocupam cada casa e qual eh o principal (2 por casa)
-    	info[2] = tabuleiro.getObs_rf_vermelho();		// int[6]		-> qtd de peoes em cada casa da reta fina do vermelho
-    	info[3] = tabuleiro.getObs_rf_verde();			// int[6]		-> qtd de peoes em cada casa da reta fina do verde
-    	info[4] = tabuleiro.getObs_rf_amarelo();		// int[6]		-> qtd de peoes em cada casa da reta fina do amarelo
-    	info[5] = tabuleiro.getObs_rf_azul();			// int[6]		-> qtd de peoes em cada casa da reta fina do azul
-    	info[6] = define_podio();						// int[4]		-> [1 lugar, 2 lugar, 3 lugar, 4 lugar]
-    	info[7] = get_turn();
-    	
-    	return info;
-    }
+	public Object[] get() { return null;};
+	// TODO: tirar esse snipet pois agora a comunicao eh feita por meio 'Moment.java'
+//    public Object[] get() {
+//    	Tabuleiro tabuleiro = Tabuleiro.getInstance();
+//    	Object info[] = new Object[8];
+//    	
+//    	info[0] = tabuleiro.getObs_casas_iniciais();	// int[4] 		-> qtd de peoes nas casas iniciais de cada jogador
+//    	info[1] = tabuleiro.getObs_path();				// int[52][2] 	-> peoes que ocupam cada casa e qual eh o principal (2 por casa)
+//    	info[2] = tabuleiro.getObs_rf_vermelho();		// int[6]		-> qtd de peoes em cada casa da reta fina do vermelho
+//    	info[3] = tabuleiro.getObs_rf_verde();			// int[6]		-> qtd de peoes em cada casa da reta fina do verde
+//    	info[4] = tabuleiro.getObs_rf_amarelo();		// int[6]		-> qtd de peoes em cada casa da reta fina do amarelo
+//    	info[5] = tabuleiro.getObs_rf_azul();			// int[6]		-> qtd de peoes em cada casa da reta fina do azul
+//    	info[6] = define_podio();						// int[4]		-> [1 lugar, 2 lugar, 3 lugar, 4 lugar]
+//    	info[7] = get_turn();
+//    	
+//    	return info;
+//    }
     
 //	Singleton ------------------------------------------
    	public static Jogo getInstance() {

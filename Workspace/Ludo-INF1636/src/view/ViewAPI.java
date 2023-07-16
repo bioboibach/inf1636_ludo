@@ -2,14 +2,11 @@ package view;
 
 import java.awt.Color;
 
-import controller.ControllerAPI;
 import controller.ObservadoIF;
 import controller.ObservadorIF;
 
 public class ViewAPI implements ObservadorIF{
 	private static ViewAPI instance;
-	
-//	private ControllerAPI control = ControllerAPI.getInstance();
 	
 	private static final Color[] COLORS = { Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.WHITE, Color.BLACK};
 	
@@ -20,35 +17,13 @@ public class ViewAPI implements ObservadorIF{
 			
     public ViewAPI(){}
 	
-//	Operacoes -------------------------------------------
+
+    //	SET ----------------------------------------
 	public void set_dadosRolados(boolean valor) {
 		dadosRolados = valor;
 	}
-	
-	public void newGame(){
-//		control.new_game();
-	}
-	
-	public void loadSavedGame(){
-//		control.load_game();
-	}
-	
-	public void SaveGame() {
-//		control.save_game();
-	}
-	
-	
-	protected void executaTurno(int indice_path, int indice_final_path, int color) {
-//		control.executaTurno(indice_path, indice_final_path, color);
-	}
-	
-	
-	protected int roll() {
-//		return control.roll();
-		return 4;
-	}
-	
-//	Metodos get --------------------------------------------
+
+	//	GET ----------------------------------------
 	public boolean get_dadosRolados() {
 		return dadosRolados;
 	}
@@ -58,17 +33,13 @@ public class ViewAPI implements ObservadorIF{
 	}
 	
 	
-//	Implementacao da interface Observador ----------------
+	//	Implementacao da interface Observador ------
 	public void notify(ObservadoIF o) {
-		
-		LudoBoard ludoBoard = new LudoBoard();
-		
-		Object[] info = (Object[]) o.get();
-		
-//		ludoBoard.updateBoardInfo(info); 
+		LudoBoard ludoBoard = LudoBoard.getInstance();
+		ludoBoard.updateBoardInfo(); 
 	}
 	
-//	Singleton ------------------------------------------
+	//	Singleton ----------------------------------
 	public static ViewAPI getInstance() {
 		if (instance == null) {
 			instance = new ViewAPI();

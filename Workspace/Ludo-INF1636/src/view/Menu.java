@@ -17,12 +17,15 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import controller.ControllerAPI;
+
 
 public class Menu{
 	
 	private static Menu instance;
 	private static ViewAPI viewAPI = ViewAPI.getInstance(); 
 	private static LudoBoard ludoBoard = LudoBoard.getInstance();
+	private static ControllerAPI control = ControllerAPI.getInstance();
 	
 	private static LudoBoard panel;
 	
@@ -103,7 +106,7 @@ public class Menu{
 	}
 
 	public void alterarImgDado() {
-		diceValue = viewAPI.roll();
+		diceValue = roll();
 		viewAPI.set_dadosRolados(true);
 		panel.repaint();
 	}
@@ -121,7 +124,7 @@ public class Menu{
 		newGameButton.setFont(new Font("Arial", Font.PLAIN, 18));
 		newGameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				startNewGame();
+				newGame();
 			}
 		});
 
@@ -214,7 +217,7 @@ public class Menu{
     		            	}
     		            }
     		            
-    		            viewAPI.executaTurno(indice_path, indice_final_path, color); 
+    		            executaTurno(indice_path, indice_final_path, color); 
 
     		            // DEBUG
     		            System.out.printf("Coords Cartesianas: (%d, %d)\nCoords Indices: (%d, %d)\n", coord_x, coord_y, casa_x, casa_y);
@@ -229,17 +232,23 @@ public class Menu{
 	}
 	
 	
-	//	Operacoes
- 	private void startNewGame() {
- 		viewAPI.newGame();
-	}
-	private void loadSavedGame() {
-		viewAPI.loadSavedGame();
-	}
-	private void saveGame() {
-		viewAPI.SaveGame();
-	}
-
+	//	Operacoes -------------------------------------------
+		private void newGame(){
+			control.newGame();
+		}
+		private void loadSavedGame(){
+			control.load_game();
+		}
+		private void saveGame() {
+			control.save_game();
+		}	
+		private static void executaTurno(int indice_path, int indice_final_path, int color) {
+			control.executaTurno(indice_path, indice_final_path, color);
+		}
+		protected int roll() {
+			return control.roll();
+		}
+	
 
 	// REFERENCIAS -----------------------
 	public static void addButtonsToPanel() {

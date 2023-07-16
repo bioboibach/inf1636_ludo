@@ -1,11 +1,5 @@
 package view;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
 import javax.swing.JFrame;
-
-import controller.ObservadoIF;
 
 public class Frame extends JFrame{
 
@@ -18,7 +12,7 @@ public class Frame extends JFrame{
         JFrame frame = new JFrame("Ludo Board");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        LudoBoard board = new LudoBoard();
+        LudoBoard board = LudoBoard.getInstance();
         frame.add(board);
 
         frame.pack();

@@ -98,7 +98,7 @@ class Peca {
 	
 	protected void move_to_base() {
 		current_casa.remove_peca(this);
-		current_casa = Tabuleiro.getInstance().get_casas_iniciais_index(id_time);
+		current_casa = Tabuleiro.getInstance().get_casasIniciaisIndex(id_time);
 		current_casa.add_peca(this);
 	}
 	protected void move_to_casa_de_saida() {
@@ -108,7 +108,7 @@ class Peca {
 	}
 	protected void move_to_reta_final(int index) {
 		current_casa.remove_peca(this);
-		current_casa = Tabuleiro.getInstance().get_reta_final_index(index, id_time);
+		current_casa = Tabuleiro.getInstance().get_retaFinalIndex(index, id_time);
 		current_casa.add_peca(this);
 	}
 	

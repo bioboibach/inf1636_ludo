@@ -20,11 +20,14 @@ class Jogo implements ObservadoIF {
 	private int 	current_dado 		= 5;
 	private int 	qtd_6_rolados 		= 0;
 	
+	
+// ____________________________________________________________________________________________________________________________
+//
 	protected Jogo() {
 		this.addObservador(ViewAPI.getInstance());
 	}
 	
-//	Inicializacao --------------------------------------
+	//	Inicializacao --------------------------------------
 	protected void initialize_jogo() {
 		start_players();
 		start_board();
@@ -50,8 +53,8 @@ class Jogo implements ObservadoIF {
 //		Inicializa as casas iniciais de cada jogador com referencias as casas inicias respectivas no tabuleiro
 		for (int count = 0; count < 4; count++) {
 			for (int i = 0; i < 4; i++) {
-				get_player(count).get_peca(i).change_casa(t.get_casas_iniciais_index(count));
-				t.get_casas_iniciais_index(count).add_peca(get_player(count).get_peca(i));
+				get_player(count).get_peca(i).change_casa(t.get_casasIniciaisIndex(count));
+				t.get_casasIniciaisIndex(count).add_peca(get_player(count).get_peca(i));
 			}
 		}
 //		Move a primeira peca vermelha para a casa de saida
@@ -65,7 +68,7 @@ class Jogo implements ObservadoIF {
 		start_game();
 	}
 
-//	Operacoes -------------------------------------------
+	//	Operacoes -------------------------------------------
 	protected void turn() {
 		current_dado = d.roll();
 		Player ply = players[current_player];
@@ -81,7 +84,7 @@ class Jogo implements ObservadoIF {
 		switch(current_dado) {
 			case 5:
 
-				c = t.get_casas_iniciais_index(ply.get_id());
+				c = t.get_casasIniciaisIndex(ply.get_id());
 				
 	//			se tem peca na casa inicial
 				if (c.get_num_pecas() != 0 && t.get_casa_de_saida(ply.get_id()).is_casa_vaga(c.get_primeira_peca_player(ply))) {
@@ -222,7 +225,7 @@ class Jogo implements ObservadoIF {
 	}
 	
 
-//	Metodos get ----------------------------------------
+	//	GET ----------------------------------------
 	protected Peca get_last_moved_piece() {
 		return last_moved_peca;
 	}
@@ -236,8 +239,6 @@ class Jogo implements ObservadoIF {
 		return current_dado;
 	}
 
-	
-//	Metodos Auxiliares ---------------------------------
 	
 //	TODO remover==============================================
 	protected void print_map() {
@@ -266,7 +267,7 @@ class Jogo implements ObservadoIF {
 	}
 //	=============================================================
 	
-//	Implementacao da interface ObservadoIF ----------------
+	// Implementacao da interface ObservadoIF ----------------
 	
 	public void addObservador(ObservadorIF o) {
 		observadores.add(o);
@@ -281,7 +282,7 @@ class Jogo implements ObservadoIF {
 		}
 	}
 
-	public Object[] get() { return null;};
+	public Object[] get() { return null;
 	// TODO: tirar esse snipet pois agora a comunicao eh feita por meio 'Moment.java'
 //    public Object[] get() {
 //    	Tabuleiro tabuleiro = Tabuleiro.getInstance();
@@ -297,9 +298,9 @@ class Jogo implements ObservadoIF {
 //    	info[7] = get_turn();
 //    	
 //    	return info;
-//    }
+    }
     
-//	Singleton ------------------------------------------
+	//	Singleton ------------------------------------------
    	public static Jogo getInstance() {
 		if (instance == null) {
 			instance = new Jogo();

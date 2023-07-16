@@ -8,8 +8,10 @@ public class ControllerAPI {
 	private static ControllerAPI instance;
 	private ModalAPI modalInst = ModalAPI.getInstance();
 
-	int currentPlayer;
+	private int currentPlayer;
 	
+// ____________________________________________________________________________________________________________________________
+//
 	private ControllerAPI() {}
 	
 	
@@ -35,27 +37,27 @@ public class ControllerAPI {
 	    }
 	}
 
-	public void executaTurno(int indice_path, int indice_final_path, int die_val){
+	public void executaTurno(int pathIndex, int finalPathIndex, int diceVal){
 		modalInst.next_turn();
-		modalInst.set_dado(die_val);
+		modalInst.set_dado(diceVal);
 		
-		int index;
-		int list_id;
+		int listType;
+		int listIndex;		
 		
-		if(indice_final_path != -1){
-			index = indice_final_path;
-			list_id = 0;	// path
+		if(finalPathIndex != -1){
+			listIndex = finalPathIndex;
+			listType = 0;	// path
 		}
-		else if(indice_path != -1) {
-			index = indice_path;
-			list_id = 2 + currentPlayer;	// final_path ~ reta_final
+		else if(pathIndex != -1) {
+			listIndex = pathIndex;
+			listType = 2;	// finalPath ~ retaFinal
 		}
 		else {
-			index = -1;
-			list_id = 1;	// casa inicial
+			listIndex = -1;
+			listType = 1;	// casa inicial
 		}
 		
-		modalInst.set_positions(currentPlayer, 1, index, list_id);
+		modalInst.set_positions(currentPlayer, listIndex, listType);
 		
 		instance.nextPlayer();
 		

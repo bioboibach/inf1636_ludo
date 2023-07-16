@@ -77,8 +77,51 @@ class Player {
 		return null;
 	}
 	
-	protected Peca get_peca(int id) {
-		return pecas[id];
+	protected Peca get_peca(int listIndex, int listType) {
+		for(int i = 0; i < pecas.length; i++) {
+			if(pecas[i].get_current_casa().get_listIndex() == listIndex) {
+				
+				int tipoCasa = pecas[i].get_current_casa().get_tipo();
+				
+				switch (listType) {
+			    case 1: // casa inicial
+			        if (tipoCasa == 1 || tipoCasa == 2 || tipoCasa == 3 || tipoCasa == 6) {
+			            return pecas[i];
+			        }
+			        break;
+			    case 0: // casa do path
+			        if (tipoCasa == 2 || tipoCasa == 3 || tipoCasa == 6) {
+			            return pecas[i];
+			        }
+			        break;
+			    case 2: // casa do endPath
+			        if (tipoCasa == 4 || tipoCasa == 5) {
+			            return pecas[i];
+			        }
+			        break;
+				}
+
+			return null;
+
+				
+				
+				return pecas[i];
+				break;
+			}
+		}
+		return null;
+		
+//  	-> 0 = casa comum
+//		 * 		-> 1 = casa inicial
+//		 * 		-> 2 = casa de saida
+//		 * 		-> 3 = casa abrigo
+//		 * 		-> 4 = casa da reta final
+//		 * 		-> 5 = casa final
+//		 * 		-> 6 = casa de entrada
+		
+//		tipoCasa == 2 || tipoCasa == 3 || tipoCasa == 6 // casa do path
+//		tipoCasa == 1 // casa inicial
+//		tipoCasa == 4 || tipoCasa == 5 // casa do endPath
 	}
 	protected int get_id(){
 		return player_id;

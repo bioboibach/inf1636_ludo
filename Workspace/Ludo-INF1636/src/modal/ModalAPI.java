@@ -2,28 +2,29 @@ package modal;
 
 public class ModalAPI {
 	private static ModalAPI instance;
-	
 	private Jogo jogoInst = Jogo.getInstance();
 	
+// ____________________________________________________________________________________________________________________________
+//
 	private ModalAPI() {}
 	
-//	Operacoes -------------------------------------------
-	public void set_positions(int player_id, int peca_id, int index, int list_id) {
+	//	Operacoes -------------------------------------------
+	public void set_positions(int playerIndex, int listIndex, int listType) {
 //		TODO: DESCOBRIR O ID DA PECA AQUI
-		peca_id = 1;
+		int peca_id = 1;
 		
-		Peca p = jogoInst.get_player(player_id).get_peca(peca_id);
+		Peca p = jogoInst.get_player(playerIndex).get_peca(listIndex, listType);
 		Casa c = null;
-//		path
-		if (list_id == 0) {
-			c = Tabuleiro.getInstance().get_path_index(index);
+		//	path
+		if (listType == 0) {
+			c = Tabuleiro.getInstance().get_pathIndex(listIndex);
 		}
-//		casa inicial
-		else if (list_id == 1) {
-			c = Tabuleiro.getInstance().get_casas_iniciais_index(player_id);
+		//	casa inicial
+		else if (listType == 1) {
+			c = Tabuleiro.getInstance().get_casasIniciaisIndex(playerIndex);
 		}
 		else {
-			c = Tabuleiro.getInstance().get_reta_final_index(index, list_id - 2);
+			c = Tabuleiro.getInstance().get_retaFinalIndex(listIndex, listType - 2);
 		}
 		c.add_peca(p);
 		p.change_casa(c);
@@ -57,24 +58,24 @@ public class ModalAPI {
 		return Dado.getInstance().roll();
 	}
 
-//	Metodos get ----------------------------------------
+	//	GET ----------------------------------------
 	public Casa get_path_index(int index){
-		return Tabuleiro.getInstance().get_path_index(index);
+		return Tabuleiro.getInstance().get_pathIndex(index);
 	}
 	public Casa get_casas_iniciais_index(int index){
-		return Tabuleiro.getInstance().get_casas_iniciais_index(index);
+		return Tabuleiro.getInstance().get_casasIniciaisIndex(index);
 	}
 	public Casa get_reta_final_vermelho_index(int index){
-		return Tabuleiro.getInstance().get_reta_final_index(index, 0);
+		return Tabuleiro.getInstance().get_retaFinalIndex(index, 0);
 	}
 	public Casa get_reta_final_verde_index(int index){
-		return Tabuleiro.getInstance().get_reta_final_index(index, 1);
+		return Tabuleiro.getInstance().get_retaFinalIndex(index, 1);
 	}
 	public Casa get_reta_final_amarelo_index(int index){
-		return Tabuleiro.getInstance().get_reta_final_index(index, 2);
+		return Tabuleiro.getInstance().get_retaFinalIndex(index, 2);
 	}
 	public Casa get_reta_final_azul_index(int index){
-		return Tabuleiro.getInstance().get_reta_final_index(index, 3);
+		return Tabuleiro.getInstance().get_retaFinalIndex(index, 3);
 	}
 	
 	public int get_player_turn() {
@@ -88,7 +89,7 @@ public class ModalAPI {
 		return jogoInst.get_val_dado();
 	}
 	
-//	Singleton ------------------------------------------
+	//	Singleton ------------------------------------------
 	public static ModalAPI getInstance() {
 		if (instance == null) {
 			instance = new ModalAPI();

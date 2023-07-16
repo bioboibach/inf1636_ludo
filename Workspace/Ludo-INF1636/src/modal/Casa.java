@@ -21,8 +21,13 @@ class Casa {
 	private int tipo = 0;
 	private int cor = -1;
 	private int num_pecas = 0;
-	private Peca[] peca_arr = new Peca[4]; 
+	private Peca[] peca_arr = new Peca[4];
 	
+//	TODO: Implementar esse atributo
+//	Indice na lista em que ele esta (casasIniciais, path ou endpath)
+	private int listIndex; 
+	
+
 	protected Casa(int tipo, int id) {
 		this.tipo = tipo;
 		cor = id;		
@@ -114,7 +119,7 @@ class Casa {
 	}
 	
 	
-//	Metodos get ----------------------------------------
+	//	GET ----------------------------------------
 	protected int get_cor() {
 		return cor;
 	}
@@ -137,4 +142,8 @@ class Casa {
 		return null;
 	}
 	
+	
+	protected int get_listIndex() {
+		return listIndex;
+	}
 }

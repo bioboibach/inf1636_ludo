@@ -26,7 +26,7 @@ public class Moment {
 		int[] 	reta_final_verde 		= this.getRetaFinalVerde();
 		int[] 	reta_final_amarelo 		= this.getRetaFinalAmarelo();
 		int[] 	reta_final_azul 		= this.getRetaFinalAzul();
-		
+		int[][]	podio					= this.getPodio();
 		
 		// As casas_iniciais comecam cheias
 		for (int i = 0; i < casas_iniciais.length; i++) {
@@ -48,13 +48,17 @@ public class Moment {
 		    reta_final_azul[i] 		= 0;
 		}
 		
+		//	Valor default do podio para indicar que ele esta vazio
+		podio[0][0] = -1;
+		
 		this.setAllCasas(
 				casas_iniciais,
 				path,
 				reta_final_vermelho,
 				reta_final_verde,
 				reta_final_amarelo,
-				reta_final_azul
+				reta_final_azul,
+				podio
 				);
 		
 	}
@@ -85,13 +89,15 @@ public class Moment {
 			int[] reta_final_vermelho,
 			int[] reta_final_verde,
 			int[] reta_final_amarelo,
-			int[] reta_final_azul) {
+			int[] reta_final_azul,
+			int[][] podio) {
 		this.setCasasIniciais(casas_iniciais);
 		this.setPath(path);
 		this.setRetaFinalVermelho(reta_final_vermelho);
 		this.setRetaFinalVerde(reta_final_verde);
 		this.setRetaFinalAmarelo(reta_final_amarelo);
 		this.setRetaFinalAzul(reta_final_azul);
+		this.setPodio(podio);
 		
 	}
 

@@ -63,10 +63,10 @@ public class LudoBoard extends JPanel{
 		rf[5] = 3;		
 		
 		// Podio
-		podio[0][0] = 0; podio[0][1] = 10;
-		podio[1][0] = 2; podio[1][1] = 5;
-		podio[2][0] = 1; podio[2][1] = 8;
-		podio[3][0] = 3; podio[3][1] = 3;
+//		podio[0][0] = 0; podio[0][1] = 10;
+//		podio[1][0] = 2; podio[1][1] = 5;
+//		podio[2][0] = 1; podio[2][1] = 8;
+//		podio[3][0] = 3; podio[3][1] = 3;
 		
 		//Turno
 		turno  = 2;
@@ -85,7 +85,6 @@ public class LudoBoard extends JPanel{
 	//	------------------------------------------------------------------------------------------------
 
 	private LudoBoard() {
-		
 		//	Inicializando as arrarys de mapeamento
 		start_arr_casas_iniciais();
 		start_arr_path_index();
@@ -131,21 +130,20 @@ public class LudoBoard extends JPanel{
 		desenho.draw_msg_turno_atual		(g);
 
 		// Peoes
-		desenho.draw_peoes(g);
-		
-		// Podio
-//		TODO: Parar de pintar a caixa de dialogo do podio depois de clicar 'ok'
-//		TODO: Colocar isso no lugar certo
-//		if(podio != null) {
-//			desenho.showPodium();
-//		}
-		
+		desenho.draw_peoes(g);		
 	}
 
 	//	Atualizacao do Board apos a execucao de um turno
 	public void updateBoardInfo() {		
-		this.moment = Moment.getInstance();
+		this.moment = Moment.getInstance();	 
+		
 		repaint();
+		
+		// Podio
+		int[][] podio = Moment.getInstance().getPodio();
+		if(moment.getPodio()[0][0] != -1) {
+			menu.showPodium(podio);
+		}
 	}
 	
 

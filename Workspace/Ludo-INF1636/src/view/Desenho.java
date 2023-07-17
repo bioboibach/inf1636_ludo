@@ -383,20 +383,6 @@ public class Desenho {
 		}
 	}
 
-	
-	//	Exibe o podio
-	protected void showPodium() {
-	    int[][] podio = moment.getPodio();
-	    
-	    StringBuilder podiumMessage = new StringBuilder("Podio:\n");
-	    for (int i = 0; i < podio.length; i++) {
-	        int playerNumber = podio[i][0];
-	        int score = podio[i][1];
-	        podiumMessage.append("Jogador	 ").append(playerNumber).append(": ").append(score).append("\n");
-	    }
-	    
-	    JOptionPane.showMessageDialog(null, podiumMessage.toString());
-	}
 
 	
 	// Singelton ------------------------------------------

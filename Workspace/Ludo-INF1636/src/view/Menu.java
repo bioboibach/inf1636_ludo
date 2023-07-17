@@ -14,10 +14,12 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import controller.ControllerAPI;
+import controller.Moment;
 
 
 public class Menu{
@@ -231,6 +233,23 @@ public class Menu{
         return mouseAdapter;
 	}
 	
+	//	Exibe o podio
+	protected void showPodium(int[][] podio) {
+	    String[] players = {"Vermelho", "Verde", "Amarelo", "Azul"};
+	    
+	    StringBuilder podiumMessage = new StringBuilder("Podio:\n");
+	    for (int i = 0; i < podio.length; i++) {
+	        int playerNumber = podio[i][0];
+	        int score = podio[i][1];
+	        podiumMessage.append("#" + (i + 1) + " Jogador	 ").append(players[playerNumber]).append(": ").append(score).append("\n");
+	    }
+	    
+	    //	Exibe o icone do trofeu
+	    ImageIcon icon = new ImageIcon("res/images/trophy.png");
+	    
+	    JOptionPane.showMessageDialog(null, podiumMessage.toString(), "Podium", JOptionPane.INFORMATION_MESSAGE, icon);
+	}
+
 	
 	//	Operacoes -------------------------------------------
 		private void newGame(){

@@ -10,14 +10,14 @@ class Jogo implements ObservadoIF {
 	List<ObservadorIF> observadores = new ArrayList<ObservadorIF>();
 
 	private Player players[] = new Player[4];
-	private Tabuleiro t;
+	private Tabuleiro board;
 	private Dado d;
 	
 	private int 	currentPeca;
 	private Peca 	lastMovedPeca 	= null;
 	private boolean captureFlag 	= false;
 	private int 	currentPlayer 	= 0;
-	private int 	currentDice 	= 5;
+	private int 	currentDice 	= -1;
 	private int 	qtd_6_rolados 	= 0;
 	
 	
@@ -40,7 +40,7 @@ class Jogo implements ObservadoIF {
 		}
 	}
 	protected void start_board() {
-		t = Tabuleiro.getInstance();
+		board = Tabuleiro.getInstance();
 	}
 	protected void start_dado() {
 		d = Dado.getInstance();
@@ -53,8 +53,8 @@ class Jogo implements ObservadoIF {
 //		Inicializa as casas iniciais de cada jogador com referencias as casas inicias respectivas no tabuleiro
 		for (int count = 0; count < 4; count++) {
 			for (int i = 0; i < 4; i++) {
-				get_player(count).get_peca(i).change_casa(t.get_casasIniciaisIndex(count));
-				t.get_casasIniciaisIndex(count).add_peca(get_player(count).get_peca(i));
+				get_player(count).get_peca(i).change_casa(board.get_casasIniciaisIndex(count));
+				board.get_casasIniciaisIndex(count).add_peca(get_player(count).get_peca(i));
 			}
 		}
 //		Move a primeira peca vermelha para a casa de saida
@@ -65,30 +65,49 @@ class Jogo implements ObservadoIF {
 	}
 	
 	//	Operacoes -------------------------------------------
+	protected void initializeTurn(int pathIndex, int finalPathIndex, int diceVal) {
+		int listIndex;		
+		int listType;	// 0 -> path, 1 -> casasIniciais, 2 -> finalPath (~ retaFinal)
+		
+		if(finalPathIndex != -1){
+			listIndex = finalPathIndex;
+			listType = 0;
+		}
+		else if(pathIndex != -1) {
+			listIndex = pathIndex;
+			listType = 2;	
+		}
+		else {
+			listIndex = -1;
+			listType = 1;	
+		}
+		
+		set_dice(diceVal);
+//		modalInst.setCurrentPeca(listIndex, listType);
+		
+		turn();
+	}
+	
 	protected void turn() {
-		currentDice = d.roll();	//	TODO: ajeitar porque o dado eh rolado na view
 		Player ply = players[currentPlayer];
 		Peca p;
 		Casa c;
 		
-		// TODO
-		// Notify observer a partir do uso dos dados
 		System.out.println("player " + currentPlayer + " turn");
 		System.out.println("dado = " + currentDice);
 		print_map();
 		
 		switch(currentDice) {
 			case 5:
-
-				c = t.get_casasIniciaisIndex(ply.get_id());
+				c = board.get_casasIniciaisIndex(ply.get_id());
 				
-	//			se tem peca na casa inicial
-				if (c.get_num_pecas() != 0 && t.get_casaDeSaida(ply.get_id()).is_casa_vaga(c.get_primeira_peca_player(ply))) {
+				//	verifica se tem peca na casa inicial
+				if (c.get_num_pecas() != 0 && board.get_casaDeSaida(ply.get_id()).is_casa_vaga(c.get_primeira_peca_player(ply))) {
 					p = c.get_primeira_peca_player(ply);
 					p.move_to_casa_de_saida();
 					set_lastMovedPeca(p);
 				}
-	//			se pode mover alguma coisa
+				// verifica se pode mover alguma coisa
 				else if (ply.can_move(currentDice)) {
 					p = ply.pick_peca(currentDice);
 					p.move(currentDice);
@@ -108,7 +127,7 @@ class Jogo implements ObservadoIF {
 					return;
 				}
 				
-	//			se player tem barreira
+				// verifica se player tem barreira
 				else if (ply.get_barrier() != null){
 					p = ply.get_barrier();
 					p.move(currentDice);
@@ -159,15 +178,15 @@ class Jogo implements ObservadoIF {
 	}
 	
 	protected void new_game() {
-		t.clear_tabuleiro();
+		board.clear_tabuleiro();
 		start_game();
 	}
 
 	protected int check_EndGameCondition() {
-		if 		(t.get_casaFinal(0).get_num_pecas() == 4) return 0;
-		else if	(t.get_casaFinal(1).get_num_pecas() == 4) return 1;
-		else if	(t.get_casaFinal(2).get_num_pecas() == 4) return 2;
-		else if	(t.get_casaFinal(3).get_num_pecas() == 4) return 3;
+		if 		(board.get_casaFinal(0).get_num_pecas() == 4) return 0;
+		else if	(board.get_casaFinal(1).get_num_pecas() == 4) return 1;
+		else if	(board.get_casaFinal(2).get_num_pecas() == 4) return 2;
+		else if	(board.get_casaFinal(3).get_num_pecas() == 4) return 3;
 		return -1;
 	}
 	protected void end_game() {
@@ -205,7 +224,7 @@ class Jogo implements ObservadoIF {
 	protected void set_turn(int t) {
 		currentPlayer = t;
 	}
-	protected void set_dado(int t) {
+	protected void set_dice(int t) {
 		currentDice = t;
 	}
 	
@@ -233,7 +252,7 @@ class Jogo implements ObservadoIF {
 	protected int 		get_turn			() {
 		return currentPlayer;
 	}
-	protected int 		get_diceVal			() {
+	protected int 		get_currentDice		() {
 		return currentDice;
 	}
 
@@ -283,12 +302,12 @@ class Jogo implements ObservadoIF {
 
 //	TODO remover==============================================
 	protected void print_map() {
-		ArrayList<Casa> map = t.get_path();
-		ArrayList<Casa> r1 = t.get_rf_vermelho();
-		ArrayList<Casa> r2= t.get_rf_verde();
-		ArrayList<Casa> r3 = t.get_rf_amarelo();
-		ArrayList<Casa> r4 = t.get_rf_azul();
-		ArrayList<Casa> ini = t.get_casas_iniciais();
+		ArrayList<Casa> map = board.get_path();
+		ArrayList<Casa> r1 = board.get_rf_vermelho();
+		ArrayList<Casa> r2= board.get_rf_verde();
+		ArrayList<Casa> r3 = board.get_rf_amarelo();
+		ArrayList<Casa> r4 = board.get_rf_azul();
+		ArrayList<Casa> ini = board.get_casas_iniciais();
 		
 		for (int i = 0; i < 4; i++) {
 		System.out.print(ini.get(i).get_num_pecas() + "\t\t");

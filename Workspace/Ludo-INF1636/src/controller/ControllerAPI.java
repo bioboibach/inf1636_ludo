@@ -37,32 +37,9 @@ public class ControllerAPI {
 	    }
 	}
 
-	public void executaTurno(int pathIndex, int finalPathIndex, int diceVal){
-		modalInst.set_dado(diceVal);
-		
-		int listType;
-		int listIndex;		
-		
-		if(finalPathIndex != -1){
-			listIndex = finalPathIndex;
-			listType = 0;	// path
-		}
-		else if(pathIndex != -1) {
-			listIndex = pathIndex;
-			listType = 2;	// finalPath ~ retaFinal
-		}
-		else {
-			listIndex = -1;
-			listType = 1;	// casa inicial
-		}
-		
-		modalInst.set_dado(diceVal);
-//		modalInst.set
-//		modalInst.set_positions(currentPlayer, listIndex, listType);
-		
+	public void executaTurno(int pathIndex, int finalPathIndex, int diceVal){		
 		instance.nextPlayer();
-		
-		modalInst.run_turn();
+		modalInst.run_turn(pathIndex, finalPathIndex, diceVal);
 	}
 	
 	public int roll() {

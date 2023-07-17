@@ -8,38 +8,12 @@ public class ModalAPI {
 //
 	private ModalAPI() {}
 	
-	//	Operacoes -------------------------------------------
-	public void set_positions(int playerIndex, int listIndex, int listType) {
-		Peca p = jogoInst.get_player(playerIndex).get_peca(listIndex, listType);
-		Casa c = null;
-		
-		if (listType == 0) {		//	path
-			c = tabuleiroInst.get_pathIndex(listIndex);
-		}
-		else if (listType == 1) {	//	casa inicial
-			c = tabuleiroInst.get_casasIniciaisIndex(playerIndex);
-		}
-		else {						//	final path
-			c = tabuleiroInst.get_retaFinalIndex(listIndex, playerIndex);
-		}
-		c.add_peca(p);
-		p.change_casa(c);
-		
-
-		jogoInst.set_currentPeca(jogoInst.get_player(p.get_cor()), p);
-		notify();
-	}
-	
-	public void run_turn() {
+	//	Operacoes -------------------------------------------	
+	public void run_turn(int pathIndex, int finalPathIndex, int diceVal) {
+		jogoInst.initializeTurn(pathIndex, finalPathIndex, diceVal);
 		jogoInst.turn();
 	}
 
-	public void set_turn(int t) {
-		jogoInst.set_turn(t);
-	}
-	public void set_dado(int t) {
-		jogoInst.set_dado(t);
-	}
 	public void clear_tabuleiro() {
 		Tabuleiro.getInstance().clear_tabuleiro();
 	}
@@ -51,6 +25,36 @@ public class ModalAPI {
 		return Dado.getInstance().roll();
 	}
 
+	//	SET ----------------------------------------
+//	public void set_positions(int playerIndex, int listIndex, int listType) {
+//		Peca p = jogoInst.get_player(playerIndex).get_peca(listIndex, listType);
+//		Casa c = null;
+//		
+//		if (listType == 0) {		//	path
+//			c = tabuleiroInst.get_pathIndex(listIndex);
+//		}
+//		else if (listType == 1) {	//	casa inicial
+//			c = tabuleiroInst.get_casasIniciaisIndex(playerIndex);
+//		}
+//		else {						//	final path
+//			c = tabuleiroInst.get_retaFinalIndex(listIndex, playerIndex);
+//		}
+//		c.add_peca(p);
+//		p.change_casa(c);
+//		
+//
+//		jogoInst.set_currentPeca(jogoInst.get_player(p.get_cor()), p);
+//		notify();
+//	}
+
+	public void set_turn(int t) {
+		jogoInst.set_turn(t);
+	}
+	public void set_dice(int t) {
+		jogoInst.set_dice(t);
+	}
+
+	
 	//	GET ----------------------------------------
 	public Casa get_path_index(int index){
 		return Tabuleiro.getInstance().get_pathIndex(index);
@@ -58,19 +62,19 @@ public class ModalAPI {
 	public Casa get_casas_iniciais_index(int index){
 		return Tabuleiro.getInstance().get_casasIniciaisIndex(index);
 	}
-//	public Casa get_reta_final_vermelho_index(int index){
-//		return Tabuleiro.getInstance().get_retaFinalIndex(index, 0);
-//	}
-//	public Casa get_reta_final_verde_index(int index){
-//		return Tabuleiro.getInstance().get_retaFinalIndex(index, 1);
-//	}
-//	public Casa get_reta_final_amarelo_index(int index){
-//		return Tabuleiro.getInstance().get_retaFinalIndex(index, 2);
-//	}
-//	public Casa get_reta_final_azul_index(int index){
-//		return Tabuleiro.getInstance().get_retaFinalIndex(index, 3);
-//	}
-//	
+	public Casa get_reta_final_vermelho_index(int index){
+		return Tabuleiro.getInstance().get_retaFinalIndex(index, 0);
+	}
+	public Casa get_reta_final_verde_index(int index){
+		return Tabuleiro.getInstance().get_retaFinalIndex(index, 1);
+	}
+	public Casa get_reta_final_amarelo_index(int index){
+		return Tabuleiro.getInstance().get_retaFinalIndex(index, 2);
+	}
+	public Casa get_reta_final_azul_index(int index){
+		return Tabuleiro.getInstance().get_retaFinalIndex(index, 3);
+	}
+	
 	public int get_player_turn() {
 		return jogoInst.get_turn(); 
 	}
@@ -79,7 +83,7 @@ public class ModalAPI {
 		return Tabuleiro.getInstance().get_currentCasaIndex(p);
 	}
 	public int get_roll() {
-		return jogoInst.get_diceVal();
+		return jogoInst.get_currentDice();
 	}
 	
 	//	Singleton ------------------------------------------

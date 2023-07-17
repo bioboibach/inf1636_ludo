@@ -13,7 +13,7 @@ class Peca {
 		Tabuleiro t = Tabuleiro.getInstance();
 		Casa c;
 		if (t.is_in_path(this)) {
-			c = t.get_destination(t.get_path_current_casa(this), die_val, this, false);
+			c = t.get_destination(t.get_pathCurrentCasa(this), die_val, this, false);
 
 			if (c.get_num_pecas() > 0) {
 				int cor;
@@ -31,8 +31,8 @@ class Peca {
 			current_casa = c;
 			current_casa.add_peca(this);
 		}
-		else if (t.is_in_reta_final(this)) {
-			c = t.get_destination(t.get_reta_final_current_casa(this), die_val, this, true);
+		else if (t.is_in_retaFinal(this)) {
+			c = t.get_destination(t.get_retaFinalCurrentCasa(this), die_val, this, true);
 			current_casa.remove_peca(this);
 			current_casa = c;
 			current_casa.add_peca(this);
@@ -103,7 +103,7 @@ class Peca {
 	}
 	protected void move_to_casa_de_saida() {
 		current_casa.remove_peca(this);
-		current_casa = Tabuleiro.getInstance().get_casa_de_saida(this.get_cor());
+		current_casa = Tabuleiro.getInstance().get_casaDeSaida(this.get_cor());
 		current_casa.add_peca(this);
 	}
 	protected void move_to_reta_final(int index) {
@@ -121,14 +121,14 @@ class Peca {
 		Tabuleiro t = Tabuleiro.getInstance();
 		Casa c;
 		int[] i = new int[2];
-		i = t.get_index_current_casa(this);
+		i = t.get_currentCasaIndex(this);
 		
 		if (t.is_in_path(this)) {
 			return t.check_path(i[0], val_die, this);
 		}
 		
 		else if (current_casa.is_casa_inicial()) {
-			c = t.get_casa_de_saida(id_time);
+			c = t.get_casaDeSaida(id_time);
 			return c.is_casa_vaga(this);
 		}
 		
@@ -147,7 +147,7 @@ class Peca {
 	}
 
 //	Metodos get ----------------------------------------
-	protected Casa get_current_casa() {
+	protected Casa get_currentCasa() {
 		return current_casa;
 	}
 	protected int get_cor() {

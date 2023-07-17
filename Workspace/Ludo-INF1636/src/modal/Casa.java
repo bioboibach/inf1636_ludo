@@ -90,7 +90,7 @@ class Casa {
 		if (is_casa_final()) return true;
 		
 //		se ta na reta final e vai para outra casa da reta final (nao tirou o numero exato para chegar no final)
-		else if (p.get_current_casa().is_reta_final() && this.is_reta_final()) return false;
+		else if (p.get_currentCasa().is_reta_final() && this.is_reta_final()) return false;
 		
 //		se tem 2 pecas na casa
 		else if(num_pecas == 2) return false;

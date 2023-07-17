@@ -20,7 +20,7 @@ class Tabuleiro {
 		start_casas();
 	}
 
-//	Inicializacao --------------------------------------
+	//	Inicializacao --------------------------------------
 	protected void start_casas() {
 		int count;
 		
@@ -82,40 +82,40 @@ class Tabuleiro {
 		for (i = 0; i < 4; i++) {
 			for (j = 0; j < 4; j++) {
 				p = jg.get_player(i).get_peca(j);
-				c = p.get_current_casa();
+				c = p.get_currentCasa();
 				c.remove_peca(p);
 				p.change_casa(null);
 			}
 		}
 	}
 	
-//	Verificacoes ---------------------------------------
-//	retorna true se a peca p ta dentro da path
+	//	Verificacoes ---------------------------------------
+	//	retorna true se a peca p ta dentro da path
 	protected boolean is_in_path(Peca p) {
-		if (path.indexOf(p.get_current_casa()) == -1) return false;
+		if (path.indexOf(p.get_currentCasa()) == -1) return false;
 		return true;
 	}
-	protected boolean is_in_reta_final(Peca p) {
+	protected boolean is_in_retaFinal(Peca p) {
 		if (p.get_cor() == 0) {
-			if (retaFinalVermelho.indexOf(p.get_current_casa()) == -1) return false;
+			if (retaFinalVermelho.indexOf(p.get_currentCasa()) == -1) return false;
 			else return true;
 		}
 		else if (p.get_cor() == 1) {
-			if (retaFinalVerde.indexOf(p.get_current_casa()) == -1) return false;
+			if (retaFinalVerde.indexOf(p.get_currentCasa()) == -1) return false;
 			else return true;
 		}
 		else if (p.get_cor() == 2) {
-			if (retaFinalAmarelo.indexOf(p.get_current_casa()) == -1) return false;
+			if (retaFinalAmarelo.indexOf(p.get_currentCasa()) == -1) return false;
 			else return true;
 		}
 		else if (p.get_cor() == 3) {
-			if (retaFinalAzul.indexOf(p.get_current_casa()) == -1) return false;
+			if (retaFinalAzul.indexOf(p.get_currentCasa()) == -1) return false;
 			else return true;
 		}
 		return true;
 	}
 	
-//	verifica o caminho e a casa de destino
+	//	verifica o caminho e a casa de destino
 	protected boolean check_path(int index, int num_moves, Peca p){
 		Casa c; 
 		if (this.check_for_barrier(index, num_moves, p)) return false;
@@ -123,9 +123,9 @@ class Tabuleiro {
 		return c.is_casa_vaga(p);
 	}
 	
-//	return true se tem barreira no caminho ate casa de entrada da peca ou ate fim do movimento
+	//	return true se tem barreira no caminho ate casa de entrada da peca ou ate fim do movimento
 	protected boolean check_for_barrier(int index, int num_moves, Peca p){
-		Casa c = p.get_current_casa();
+		Casa c = p.get_currentCasa();
 		int count;
 		for (count = 1; count < num_moves; count++) {
 			c = path.get((index + count)%52);
@@ -135,9 +135,9 @@ class Tabuleiro {
 		return false;
 	}
 	
-//	Metodos get ----------------------------------------
+	//	GET ----------------------------------------
 	protected Casa get_destination(int index, int num_moves, Peca p, boolean is_in_reta_final){
-		Casa c = p.get_current_casa();
+		Casa c = p.get_currentCasa();
 		int current_index = index;
 		
 		if(is_in_path(p)) {
@@ -152,16 +152,16 @@ class Tabuleiro {
 			}
 		}
 		
-//		se n ta na path
+		//	se nao esta na path
 		else if (is_in_reta_final){
 			if (index + num_moves > 5) return null;
 			else c = get_retaFinalIndex(index + num_moves, p.get_cor());
 		}
-		else c = get_casa_de_saida(p.get_cor());
+		else c = get_casaDeSaida(p.get_cor());
 		return c;
 	}
 	
-	protected Casa get_casa_de_saida(int player_id) {
+	protected Casa get_casaDeSaida(int player_id) {
 		if (player_id == 0) return get_pathIndex(0);
 		else if (player_id == 1) return get_pathIndex(13);
 		else if (player_id == 2) return get_pathIndex(26);
@@ -196,63 +196,63 @@ class Tabuleiro {
 	protected Casa get_casasIniciaisIndex(int i) {
 		return casasIniciais.get(i);
 	}
-	protected Casa get_retaFinalIndex(int i, int cor) {
-		if (cor == 0) return retaFinalVermelho.get(i);
-		else if (cor == 1) return retaFinalVerde.get(i);
-		else if (cor == 2) return retaFinalAmarelo.get(i);
-		else if (cor == 3) return retaFinalAzul.get(i);
+	protected Casa get_retaFinalIndex(int i, int player) {
+		if (player == 0) return retaFinalVermelho.get(i);
+		else if (player == 1) return retaFinalVerde.get(i);
+		else if (player == 2) return retaFinalAmarelo.get(i);
+		else if (player == 3) return retaFinalAzul.get(i);
 		return null;
 	}
 
-	protected Casa get_casa_final(int player_id) {
+	protected Casa get_casaFinal(int player_id) {
 		if (player_id == 0) return retaFinalVermelho.get(5);
 		else if (player_id == 1) return retaFinalVerde.get(5);
 		else if (player_id == 2) return retaFinalAmarelo.get(5);
 		else return retaFinalAzul.get(5);
 	}
 	
-	protected int get_path_current_casa(Peca p) {
-		return path.indexOf(p.get_current_casa());
+	protected int get_pathCurrentCasa(Peca p) {
+		return path.indexOf(p.get_currentCasa());
 	}
-	protected int get_reta_final_current_casa(Peca p) {
-		if (p.get_cor() == 0) return retaFinalVermelho.indexOf(p.get_current_casa());
-		else if (p.get_cor() == 1) return retaFinalVerde.indexOf(p.get_current_casa());
-		else if (p.get_cor() == 2) return retaFinalAmarelo.indexOf(p.get_current_casa());
-		else return retaFinalAzul.indexOf(p.get_current_casa());
+	protected int get_retaFinalCurrentCasa(Peca p) {
+		if (p.get_cor() == 0) return retaFinalVermelho.indexOf(p.get_currentCasa());
+		else if (p.get_cor() == 1) return retaFinalVerde.indexOf(p.get_currentCasa());
+		else if (p.get_cor() == 2) return retaFinalAmarelo.indexOf(p.get_currentCasa());
+		else return retaFinalAzul.indexOf(p.get_currentCasa());
 	}
 
-	protected int[] get_index_current_casa(Peca p) {
+	protected int[] get_currentCasaIndex(Peca p) {
 		int[] i = new int[2];
-		if((i[0] = get_path_current_casa(p)) != -1) {
+		if((i[0] = get_pathCurrentCasa(p)) != -1) {
 			i[1] = 0;
 			return i;
 		}
-		else if ((i[0] = casasIniciais.indexOf(p.get_current_casa())) != -1) {
+		else if ((i[0] = casasIniciais.indexOf(p.get_currentCasa())) != -1) {
 			i[1] = 1;
 			return i;
 		}
-		else if ((i[0] = retaFinalVermelho.indexOf(p.get_current_casa())) != -1) {
+		else if ((i[0] = retaFinalVermelho.indexOf(p.get_currentCasa())) != -1) {
 			i[1] = 2;
 			return i;
 		}
-		else if ((i[0] = retaFinalVerde.indexOf(p.get_current_casa())) != -1) {
+		else if ((i[0] = retaFinalVerde.indexOf(p.get_currentCasa())) != -1) {
 			i[1] = 3;
 			return i;
 		}
-		else if ((i[0] = retaFinalAmarelo.indexOf(p.get_current_casa())) != -1) {
+		else if ((i[0] = retaFinalAmarelo.indexOf(p.get_currentCasa())) != -1) {
 			i[1] = 4;
 			return i;
 		}
 		else {
-			i[0] = retaFinalAzul.indexOf(p.get_current_casa());
+			i[0] = retaFinalAzul.indexOf(p.get_currentCasa());
 			i[1] = 5;
 			return i;
 		}
 	}
 
-//	Metodos get para o Observador -----------------------------------
-	protected int[] getObs_casas_iniciais(){
-//		obs_casas_iniciais[0] -> qtd de peoes nas casas iniciais do vermelho...
+	//	GET para o Observador -----------------------------------
+	protected int[] getObs_casasIniciais(){
+		//	obs_casas_iniciais[0] -> qtd de peoes nas casas iniciais do vermelho...
 		int[] obs_casas_iniciais = new int[4];
 		
 		for (int i = 0; i < casasIniciais.size(); i++) {
@@ -263,9 +263,9 @@ class Tabuleiro {
 		return obs_casas_iniciais;
 	}	
 	protected int[][] getObs_path(){
-//    	Cada casa de path eh representada por um int[2]
-//    	Obs: int[x][0] -> peao principal (fica embaixo no abrigo)
-//    	Obs: int[x][1] -> peao secundario (fica em cima no abrigo)
+    	//	Cada casa de path eh representada por um int[2]
+    	//	Obs: int[x][0] -> peao principal (fica embaixo no abrigo)
+    	//	Obs: int[x][1] -> peao secundario (fica em cima no abrigo)
     	int[][] obs_path = new int[52][2];
     	
     	for (int i = 0; i < path.size(); i++) {
@@ -291,7 +291,7 @@ class Tabuleiro {
 	}
 	
 	protected int[] getObs_rf_vermelho(){
-//		obs_rf_vermelho[0] -> qtd de peoes na primeira casa da reta final do vermelho
+		//	obs_rf_vermelho[0] -> qtd de peoes na primeira casa da reta final do vermelho
 		int[] obs_rf_vermelho = new int[6];
 		for (int i = 0; i < retaFinalVermelho.size(); i++) {
     	    Casa casa = retaFinalVermelho.get(i);
@@ -300,7 +300,7 @@ class Tabuleiro {
 		return obs_rf_vermelho;
 	}
 	protected int[] getObs_rf_verde(){
-//		obs_rf_verde[0] -> qtd de peoes na primeira casa da reta final do verde
+		//	obs_rf_verde[0] -> qtd de peoes na primeira casa da reta final do verde
 		int[] obs_rf_verde = new int[6];
 		for (int i = 0; i < retaFinalVerde.size(); i++) {
     	    Casa casa = retaFinalVerde.get(i);
@@ -309,7 +309,7 @@ class Tabuleiro {
 		return obs_rf_verde;
 	}
 	protected int[] getObs_rf_amarelo(){
-//		obs_rf_amarelo[0] -> qtd de peoes na primeira casa da reta final do amarelo
+		//	obs_rf_amarelo[0] -> qtd de peoes na primeira casa da reta final do amarelo
 		int[] obs_rf_amarelo = new int[6];
 		for (int i = 0; i < retaFinalAmarelo.size(); i++) {
     	    Casa casa = retaFinalAmarelo.get(i);
@@ -319,7 +319,7 @@ class Tabuleiro {
 		return obs_rf_amarelo;
 	}
 	protected int[] getObs_rf_azul(){
-//		obs_rf_azul[0] -> qtd de peoes na primeira casa da reta final do azul
+		//	obs_rf_azul[0] -> qtd de peoes na primeira casa da reta final do azul
 		int[] obs_rf_azul = new int[6];
 		for (int i = 0; i < retaFinalAmarelo.size(); i++) {
     	    Casa casa = retaFinalAmarelo.get(i);

@@ -20,14 +20,14 @@ class Load_game {
 	}
 
 	protected void load() throws IOException {
-		ModalAPI m = ModalAPI.getInstance();
+		ModalAPI modalAPI = ModalAPI.getInstance();
 		JFileChooser f_chooser = new JFileChooser();
 
 		int list_index, index;
 
 		int b = f_chooser.showOpenDialog(null);
 		if (b == JFileChooser.APPROVE_OPTION) {
-			m.clear_tabuleiro();
+			modalAPI.clear_tabuleiro();
 			File save_file = f_chooser.getSelectedFile();
 			String filepath = save_file.getPath();
 			Scanner s = new Scanner(new BufferedReader(new FileReader(filepath)));
@@ -39,10 +39,11 @@ class Load_game {
 						index = Integer.parseInt(s.next());
 						list_index = Integer.parseInt(s.next());
 
-						m.set_positions(i, j, index, list_index);
+//						TODO: adaptar essa linha para o novo set_positions()
+//						modalAPI.set_positions(i, j, index, list_index);
 					}
 				}
-				m.set_turn(Integer.parseInt(s.next()));
+				modalAPI.set_turn(Integer.parseInt(s.next()));
 				s.close();
 				System.out.println("Jogo Carregado com sucesso");
 			} catch (Exception e) {

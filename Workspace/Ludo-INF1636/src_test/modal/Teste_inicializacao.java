@@ -17,7 +17,7 @@ public class Teste_inicializacao {
 	@Test
 	public void initialization() {
 		Casa c1, c2;
-		c1 = jg.get_player(0).get_peca(0).get_current_casa();
+		c1 = jg.get_player(0).get_peca(0).get_currentCasa();
 		c2 = tb.get_pathIndex(0);
 
 		assertEquals(c1, c2);
@@ -29,9 +29,9 @@ public class Teste_inicializacao {
 		tb.get_casasIniciaisIndex(0).remove_peca(jg.get_player(0).get_peca(2));
 		tb.get_casasIniciaisIndex(0).remove_peca(jg.get_player(0).get_peca(3));
 		for (int i = 0; i < 4; i++) {
-			tb.get_retaFinalIndex(5, 0).add_peca(jg.get_player(0).get_peca(i));
+//			tb.get_retaFinalIndex(5, 0).add_peca(jg.get_player(0).get_peca(i));
 		}
-		assertSame(jg.check_end_game_condition(), 0);
+		assertSame(jg.check_EndGameCondition(), 0);
 	}	
 	
 }

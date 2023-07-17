@@ -38,7 +38,6 @@ public class ControllerAPI {
 	}
 
 	public void executaTurno(int pathIndex, int finalPathIndex, int diceVal){
-		modalInst.next_turn();
 		modalInst.set_dado(diceVal);
 		
 		int listType;
@@ -57,7 +56,9 @@ public class ControllerAPI {
 			listType = 1;	// casa inicial
 		}
 		
-		modalInst.set_positions(currentPlayer, listIndex, listType);
+		modalInst.set_dado(diceVal);
+//		modalInst.set
+//		modalInst.set_positions(currentPlayer, listIndex, listType);
 		
 		instance.nextPlayer();
 		

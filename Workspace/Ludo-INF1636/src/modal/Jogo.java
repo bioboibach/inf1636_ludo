@@ -13,12 +13,12 @@ class Jogo implements ObservadoIF {
 	private Tabuleiro t;
 	private Dado d;
 	
-	private int 	current_peca;
-	private Peca 	last_moved_peca 	= null;
-	private boolean capture_flag 		= false;
-	private int 	current_player 		= 0;
-	private int 	current_dado 		= 5;
-	private int 	qtd_6_rolados 		= 0;
+	private int 	currentPeca;
+	private Peca 	lastMovedPeca 	= null;
+	private boolean captureFlag 	= false;
+	private int 	currentPlayer 	= 0;
+	private int 	currentDice 	= 5;
+	private int 	qtd_6_rolados 	= 0;
 	
 	
 // ____________________________________________________________________________________________________________________________
@@ -48,7 +48,7 @@ class Jogo implements ObservadoIF {
 	protected void start_game() {
 		update_capture(false);
 		set_turn(0);
-		current_dado = 5;
+		currentDice = 5;
 		qtd_6_rolados = 0;
 //		Inicializa as casas iniciais de cada jogador com referencias as casas inicias respectivas no tabuleiro
 		for (int count = 0; count < 4; count++) {
@@ -60,43 +60,39 @@ class Jogo implements ObservadoIF {
 //		Move a primeira peca vermelha para a casa de saida
 		Peca p = players[0].get_peca(0);
 		p.move_to_casa_de_saida();
-		update_last_moved_peca(p);
+		set_lastMovedPeca(p);
 		end_turn();
 	}
-	protected void new_game() {
-		t.clear_tabuleiro();
-		start_game();
-	}
-
+	
 	//	Operacoes -------------------------------------------
 	protected void turn() {
-		current_dado = d.roll();
-		Player ply = players[current_player];
+		currentDice = d.roll();	//	TODO: ajeitar porque o dado eh rolado na view
+		Player ply = players[currentPlayer];
 		Peca p;
 		Casa c;
 		
 		// TODO
 		// Notify observer a partir do uso dos dados
-		System.out.println("player " + current_player + " turn");
-		System.out.println("dado = " + current_dado);
+		System.out.println("player " + currentPlayer + " turn");
+		System.out.println("dado = " + currentDice);
 		print_map();
 		
-		switch(current_dado) {
+		switch(currentDice) {
 			case 5:
 
 				c = t.get_casasIniciaisIndex(ply.get_id());
 				
 	//			se tem peca na casa inicial
-				if (c.get_num_pecas() != 0 && t.get_casa_de_saida(ply.get_id()).is_casa_vaga(c.get_primeira_peca_player(ply))) {
+				if (c.get_num_pecas() != 0 && t.get_casaDeSaida(ply.get_id()).is_casa_vaga(c.get_primeira_peca_player(ply))) {
 					p = c.get_primeira_peca_player(ply);
 					p.move_to_casa_de_saida();
-					update_last_moved_peca(p);
+					set_lastMovedPeca(p);
 				}
 	//			se pode mover alguma coisa
-				else if (ply.can_move(current_dado)) {
-					p = ply.pick_peca(current_dado);
-					p.move(current_dado);
-					update_last_moved_peca(p);
+				else if (ply.can_move(currentDice)) {
+					p = ply.pick_peca(currentDice);
+					p.move(currentDice);
+					set_lastMovedPeca(p);
 				}
 				break;
 				
@@ -104,9 +100,9 @@ class Jogo implements ObservadoIF {
 
 				qtd_6_rolados++;
 				if (qtd_6_rolados == 3) {
-					c = last_moved_peca.get_current_casa();
+					c = lastMovedPeca.get_currentCasa();
 					if(c.get_tipo() != 5 && c.get_tipo() != 4) {
-						last_moved_peca.move_to_base();
+						lastMovedPeca.move_to_base();
 					}
 					end_turn();
 					return;
@@ -115,82 +111,75 @@ class Jogo implements ObservadoIF {
 	//			se player tem barreira
 				else if (ply.get_barrier() != null){
 					p = ply.get_barrier();
-					p.move(current_dado);
-					update_last_moved_peca(p);
+					p.move(currentDice);
+					set_lastMovedPeca(p);
 				}
 				
-				else if (ply.can_move(current_dado)){
-					p = ply.pick_peca(current_dado);
-					p.move(current_dado);
-					update_last_moved_peca(p);
+				else if (ply.can_move(currentDice)){
+					p = ply.pick_peca(currentDice);
+					p.move(currentDice);
+					set_lastMovedPeca(p);
 				}
 				break;
 	
 			default:
 
-				if (ply.can_move(current_dado)) {
-					p = ply.pick_peca(current_dado);
-					p.move(current_dado);
-					update_current_piece(ply, p);
-					update_last_moved_peca(p);
+				if (ply.can_move(currentDice)) {
+					p = ply.pick_peca(currentDice);
+					p.move(currentDice);
+					set_currentPeca(ply, p);
+					set_lastMovedPeca(p);
 				}
 		}
 		
-		while (last_moved_peca.get_current_casa().is_casa_final() || capture_flag == true) {
-			if (capture_flag == true) update_capture(false);
+		while (lastMovedPeca.get_currentCasa().is_casa_final() || captureFlag == true) {
+			if (captureFlag == true) update_capture(false);
 			if(ply.can_move(6)) {
 				p = ply.pick_peca(6);
 				p.move(6);
-				update_last_moved_peca(p);
+				set_lastMovedPeca(p);
 			}
 			else break;
 		}
 		
-		if (check_end_game_condition() != -1) {
+		if (check_EndGameCondition() != -1) {
 			end_game();
 		}
-		if (current_dado == 6) {
+		if (currentDice == 6) {
 			turn();
 		}
 		end_turn();
 		return;		
 	}
 	protected void end_turn() {
-		current_player = (current_player + 1) % 4;
+		currentPlayer = (currentPlayer + 1) % 4;
 		qtd_6_rolados = 0;
-		capture_flag = false;
+		captureFlag = false;
+		atualizaObservadores();
 	}
-	protected void set_turn(int t) {
-		current_player = t;
-	}
-	protected void next_turn() {
-		current_player = (current_player + 1)%4;
-		turn();
-	}
-	protected void set_dado(int t) {
-		current_dado = t;
+	
+	protected void new_game() {
+		t.clear_tabuleiro();
+		start_game();
 	}
 
-
-	protected int check_end_game_condition() {
-		if 		(t.get_casa_final(0).get_num_pecas() == 4) return 0;
-		else if	(t.get_casa_final(1).get_num_pecas() == 4) return 1;
-		else if	(t.get_casa_final(2).get_num_pecas() == 4) return 2;
-		else if	(t.get_casa_final(3).get_num_pecas() == 4) return 3;
+	protected int check_EndGameCondition() {
+		if 		(t.get_casaFinal(0).get_num_pecas() == 4) return 0;
+		else if	(t.get_casaFinal(1).get_num_pecas() == 4) return 1;
+		else if	(t.get_casaFinal(2).get_num_pecas() == 4) return 2;
+		else if	(t.get_casaFinal(3).get_num_pecas() == 4) return 3;
 		return -1;
 	}
 	protected void end_game() {
-//		TODO
-//		finaliza o jogo
-//		calcula 2o 3o e 4o lugar
+		determinePodium();
 		System.out.print("\n\n\n ======================     FIM DE JOGO    ======================\n\n\n");
-		
 	}
-	protected int[][] define_podio() {
+	protected int[][] determinePodium() {
 		TreeSet<Integer> pecas_count = new TreeSet<>();
 		List<Integer> pecas_count_lst = new ArrayList<>(pecas_count);
 		int[][] podio = new int[4][2]; 		//Colocacao de cada player
 		
+//		TODO: corrigir implementacao deste metodo: a regra diz que a pontuacao depende da distancia dos peoes do jogador ate a final ou algo parecido
 //		for(int i = 0; i < 4; i++)
 //			pecas_count.add(t.get_casa_final(i).get_num_pecas());
 //		
@@ -199,19 +188,7 @@ class Jogo implements ObservadoIF {
 //		
 		return podio;
 	}
-	
-	protected void update_current_piece(Player ply, Peca p) {
-		int i;
-		for (i = 0; i < 4; i++) {
-			if (ply.get_peca(i).equals(p)) break;
-		}
-		current_peca = (p.get_cor() * 4) + i; 
-	}
-	
-	protected void update_last_moved_peca(Peca p) {
-		last_moved_peca = p;
-	}
-	
+		
 	protected void captura(Casa c) {
 		Peca p = c.get_peca(0);
 		if (p == null) {
@@ -221,61 +198,53 @@ class Jogo implements ObservadoIF {
 		update_capture(true);
 	}
 	protected void update_capture(boolean b) {
-		capture_flag = b;
+		captureFlag = b;
 	}
 	
-
-	//	GET ----------------------------------------
-	protected Peca get_last_moved_piece() {
-		return last_moved_peca;
+	//	SET ----------------------------------------
+	protected void set_turn(int t) {
+		currentPlayer = t;
 	}
-	protected Player get_player(int id){
+	protected void set_dado(int t) {
+		currentDice = t;
+	}
+	
+	protected void set_currentPeca(Player ply, Peca p) {
+		int i;
+		for (i = 0; i < 4; i++) {
+			if (ply.get_peca(i).equals(p)) break;
+		}
+		currentPeca = (p.get_cor() * 4) + i; 
+	}
+	protected void set_lastMovedPeca(Peca p) {
+		lastMovedPeca = p;
+	}
+	
+	//	GET ----------------------------------------
+	protected Peca		get_LastMovedPeca	() {
+		return lastMovedPeca;
+	}
+	protected Player 	get_player			(int id){
 		return players[id];
 	}
-	protected int get_turn() {
-		return current_player;
+	protected int 		get_currentPlayer	() {
+		return currentPlayer;
 	}
-	protected int get_val_dado() {
-		return current_dado;
+	protected int 		get_turn			() {
+		return currentPlayer;
+	}
+	protected int 		get_diceVal			() {
+		return currentDice;
 	}
 
-	
-//	TODO remover==============================================
-	protected void print_map() {
-		ArrayList<Casa> map = t.get_path();
-		ArrayList<Casa> r1 = t.get_rf_vermelho();
-		ArrayList<Casa> r2= t.get_rf_verde();
-		ArrayList<Casa> r3 = t.get_rf_amarelo();
-		ArrayList<Casa> r4 = t.get_rf_azul();
-		ArrayList<Casa> ini = t.get_casas_iniciais();
-		
-		for (int i = 0; i < 4; i++) {
-		System.out.print(ini.get(i).get_num_pecas() + "\t\t");
-		}
-		System.out.println();
-		for (int i = 0; i < 52; i++) {
-			System.out.print(map.get(i).get_num_pecas() + " ");
-		}
-		System.out.println();
-		for (int i = 0; i < 6; i++) {
-			System.out.println(r1.get(i).get_num_pecas() + "\t\t" +
-							   r2.get(i).get_num_pecas() + "\t\t" +
-							   r3.get(i).get_num_pecas() + "\t\t" +
-							   r4.get(i).get_num_pecas());
-		}
-		System.out.println();System.out.println();
-	}
-//	=============================================================
-	
 	// Implementacao da interface ObservadoIF ----------------
-	
-	public void addObservador(ObservadorIF o) {
+	public void addObservador			(ObservadorIF o) {
 		observadores.add(o);
 	}
-	public void removeObservador(ObservadorIF o) {
+	public void removeObservador		(ObservadorIF o) {
 		observadores.remove(o);
 	}
-	public void atualizaObservadores() {
+	public void atualizaObservadores	() {
 		ListIterator<ObservadorIF> li = observadores.listIterator();
 		while(li.hasNext()) {
 			li.next().notify(this);
@@ -307,5 +276,37 @@ class Jogo implements ObservadoIF {
 		}
 		return instance;
 	}
+
+   	
+   	
+   	
+
+//	TODO remover==============================================
+	protected void print_map() {
+		ArrayList<Casa> map = t.get_path();
+		ArrayList<Casa> r1 = t.get_rf_vermelho();
+		ArrayList<Casa> r2= t.get_rf_verde();
+		ArrayList<Casa> r3 = t.get_rf_amarelo();
+		ArrayList<Casa> r4 = t.get_rf_azul();
+		ArrayList<Casa> ini = t.get_casas_iniciais();
+		
+		for (int i = 0; i < 4; i++) {
+		System.out.print(ini.get(i).get_num_pecas() + "\t\t");
+		}
+		System.out.println();
+		for (int i = 0; i < 52; i++) {
+			System.out.print(map.get(i).get_num_pecas() + " ");
+		}
+		System.out.println();
+		for (int i = 0; i < 6; i++) {
+			System.out.println(r1.get(i).get_num_pecas() + "\t\t" +
+							   r2.get(i).get_num_pecas() + "\t\t" +
+							   r3.get(i).get_num_pecas() + "\t\t" +
+							   r4.get(i).get_num_pecas());
+		}
+		System.out.println();System.out.println();
+	}
+//	=============================================================
+	
 }
 

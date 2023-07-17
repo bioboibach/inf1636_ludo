@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JOptionPane;
-
 import controller.Moment;
 
 public class Desenho {
@@ -270,7 +268,7 @@ public class Desenho {
 	//	Auxiliares de draw_peoes()
 	private void draw_casas_iniciais	(Graphics g) {
 		Color color;
-		int[] casas_iniciais = moment.getCasasIniciais();
+		int[] casas_iniciais = moment.get_casasIniciais();
 		
 		for(int i = 0; i < casas_iniciais.length; i++) {
 			color = COLORS[i];

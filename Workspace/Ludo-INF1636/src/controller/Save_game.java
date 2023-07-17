@@ -1,36 +1,96 @@
 package controller;
 
-import modal.ModalAPI;
 import java.io.*;
+import javax.swing.JFileChooser;
 
 class Save_game {
 	private static Save_game instance = null;
+	Moment moment = Moment.getInstance();
 	
-	protected void save() throws IOException{
-		ModalAPI m = ModalAPI.getInstance();
-		int[] aux = new int[2];
-		FileWriter inputStream = new FileWriter("res/save_data/save_file.txt");
-		
-		try {
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					aux = m.get_peca_indexes(i, j);
-					inputStream.write(aux[0] + " ");
-					inputStream.write(aux[1] + " ");
-				}
-			}
-			int turn = m.get_player_turn();
-			inputStream.write(turn + "");
-			
-		}
-		catch (Exception e){
-			e.getStackTrace();
-		}
-		finally {
-			inputStream.close();
-		}
+//	protected void save() throws IOException{
+//		ModalAPI m = ModalAPI.getInstance();
+//		int[] aux = new int[2];
+//		FileWriter inputStream = new FileWriter("res/save_data/save_file.txt");
+//		
+//		try {
+//			for (int i = 0; i < 4; i++) {
+//				for (int j = 0; j < 4; j++) {
+//					aux = m.get_peca_indexes(i, j);
+//					inputStream.write(aux[0] + " ");
+//					inputStream.write(aux[1] + " ");
+//				}
+//			}
+//			int turn = m.get_player_turn();
+//			inputStream.write(turn + "");
+//			
+//		}
+//		catch (Exception e){
+//			e.getStackTrace();
+//		}
+//		finally {
+//			inputStream.close();
+//		}
+//	}
+	
+	protected void save() throws IOException {
+	    JFileChooser f_chooser = new JFileChooser();
+
+	    int b = f_chooser.showSaveDialog(null);
+	    if (b == JFileChooser.APPROVE_OPTION) {
+	        File save_file = f_chooser.getSelectedFile();
+	        String filepath = save_file.getPath();
+
+	        saveDataToCSV(filepath);
+
+	        System.out.println("Jogo salvo com sucesso");
+	    }
 	}
-	
+
+	private void saveDataToCSV(String filepath) {
+	    try (PrintWriter writer = new PrintWriter(new FileWriter(filepath))) {
+	        // Write the header row
+	        writer.println("casasIniciais,path,retaFinalVermelho,retaFinalVerde,retaFinalAmarelo,retaFinalAzul,podio,turno");
+
+	        // Write the data rows
+	        StringBuilder sb = new StringBuilder();
+	        sb.append(arrayToString(moment.get_casasIniciais())).append(",");
+	        sb.append(array2DToString(moment.getPath())).append(",");
+	        sb.append(arrayToString(moment.getRetaFinalVermelho())).append(",");
+	        sb.append(arrayToString(moment.getRetaFinalVerde())).append(",");
+	        sb.append(arrayToString(moment.getRetaFinalAmarelo())).append(",");
+	        sb.append(arrayToString(moment.getRetaFinalAzul())).append(",");
+	        sb.append(array2DToString(moment.getPodio())).append(",");
+	        sb.append(moment.getTurno());
+
+	        writer.println(sb.toString());
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	private String arrayToString(int[] array) {
+	    StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < array.length; i++) {
+	        sb.append(array[i]);
+	        if (i < array.length - 1) {
+	            sb.append("|");
+	        }
+	    }
+	    return sb.toString();
+	}
+
+	private String array2DToString(int[][] array) {
+	    StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < array.length; i++) {
+	        sb.append(arrayToString(array[i]));
+	        if (i < array.length - 1) {
+	            sb.append(";");
+	        }
+	    }
+	    return sb.toString();
+	}
+
+	//	Singleton ----------------------------------	
 	protected static Save_game getInstance() {
 		if (instance == null) {
 			instance = new Save_game();

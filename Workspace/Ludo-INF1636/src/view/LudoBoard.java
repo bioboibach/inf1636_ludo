@@ -30,7 +30,7 @@ public class LudoBoard extends JPanel{
 		
 	//	TESTES------------------------------------------------------------------------------------------
 	private void teste() {		
-		int[] 	casas_iniciais 		= moment.getCasasIniciais();
+		int[] 	casas_iniciais 		= moment.get_casasIniciais();
 		int[][]	path				= moment.getPath();
 		int[] 	reta_final_vermelho = moment.getRetaFinalVermelho();
 		int[] 	reta_final_verde 	= moment.getRetaFinalVerde();

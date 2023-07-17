@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Arrays;
+
 public class Moment {
 	private static 		Moment  			instance;
 	private int[] 		casasIniciais 		= new int[4];
@@ -18,15 +20,29 @@ public class Moment {
 			this.initializeBoardInfo();
 	}
 	
+	//	Operacoes
+	public void print() {
+		System.out.println("casasIniciais: " 		+ Arrays.toString(casasIniciais));
+	    System.out.println("path: " 				+ Arrays.deepToString(path));
+	    System.out.println("retaFinalVermelho: " 	+ Arrays.toString(retaFinalVermelho));
+	    System.out.println("retaFinalVerde: " 		+ Arrays.toString(retaFinalVerde));
+	    System.out.println("retaFinalAmarelo: " 	+ Arrays.toString(retaFinalAmarelo));
+	    System.out.println("retaFinalAzul: " 		+ Arrays.toString(retaFinalAzul));
+	    System.out.println("podio: " 				+ Arrays.deepToString(podio));
+	    System.out.println("turno: " 				+ turno);
+	}
+	
 	// Inicializacao ------------------
+
 	private void initializeBoardInfo() {
-		int[] 	casas_iniciais 			= this.getCasasIniciais();
+		int[] 	casas_iniciais 			= this.get_casasIniciais();
 		int[][]	path					= this.getPath();
 		int[] 	reta_final_vermelho 	= this.getRetaFinalVermelho();
 		int[] 	reta_final_verde 		= this.getRetaFinalVerde();
 		int[] 	reta_final_amarelo 		= this.getRetaFinalAmarelo();
 		int[] 	reta_final_azul 		= this.getRetaFinalAzul();
 		int[][]	podio					= this.getPodio();
+		int		turno					= -1;
 		
 		// As casas_iniciais comecam cheias
 		for (int i = 0; i < casas_iniciais.length; i++) {
@@ -58,7 +74,8 @@ public class Moment {
 				reta_final_verde,
 				reta_final_amarelo,
 				reta_final_azul,
-				podio
+				podio,
+				turno
 				);
 		
 	}
@@ -74,14 +91,14 @@ public class Moment {
 			int[][]		podio,
 			int			turno
 			) {
-		this.setCasasIniciais(casas_iniciais);
-		this.setPath(path);
-		this.setRetaFinalVermelho(reta_final_vermelho);
-		this.setRetaFinalVerde(reta_final_verde);
-		this.setRetaFinalAmarelo(reta_final_amarelo);
-		this.setRetaFinalAzul(reta_final_azul);
-		this.setPodio(podio);
-		this.setTurno(turno);
+		this.set_casasIniciais(casas_iniciais);
+		this.set_path(path);
+		this.set_retaFinalVermelho(reta_final_vermelho);
+		this.set_retaFinalVerde(reta_final_verde);
+		this.set_retaFinalAmarelo(reta_final_amarelo);
+		this.set_retaFinalAzul(reta_final_azul);
+		this.set_podio(podio);
+		this.set_turno(turno);
 	}
 	public void setAllCasas(
 			int[] casas_iniciais,
@@ -90,44 +107,46 @@ public class Moment {
 			int[] reta_final_verde,
 			int[] reta_final_amarelo,
 			int[] reta_final_azul,
-			int[][] podio) {
-		this.setCasasIniciais(casas_iniciais);
-		this.setPath(path);
-		this.setRetaFinalVermelho(reta_final_vermelho);
-		this.setRetaFinalVerde(reta_final_verde);
-		this.setRetaFinalAmarelo(reta_final_amarelo);
-		this.setRetaFinalAzul(reta_final_azul);
-		this.setPodio(podio);
+			int[][] podio,
+			int turn) {
+		this.set_casasIniciais(casas_iniciais);
+		this.set_path(path);
+		this.set_retaFinalVermelho(reta_final_vermelho);
+		this.set_retaFinalVerde(reta_final_verde);
+		this.set_retaFinalAmarelo(reta_final_amarelo);
+		this.set_retaFinalAzul(reta_final_azul);
+		this.set_podio(podio);
+		this.set_turno(turn);
 		
 	}
 
-	public void setCasasIniciais		(int[] casas_iniciais) {
+	public void set_casasIniciais		(int[] casas_iniciais) {
 	    this.casasIniciais = casas_iniciais;
 	}
-	public void setPath					(int[][] path) {
+	public void set_path					(int[][] path) {
 	    this.path = path;
 	}
-	public void setRetaFinalVermelho	(int[] reta_final_vermelho) {
+	public void set_retaFinalVermelho	(int[] reta_final_vermelho) {
 	    this.retaFinalVermelho = reta_final_vermelho;
 	}
-	public void setRetaFinalVerde		(int[] reta_final_verde) {
+	public void set_retaFinalVerde		(int[] reta_final_verde) {
 	    this.retaFinalVerde = reta_final_verde;
 	}
-	public void setRetaFinalAmarelo		(int[] reta_final_amarelo) {
+	public void set_retaFinalAmarelo		(int[] reta_final_amarelo) {
 	    this.retaFinalAmarelo = reta_final_amarelo;
 	}
-	public void setRetaFinalAzul		(int[] reta_final_azul) {
+	public void set_retaFinalAzul		(int[] reta_final_azul) {
 	    this.retaFinalAzul = reta_final_azul;
 	}
-	public void setPodio				(int[][] podio) {
+	public void set_podio				(int[][] podio) {
 	    this.podio = podio;
 	}
-	public void setTurno				(int turno) {
+	public void set_turno				(int turno) {
 	    this.turno = turno;
 	}
 	
 	// GET ----------------------------
-	public int[] 	getCasasIniciais		() {
+	public int[] 	get_casasIniciais		() {
 	    return casasIniciais;
 	}
 	public int[][] 	getPath					() {

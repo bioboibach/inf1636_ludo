@@ -54,7 +54,7 @@ public class LudoBoard extends JPanel{
 		
 		// Retas finais
 		int [][] 	rfs = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul}; 
-		int [] 		rf 	= rfs[0];
+		int [] 		rf 	= rfs[0];	// escolhe qual reta final voce quer adicionar pecas
 		rf[0] = 1;
 		rf[1] = 1;
 		rf[2] = 1;
@@ -62,14 +62,14 @@ public class LudoBoard extends JPanel{
 		rf[4] = 1;
 		rf[5] = 3;		
 		
-//		// Podio
-//		podio[0][0] = 0; podio[0][1] = 10;
-//		podio[1][0] = 2; podio[1][1] = 5;
-//		podio[2][0] = 1; podio[2][1] = 8;
-//		podio[3][0] = 3; podio[3][1] = 3;
+		// Podio
+		podio[0][0] = 0; podio[0][1] = 10;
+		podio[1][0] = 2; podio[1][1] = 5;
+		podio[2][0] = 1; podio[2][1] = 8;
+		podio[3][0] = 3; podio[3][1] = 3;
 		
 		//Turno
-//		turno  = 2;
+		turno  = 2;
 		
 		moment.setAll(
 				casas_iniciais,
@@ -111,10 +111,6 @@ public class LudoBoard extends JPanel{
 
 	
 	//	Operacoes ---------------------------------------------
-	
-	
-	
-	//	Desenhar 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -124,28 +120,27 @@ public class LudoBoard extends JPanel{
 		menu.drawDiceImg(g, turno);
         
 		// Executando as auxiliares
-		desenho.draw_tabuleiro(g);
-		desenho.draw_base(g);
-		desenho.draw_caminho_vitoria(g);
-		desenho.draw_bolas_brancas_bases(g);
-		desenho.draw_casa_inicio(g);
-		desenho.draw_barreira(g);
-		desenho.draw_triangulo_inicio(g);
-		desenho.draw_triangulo_meio(g);
-		desenho.draw_msg_turno_atual(g);
+		desenho.draw_tabuleiro				(g);
+		desenho.draw_base					(g);
+		desenho.draw_caminho_vitoria		(g);
+		desenho.draw_bolas_brancas_bases	(g);
+		desenho.draw_casa_inicio			(g);
+		desenho.draw_barreira				(g);
+		desenho.draw_triangulo_inicio		(g);
+		desenho.draw_triangulo_meio			(g);
+		desenho.draw_msg_turno_atual		(g);
 
 		// Peoes
 		desenho.draw_peoes(g);
 		
 		// Podio
-////		TODO: Parar de pintar a caixa de dialogo do podio depois de clicar 'ok'
-//			TODO: Colocar isso no lugar certo
+//		TODO: Parar de pintar a caixa de dialogo do podio depois de clicar 'ok'
+//		TODO: Colocar isso no lugar certo
 //		if(podio != null) {
-//			exibePodio();
+//			desenho.showPodium();
 //		}
 		
 	}
-	
 
 	//	Atualizacao do Board apos a execucao de um turno
 	public void updateBoardInfo() {		

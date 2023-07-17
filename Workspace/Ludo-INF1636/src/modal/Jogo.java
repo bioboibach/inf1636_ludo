@@ -20,9 +20,10 @@ class Jogo implements ObservadoIF {
 	private int 	currentDice 	= -1;
 	private int 	qtd_6_rolados 	= 0;
 	
-	
+	private Casa	clickedCasa 	;
 // ____________________________________________________________________________________________________________________________
 //
+
 	protected Jogo() {
 		this.addObservador(ViewAPI.getInstance());
 	}
@@ -83,7 +84,9 @@ class Jogo implements ObservadoIF {
 		}
 		
 		set_dice(diceVal);
-//		modalInst.setCurrentPeca(listIndex, listType);
+//		TODO: 
+//		set_clickedCasa(listIndex, listType); // verificar se na casa tem pecas, caso tiver, e
+//		setCurrentPeca(listIndex, listType);
 		
 		turn();
 	}
@@ -239,6 +242,11 @@ class Jogo implements ObservadoIF {
 		lastMovedPeca = p;
 	}
 	
+	
+	protected void set_set_clickedCasa(int listIndex, int listType) {
+		// TODO: implementar
+		
+	}
 	//	GET ----------------------------------------
 	protected Peca		get_LastMovedPeca	() {
 		return lastMovedPeca;
@@ -255,7 +263,10 @@ class Jogo implements ObservadoIF {
 	protected int 		get_currentDice		() {
 		return currentDice;
 	}
-
+	protected Casa		get_clickedCasa		() {
+		return clickedCasa;
+	}
+	
 	// Implementacao da interface ObservadoIF ----------------
 	public void addObservador			(ObservadorIF o) {
 		observadores.add(o);

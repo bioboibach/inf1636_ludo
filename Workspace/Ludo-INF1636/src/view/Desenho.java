@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.swing.JOptionPane;
+
 import controller.Moment;
 
 public class Desenho {
@@ -40,7 +42,7 @@ public class Desenho {
 		}
 	}
 	
-	// Define as dimensoes do tabuleiro
+	// 	Define as dimensoes do tabuleiro
 	protected void setValues(int HEIGHT, int WIDTH, int SIZE) {
 		this.HEIGHT = HEIGHT;
 		this.WIDTH = WIDTH;
@@ -48,10 +50,10 @@ public class Desenho {
 		
 		start_qtds_finais();
 	} 
-	// Define os valores para os atributos de referencia para o paint
+	// 	Define os valores para os atributos de referencia para o paint
 
 	
-	// Auxiliares do paintComponent()
+	// 	Auxiliares do paintComponent()
 	protected void draw_tabuleiro			(Graphics g) {
 		// Desenha o tabuleiro
 		Color color = Color.WHITE;
@@ -265,7 +267,7 @@ public class Desenho {
 	}
 
 	
-	// Auxiliares de draw_peoes()
+	//	Auxiliares de draw_peoes()
 	private void draw_casas_iniciais	(Graphics g) {
 		Color color;
 		int[] casas_iniciais = moment.getCasasIniciais();
@@ -379,6 +381,21 @@ public class Desenho {
 			int textY = arrRetasFinais[i][5][1] + 17;
 			g.drawString(text, textX, textY);
 		}
+	}
+
+	
+	//	Exibe o podio
+	protected void showPodium() {
+	    int[][] podio = moment.getPodio();
+	    
+	    StringBuilder podiumMessage = new StringBuilder("Podio:\n");
+	    for (int i = 0; i < podio.length; i++) {
+	        int playerNumber = podio[i][0];
+	        int score = podio[i][1];
+	        podiumMessage.append("Jogador	 ").append(playerNumber).append(": ").append(score).append("\n");
+	    }
+	    
+	    JOptionPane.showMessageDialog(null, podiumMessage.toString());
 	}
 
 	

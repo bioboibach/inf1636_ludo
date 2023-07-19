@@ -53,20 +53,20 @@ public class LudoBoard extends JPanel{
 //		path[30][0] = 3; path[30][1] = -1;	// stack
 		
 //		// Retas finais
-//		int [][] 	rfs = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul}; 
-//		int [] 		rf 	= rfs[0];	// escolhe qual reta final voce quer adicionar pecas
-//		rf[0] = 1;
-//		rf[1] = 1;
-//		rf[2] = 1;
-//		rf[3] = 1;
-//		rf[4] = 1;
-//		rf[5] = 3;		
-//		
+		int [][] 	rfs = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul}; 
+		int [] 		rf 	= rfs[0];	// escolhe qual reta final voce quer adicionar pecas
+		rf[0] = 1;
+		rf[1] = 1;
+		rf[2] = 1;
+		rf[3] = 1;
+		rf[4] = 1;
+		rf[5] = 3;		
+		
 		// Podio
-//		podio[0][0] = 0; podio[0][1] = 10;
-//		podio[1][0] = 2; podio[1][1] = 5;
-//		podio[2][0] = 1; podio[2][1] = 8;
-//		podio[3][0] = 3; podio[3][1] = 3;
+		podio[0][0] = 0; podio[0][1] = 10;
+		podio[1][0] = 2; podio[1][1] = 5;
+		podio[2][0] = 1; podio[2][1] = 8;
+		podio[3][0] = 3; podio[3][1] = 3;
 		
 		//Turno
 		turno  = 2;
@@ -145,7 +145,7 @@ public class LudoBoard extends JPanel{
 		
 		// Podio
 		int[][] podio = Moment.getInstance().getPodio();
-		if(moment.getPodio()[0][0] != -1) {
+		if(podio[0][0] != -1) {
 			menu.showPodium(podio);
 		}
 	}

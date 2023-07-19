@@ -13,8 +13,10 @@ class Jogo implements ObservadoIF {
 
 	private Player players[] = new Player[4];
 	private Tabuleiro board;
+	@SuppressWarnings("unused")
 	private Dado d;
 	
+	@SuppressWarnings("unused")
 	private int 	currentPeca;
 	private Peca 	lastMovedPeca 	= null;
 	private boolean captureFlag 	= false;
@@ -54,14 +56,14 @@ class Jogo implements ObservadoIF {
 		set_currentPlayer(0);
 		currentDice = 5;
 		qtd_6_rolados = 0;
-//		Inicializa as casas iniciais de cada jogador com referencias as casas inicias respectivas no tabuleiro
+		//	Inicializa as casas iniciais de cada jogador com referencias as casas inicias respectivas no tabuleiro
 		for (int count = 0; count < 4; count++) {
 			for (int i = 0; i < 4; i++) {
 				get_player(count).get_peca(i).change_casa(board.get_casasIniciaisIndex(count));
 				board.get_casasIniciaisIndex(count).add_peca(get_player(count).get_peca(i));
 			}
 		}
-//		Move a primeira peca vermelha para a casa de saida
+		//	Move a primeira peca vermelha para a casa de saida
 		Peca p = players[0].get_peca(0);
 		p.move_to_casa_de_saida();
 		set_lastMovedPeca(p);
@@ -183,6 +185,7 @@ class Jogo implements ObservadoIF {
 		currentPlayer = (currentPlayer + 1) % 4;
 		qtd_6_rolados = 0;
 		captureFlag = false;
+		podium[0][0] = -1;
 		atualizaObservadores();
 	}
 	
@@ -203,10 +206,14 @@ class Jogo implements ObservadoIF {
 		atualizaObservadores();
 		System.out.print("\n\n\n ======================     FIM DE JOGO    ======================\n\n\n");
 	}
+	
 	protected void determinePodium() {
-		int[][] podium = new int[4][2]; 		//Colocacao de cada player
+		int[][] podium = {{0, 0}, {1, 0}, {2, 0}, {3, 0}};
 		
-		int[] playerPoints = {0, 0, 0, 0};
+		//	Pecas nas casas iniciais
+		for(int i = 0; i < 4; i++) {
+			podium[i][1] = 58*moment.get_casasIniciais()[i];
+		}
 		
 		//	Pecas na path
 		int pecaPrincipal;
@@ -218,11 +225,11 @@ class Jogo implements ObservadoIF {
 			pecaSecundaria = moment.getPath()[i][1];
 			if(pecaPrincipal != -1) {
 				colorOffset = pecaPrincipal*13;
-				playerPoints[pecaPrincipal] += 52 - (pecaPrincipal - colorOffset) + 6;	// valor ate chegar na reta final respectiva + qtd de casas da reta final
+				podium[pecaPrincipal][1] += 52 - (i - colorOffset) + 6;	// valor ate chegar na reta final respectiva + qtd de casas da reta final
 				
 				if(pecaSecundaria != -1) {
-					colorOffset = pecaPrincipal*13;
-					playerPoints[pecaPrincipal] += 52 - (pecaPrincipal - colorOffset) + 6;	// valor ate chegar na reta final respectiva + qtd de casas da reta final
+					colorOffset = pecaSecundaria*13;
+					podium[pecaSecundaria][1] += 52 - (i - colorOffset) + 6;	// valor ate chegar na reta final respectiva + qtd de casas da reta final
 				}
 			}	
 		}
@@ -233,29 +240,17 @@ class Jogo implements ObservadoIF {
 		for(int i = 0; i < retas_finais.length; i++) {
 			for(int k = 0; k < retas_finais[i].length; k++) {
 				if(retas_finais[i][k] > 0) {
-					playerPoints[i] += 5 - k;
+					podium[i][1] += 5 - k;
 				}
 			}
 		}
 		
 		//	Coloca em ordem
-		int place;
-		for(int i = 0; i < 4; i++) {
-			place = 0;
-			for(int k = 0; k < 4; k++) {
-				if(k != i) {
-					if(playerPoints[i] > playerPoints[k]) {
-						place++;
-					}
-				}
-			}
-			podium[place][0] = i;
-			podium[place][1] = playerPoints[i];
-		}
-		
+		Arrays.sort(podium, Comparator.comparingInt(a -> a[1]));
+
 		this.podium= podium;
 	}
-
+	
 	protected void captura(Casa c) {
 		Peca p = c.get_peca(0);
 		if (p == null) {
@@ -320,7 +315,6 @@ class Jogo implements ObservadoIF {
 	}
 
 	public void get() {
-		podium[0][0] = -1;
 		moment.set_casasIniciais(board.getObs_casasIniciais());
 		moment.set_path(board.getObs_path());
 		moment.set_retaFinalVermelho(board.getObs_rf_vermelho());

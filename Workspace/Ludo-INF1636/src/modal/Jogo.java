@@ -173,6 +173,7 @@ class Jogo implements ObservadoIF {
 		
 		if (check_EndGameCondition() != -1) {
 			end_game();
+			return;
 		}
 		if (currentDice == 6) {
 			atualizaObservadores();

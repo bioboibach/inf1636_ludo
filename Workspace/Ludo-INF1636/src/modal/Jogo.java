@@ -26,6 +26,8 @@ class Jogo implements ObservadoIF {
 	private int[][] podium			= new int[4][2];
 	
 	private Casa	clickedCasa 	;
+	
+	private Boolean newGamebool = false;
 // ____________________________________________________________________________________________________________________________
 //
 
@@ -189,6 +191,7 @@ class Jogo implements ObservadoIF {
 	
 	protected void new_game() {
 		board.clear_tabuleiro();
+		newGamebool = true;
 		start_game();
 	}
 
@@ -320,6 +323,7 @@ class Jogo implements ObservadoIF {
 		moment.set_retaFinalAzul(board.getObs_rf_azul());
 		moment.set_podio(podium);
 		moment.set_player(currentPlayer);
+		moment.set_newGamebool(newGamebool);
 	}
 
 	//	Singleton ------------------------------------------
@@ -329,6 +333,5 @@ class Jogo implements ObservadoIF {
 		}
 		return instance;
 	}
-  	
 }
 

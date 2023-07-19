@@ -170,7 +170,7 @@ class Tabuleiro {
 		else return get_pathIndex(39);	
 	}
 
-//	========================= TODO remove
+//	=======================================
 	protected ArrayList<Casa> get_casas_iniciais(){
 		return casasIniciais;
 	}	

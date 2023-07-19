@@ -70,8 +70,10 @@ class Player {
 					cj.is_casa_de_saida()
 					)continue;
 				
-				else if (ci.equals(cj))
+				else if (ci.equals(cj)) {
+					
 					return pecas[i];
+				}
 			}
 		}
 		return null;

@@ -254,11 +254,10 @@ public class LudoBoard extends JPanel{
 	}
 	private void start_arr_retas_finais		() {
 		int[][][] arr = new int[4][6][2];
-		arr = arrRetasFinaisIndex;
 		for(int i = 0; i < arr.length; i++) {
 			for(int k = 0; k < arr[i].length; k++) {
-				arr[i][k][0] = arr[i][k][0]*SIZE + 12;
-				arr[i][k][1] = arr[i][k][1]*SIZE + 12;
+				arr[i][k][0] = arrRetasFinaisIndex[i][k][0]*SIZE + 12;
+				arr[i][k][1] = arrRetasFinaisIndex[i][k][1]*SIZE + 12;
 			}
 		}
 		arrRetasFinais = arr;

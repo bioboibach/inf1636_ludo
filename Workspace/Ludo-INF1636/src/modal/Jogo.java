@@ -95,6 +95,7 @@ class Jogo implements ObservadoIF {
 		else if (diceVal == 6) {
 			qtd_6_rolados++;
 			if (qtd_6_rolados == 3) {
+				System.out.println("ROLOU 6 TRES VEZES");
 				c = lastMovedPeca.get_currentCasa();
 				if(c.get_tipo() != 5 && c.get_tipo() != 4) {
 					lastMovedPeca.move_to_base();
@@ -108,6 +109,7 @@ class Jogo implements ObservadoIF {
 				p = ply.get_barrier();
 				p.move(diceVal);
 				set_lastMovedPeca(p);
+				atualizaObservadores();
 				return;
 			}
 		}
@@ -130,9 +132,6 @@ class Jogo implements ObservadoIF {
 			listType = 1;	
 		}
 		
-//		TODO:
-//		set_clickedCasa(listIndex, listType); // verificar se na casa tem pecas, caso tiver, e
-//		setCurrentPeca(listIndex, listType);
 		
 		turn();
 	}
@@ -141,8 +140,6 @@ class Jogo implements ObservadoIF {
 		Player ply = players[currentPlayer];
 		Peca p = null;
 		
-//		System.out.println("player " + currentPlayer + " turn");
-		System.out.println("dado = " + currentDice);
 		print_map();
 		
 		for (int i = 0; i < 4; i++) {
@@ -176,6 +173,7 @@ class Jogo implements ObservadoIF {
 			end_game();
 		}
 		if (currentDice == 6) {
+			atualizaObservadores();
 			return;
 		}
 		end_turn();

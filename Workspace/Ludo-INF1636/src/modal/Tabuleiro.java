@@ -118,7 +118,9 @@ class Tabuleiro {
 	//	verifica o caminho e a casa de destino
 	protected boolean check_path(int index, int num_moves, Peca p){
 		Casa c; 
-		if (this.check_for_barrier(index, num_moves, p)) return false;
+		if (this.check_for_barrier(index, num_moves, p)) {
+			return false;
+		}
 		c = get_destination(index, num_moves, p, false);
 		return c.is_casa_vaga(p);
 	}
@@ -127,7 +129,7 @@ class Tabuleiro {
 	protected boolean check_for_barrier(int index, int num_moves, Peca p){
 		Casa c = p.get_currentCasa();
 		int count;
-		for (count = 1; count < num_moves; count++) {
+		for (count = 1; count <= num_moves; count++) {
 			c = path.get((index + count)%52);
 			if (c.is_barreira()) return true;
 			else if (c.is_casa_de_entrada() && c.get_cor() == p.get_cor()) return false;

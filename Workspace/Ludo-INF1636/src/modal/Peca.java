@@ -13,7 +13,6 @@ class Peca {
 		Casa c;
 		if (t.is_in_path(this)) {
 			c = t.get_destination(t.get_pathCurrentCasa(this), die_val, this, false);
-
 			if (c.get_num_pecas() > 0) {
 				int cor;
 				if (c.get_peca(0) == null)
@@ -66,7 +65,6 @@ class Peca {
 		Casa c;
 		int[] i = new int[2];
 		i = t.get_currentCasaIndex(this);
-		
 		if (t.is_in_path(this)) {
 			return t.check_path(i[0], val_die, this);
 		}

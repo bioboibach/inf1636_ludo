@@ -153,10 +153,7 @@ public class Menu{
 		launchDiceButton.setFont(new Font("Arial", Font.PLAIN, 18));
 		launchDiceButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int diceVal = alterarImgDado();
-				if(diceVal == 5 || diceVal == 6) {
-					executaTurno(-2, -2, diceVal);
-				}
+				alterarImgDado();
 			}
 		});
 		

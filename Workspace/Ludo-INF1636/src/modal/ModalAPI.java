@@ -41,6 +41,27 @@ public class ModalAPI {
 		jogoInst.set_dice(t);
 	}
 
+	public void set_positions(int player_id, int peca_id, int index, int list_id) {
+		Peca p = Jogo.getInstance().get_player(player_id).get_peca(peca_id);
+		Casa c = null;
+//		path
+		if (list_id == 0) {
+			c = Tabuleiro.getInstance().get_pathIndex(index);
+		}
+//		casa inicial
+		else if (list_id == 1) {
+			c = Tabuleiro.getInstance().get_casasIniciaisIndex(player_id);
+		}
+		else {
+			c = Tabuleiro.getInstance().get_retaFinalIndex(index, list_id - 2);
+		}
+		c.add_peca(p);
+		p.change_casa(c);
+		jogoInst.atualizaObservadores();
+	}
+	
+
+	
 	private void nextPlayer() {
 		lastPlayer = (lastPlayer + 1) % 4;
 	}

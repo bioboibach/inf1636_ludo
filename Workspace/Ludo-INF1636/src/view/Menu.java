@@ -176,7 +176,7 @@ public class Menu{
 		        }
 		    });
 		}
-  
+ 
 	}
 
 	//	Leitura do mouseclick no tabuleiro

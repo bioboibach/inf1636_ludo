@@ -223,7 +223,8 @@ class Tabuleiro {
 
 	protected int[] get_currentCasaIndex(Peca p) {
 		int[] i = new int[2];
-		if((i[0] = get_pathCurrentCasa(p)) != -1) {
+		if(get_pathCurrentCasa(p) != -1) {
+			i[0] = get_pathCurrentCasa(p);
 			i[1] = 0;
 			return i;
 		}

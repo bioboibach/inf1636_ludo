@@ -32,6 +32,9 @@ public class ViewAPI implements ObservadorIF{
 		return COLORS;
 	}
 	
+	public void updateBoardInfo() {
+		LudoBoard.getInstance().updateBoardInfo();
+	}
 	
 	//	Implementacao da interface Observador ------
 	public void notify(ObservadoIF o) {

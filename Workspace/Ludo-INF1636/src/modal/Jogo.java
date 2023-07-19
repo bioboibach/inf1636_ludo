@@ -290,11 +290,6 @@ class Jogo implements ObservadoIF {
 		lastMovedPeca = p;
 	}
 	
-	
-	protected void set_set_clickedCasa(int listIndex, int listType) {
-		// TODO: implementar
-		
-	}
 	//	GET ----------------------------------------
 	protected Peca		get_LastMovedPeca	() {
 		return lastMovedPeca;
@@ -338,7 +333,6 @@ class Jogo implements ObservadoIF {
 		moment.set_player(currentPlayer);
 	}
 
-    
 	//	Singleton ------------------------------------------
    	public static Jogo getInstance() {
 		if (instance == null) {

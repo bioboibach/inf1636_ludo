@@ -97,7 +97,6 @@ class Jogo implements ObservadoIF {
 		else if (diceVal == 6) {
 			qtd_6_rolados++;
 			if (qtd_6_rolados == 3) {
-				System.out.println("ROLOU 6 TRES VEZES");
 				c = lastMovedPeca.get_currentCasa();
 				if(c.get_tipo() != 5 && c.get_tipo() != 4) {
 					lastMovedPeca.move_to_base();
@@ -107,7 +106,7 @@ class Jogo implements ObservadoIF {
 			}
 			
 			// verifica se player tem barreira
-			else if (ply.get_barrier() != null){
+			if (ply.get_barrier() != null){
 				p = ply.get_barrier();
 				p.move(diceVal);
 				set_lastMovedPeca(p);
@@ -141,8 +140,6 @@ class Jogo implements ObservadoIF {
 	protected void turn() {
 		Player ply = players[currentPlayer];
 		Peca p = null;
-		
-		print_map();
 		
 		for (int i = 0; i < 4; i++) {
 			if (clickedCasa.get_peca(i) != null) {
@@ -205,7 +202,6 @@ class Jogo implements ObservadoIF {
 	protected void end_game() {
 		determinePodium();
 		atualizaObservadores();
-		System.out.print("\n\n\n ======================     FIM DE JOGO    ======================\n\n\n");
 	}
 	
 	protected void determinePodium() {
@@ -333,37 +329,6 @@ class Jogo implements ObservadoIF {
 		}
 		return instance;
 	}
-
-   	
-   	
-   	
-
-//	TODO remover==============================================
-	protected void print_map() {
-		ArrayList<Casa> map = board.get_path();
-		ArrayList<Casa> r1 = board.get_rf_vermelho();
-		ArrayList<Casa> r2= board.get_rf_verde();
-		ArrayList<Casa> r3 = board.get_rf_amarelo();
-		ArrayList<Casa> r4 = board.get_rf_azul();
-		ArrayList<Casa> ini = board.get_casas_iniciais();
-		
-		for (int i = 0; i < 4; i++) {
-		System.out.print(ini.get(i).get_num_pecas() + "\t\t");
-		}
-		System.out.println();
-		for (int i = 0; i < 52; i++) {
-			System.out.print(map.get(i).get_num_pecas() + " ");
-		}
-		System.out.println();
-		for (int i = 0; i < 6; i++) {
-			System.out.println(r1.get(i).get_num_pecas() + "\t\t" +
-							   r2.get(i).get_num_pecas() + "\t\t" +
-							   r3.get(i).get_num_pecas() + "\t\t" +
-							   r4.get(i).get_num_pecas());
-		}
-		System.out.println();System.out.println();
-	}
-//	=============================================================
-	
+  	
 }
 

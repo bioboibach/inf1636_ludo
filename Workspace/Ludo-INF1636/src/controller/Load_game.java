@@ -37,6 +37,7 @@ class Load_game {
 					}
 				}
 				modalAPI.set_turn(Integer.parseInt(s.next()));
+				modalAPI.update_moment();
 				s.close();
 				System.out.println("Jogo Carregado com sucesso");
 		}

@@ -20,8 +20,11 @@ class Peca {
 				else
 					cor = c.get_peca(0).get_cor();
 
-				if (cor != id_time && (!c.is_abrigo() || (c.is_casa_de_saida() && c.get_cor() != cor))) {
-							Jogo.getInstance().captura(c);
+				if (cor != id_time && (!c.is_abrigo() && !c.is_casa_de_saida())) {
+					Jogo.getInstance().captura(c);
+				}
+				else if (cor != id_time && c.is_casa_de_saida() && c.get_cor() != cor) {
+					Jogo.getInstance().captura(c);
 				}
 			}
 			current_casa.remove_peca(this);
@@ -45,6 +48,18 @@ class Peca {
 		current_casa.add_peca(this);
 	}
 	protected void move_to_casa_de_saida() {
+		Casa c = Tabuleiro.getInstance().get_casaDeSaida(this.get_cor());
+		if (c.get_num_pecas() > 0) {
+			int cor;
+			if (c.get_peca(0) == null)
+				cor = c.get_peca(1).get_cor();
+			else
+				cor = c.get_peca(0).get_cor();
+
+			if (cor != id_time && c.is_casa_de_saida() && c.get_cor() != cor) {
+				Jogo.getInstance().captura(c);
+			}
+		}
 		current_casa.remove_peca(this);
 		current_casa = Tabuleiro.getInstance().get_casaDeSaida(this.get_cor());
 		current_casa.add_peca(this);

@@ -57,9 +57,11 @@ public class ModalAPI {
 		}
 		c.add_peca(p);
 		p.change_casa(c);
-		jogoInst.atualizaObservadores();
 	}
 	
+	public void update_moment() {
+		jogoInst.atualizaObservadores();
+	}
 
 	
 	private void nextPlayer() {

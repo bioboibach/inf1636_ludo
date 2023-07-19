@@ -194,7 +194,6 @@ public class Menu{
                 	else {
     		            int indice_path 		= -1;
     		            int indice_final_path 	= -1;
-    		            int color 				= -1;
     		            
     		            int[] coords = new int[2];
     		            
@@ -214,7 +213,6 @@ public class Menu{
     		            	for(int k = 0; k < arrRetasFinaisIndex[i].length; k++) {
     		            		coords = arrRetasFinaisIndex[i][k];
     		            		if (coords[0] == casa_x && coords[1] == casa_y) {
-    		            			color = i;
         		                	indice_final_path = k;
         		                    break outerLoop;
         		                }
@@ -236,23 +234,57 @@ public class Menu{
 	}
 	
 	//	Exibe o podio
-	protected void showPodium(int[][] podio) {
+	protected void showPodium(int[][] podium) {
 	    String[] players = {"Vermelho", "Verde", "Amarelo", "Azul"};
-	    
+
 	    StringBuilder podiumMessage = new StringBuilder("Podio:\n");
-	    for (int i = 0; i < podio.length; i++) {
-	        int playerNumber = podio[i][0];
-	        int score = podio[i][1];
-	        podiumMessage.append("#" + (i + 1) + " Jogador	 ").append(players[playerNumber]).append(": ").append(score).append("\n");
+	    for (int i = 0; i < podium.length; i++) {
+	        int playerNumber = podium[i][0];
+	        podiumMessage.append("#").append(i + 1).append(" Jogador: ").append(players[playerNumber]).append("\n");
 	    }
-	    
-	    //	Exibe o icone do trofeu
+
+	    // Exibe o ícone do troféu
 	    ImageIcon icon = new ImageIcon("res/images/trophy.png");
 	    
-	    JOptionPane.showMessageDialog(null, podiumMessage.toString(), "Podium", JOptionPane.INFORMATION_MESSAGE, icon);
+	    int option = JOptionPane.showOptionDialog(
+	            null,
+	            podiumMessage.toString(),
+	            "Podium",
+	            JOptionPane.YES_NO_OPTION,
+	            JOptionPane.INFORMATION_MESSAGE,
+	            icon,
+	            new String[]{"Ok"},
+	            null
+	    );
+
+	    if (option == JOptionPane.YES_OPTION || option == JOptionPane.NO_OPTION) {
+	    	showFinalDecisionBox();
+	    }
 	}
 
-	
+	//	Exibe mensagem final
+	protected void showFinalDecisionBox() {
+	    // Exibe o ícone do troféu
+	    @SuppressWarnings("unused")
+		ImageIcon icon = new ImageIcon("res/images/trophy.png");
+
+	    
+	    int option = JOptionPane.showConfirmDialog(
+                null,
+                "Deseja continuar a jogar?",
+                "Confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (option == JOptionPane.YES_OPTION) {
+            newGame();
+        } else if (option == JOptionPane.NO_OPTION) {
+        	System.exit(0);
+        }
+       
+	}
+
 	//	Operacoes -------------------------------------------
 	private void newGame(){
 		control.newGame();

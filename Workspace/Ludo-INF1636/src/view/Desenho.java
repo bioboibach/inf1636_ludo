@@ -381,10 +381,15 @@ public class Desenho {
 		}
 	}
 
-
+	
+	
+	//	SET ---------------------------------------------
+	protected void set_qtds_finais(int[] qtds_finais) {
+		this.qtds_finais  = qtds_finais;
+	}
 	
 	// Singelton ------------------------------------------
-	public static Desenho getInstance() {
+ 	public static Desenho getInstance() {
 		if (instance == null) {
 			instance = new Desenho();
 		}

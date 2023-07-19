@@ -13,6 +13,7 @@ public class Moment {
 	private int[][]		podio 				= new int[4][2];
 	private int			player				= 0;
 	private int 		diceVal				;
+	private Boolean		newGamebool 		= false;
 	
 // ____________________________________________________________________________________________________________________________
 //
@@ -134,7 +135,10 @@ public class Moment {
 	public void set_diceVal				(int diceVal) {
 		this.diceVal = diceVal;
 	}
-	
+	public void set_newGamebool			(Boolean newGamebool) {
+		this.newGamebool = newGamebool;
+	}
+
 	// GET ----------------------------
 	public int[] 	get_casasIniciais		() {
 	    return casasIniciais;
@@ -162,6 +166,9 @@ public class Moment {
 	}
 	public int 		getDiceVal				() {
 		return diceVal;
+	}
+	public Boolean	get_newGamebool			() {
+		return newGamebool;
 	}
 	
 	//	Singleton ------------------------------------------

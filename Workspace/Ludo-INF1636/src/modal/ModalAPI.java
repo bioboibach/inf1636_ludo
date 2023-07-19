@@ -1,12 +1,8 @@
 package modal;
 
-import controller.Moment;
-
 public class ModalAPI {
 	private static ModalAPI instance;
 	private Jogo jogoInst = Jogo.getInstance();
-	private Tabuleiro tabuleiroInst = Tabuleiro.getInstance();
-	private Moment	moment = Moment.getInstance();
 	
 	//	Jogador anterior (para saber quando os valores 5 e 6 do dado representam um movimento e por isso um peao deve ser selecionado)
 	private int lastPlayer = 0;
@@ -62,9 +58,7 @@ public class ModalAPI {
 	
 
 	
-	private void nextPlayer() {
-		lastPlayer = (lastPlayer + 1) % 4;
-	}
+	
 	//	GET ----------------------------------------
 	public Casa get_path_index(int index){
 		return Tabuleiro.getInstance().get_pathIndex(index);

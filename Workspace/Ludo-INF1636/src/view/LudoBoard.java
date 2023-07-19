@@ -29,6 +29,7 @@ public class LudoBoard extends JPanel{
 //
 		
 	//	TESTES------------------------------------------------------------------------------------------
+	@SuppressWarnings("unused")
 	private void teste() {		
 		int[] 	casas_iniciais 		= moment.get_casasIniciais();
 		int[][]	path				= moment.getPath();
@@ -134,7 +135,7 @@ public class LudoBoard extends JPanel{
 		desenho.draw_msg_turno_atual		(g);
 
 		// Peoes
-		desenho.draw_peoes(g);		
+		desenho.draw_peoes(g);
 	}
 
 	//	Atualizacao do Board apos a execucao de um turno
@@ -147,6 +148,12 @@ public class LudoBoard extends JPanel{
 		int[][] podio = Moment.getInstance().getPodio();
 		if(podio[0][0] != -1) {
 			menu.showPodium(podio);
+		}
+		
+		// Casa finais
+		if(moment.get_newGamebool() == true) {
+			int[] lst = {0, 0, 0, 0};
+			desenho.set_qtds_finais(lst);
 		}
 	}
 	

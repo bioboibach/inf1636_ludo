@@ -17,18 +17,7 @@ public class ModalAPI {
 	
 	//	Operacoes -------------------------------------------	
 	public void run_turn(int pathIndex, int finalPathIndex, int diceVal) {
-		System.out.println("index = " + diceVal);
-        System.out.println("lastTurn = " + lastPlayer);
-//        if((diceVal == 5 || diceVal == 6) && moment.getPlayer() == lastPlayer) {
-//        	System.out.println("Regra do 5 e 6: 2a vez");
-//		}
-//        else {
-//        	nextPlayer();
-//        	jogoInst.initializeTurn(pathIndex, finalPathIndex, diceVal);
-//        }
-//        if(pathIndex == -2 || finalPathIndex == -2) {
-//        	return;
-//		}
+
     	jogoInst.initializeTurn(pathIndex, finalPathIndex, diceVal);
 	}
 

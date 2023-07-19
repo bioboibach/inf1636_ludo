@@ -293,13 +293,11 @@ public class Desenho {
 				// Se houver, desenha o principal
 				color = COLORS[path[i][0]];
 				draw_peca(g, arrPath[i], color, 0);
-				System.out.println("Caiu 1 ------------------");
 			}
 			
 			// Peao secundario
 			if(path[i][1] == -1) {
 				// Se nao houver um segundo peao na casa
-				System.out.println("Caiu 2 ------------------");
 				continue;
 			}
 			else {
@@ -307,7 +305,6 @@ public class Desenho {
 					// Caso nao seja da mesma cor, desenha ele como stack 
 					color = COLORS[path[i][1]];
 					draw_peca(g, arrPath[i], color, 1);
-					System.out.println("Caiu 3 ------------------");
 				}
 				else {
 					// Se houver e ele for da mesma cor que o principal, desenha ele como barreira

@@ -11,7 +11,7 @@ public class ModalAPI {
 	//	Operacoes -------------------------------------------	
 	public void run_turn(int pathIndex, int finalPathIndex, int diceVal) {
 		jogoInst.initializeTurn(pathIndex, finalPathIndex, diceVal);
-		jogoInst.turn();
+//		jogoInst.turn();
 	}
 
 	public void clear_tabuleiro() {

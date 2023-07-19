@@ -42,7 +42,7 @@ public class Moment {
 		int[] 	reta_final_amarelo 		= this.getRetaFinalAmarelo();
 		int[] 	reta_final_azul 		= this.getRetaFinalAzul();
 		int[][]	podio					= this.getPodio();
-		int		turno					= -1;
+		int		turno					= 0;
 		
 		// As casas_iniciais comecam cheias
 		for (int i = 0; i < casas_iniciais.length; i++) {

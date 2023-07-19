@@ -40,28 +40,28 @@ public class LudoBoard extends JPanel{
 		int		turno				= moment.getTurno();
 		
 		// Casas iniciais
-		casas_iniciais[0] = 1;
-		casas_iniciais[1] = 2;
-		casas_iniciais[2] = 0;
-		casas_iniciais[3] = 3;
+		casas_iniciais[0] = 4;
+		casas_iniciais[1] = 4;
+		casas_iniciais[2] = 4;
+		casas_iniciais[3] = 4;
 		
 		// Path
-		path[10][0] = 0; path[10][1] = -1;	// normal
-		path[13][0] = 1; path[13][1] = 1;	// barreira
-		path[23][0] = 3; path[23][1] = 2;	// stack
+//		path[10][0] = 0; path[10][1] = -1;	// normal
+//		path[13][0] = 1; path[13][1] = 1;	// barreira
+//		path[23][0] = 3; path[23][1] = 2;	// stack
 		
-		path[30][0] = 3; path[30][1] = -1;	// stack
+//		path[30][0] = 3; path[30][1] = -1;	// stack
 		
-		// Retas finais
-		int [][] 	rfs = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul}; 
-		int [] 		rf 	= rfs[0];	// escolhe qual reta final voce quer adicionar pecas
-		rf[0] = 1;
-		rf[1] = 1;
-		rf[2] = 1;
-		rf[3] = 1;
-		rf[4] = 1;
-		rf[5] = 3;		
-		
+//		// Retas finais
+//		int [][] 	rfs = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul}; 
+//		int [] 		rf 	= rfs[0];	// escolhe qual reta final voce quer adicionar pecas
+//		rf[0] = 1;
+//		rf[1] = 1;
+//		rf[2] = 1;
+//		rf[3] = 1;
+//		rf[4] = 1;
+//		rf[5] = 3;		
+//		
 		// Podio
 //		podio[0][0] = 0; podio[0][1] = 10;
 //		podio[1][0] = 2; podio[1][1] = 5;
@@ -70,7 +70,7 @@ public class LudoBoard extends JPanel{
 		
 		//Turno
 		turno  = 2;
-		
+
 		moment.setAll(
 				casas_iniciais,
 				path,
@@ -105,7 +105,7 @@ public class LudoBoard extends JPanel{
         menu.botoes();
         Menu.addButtonsToPanel();
         
-        teste(); // ---------------------------------------------------------------------------------->>>>>> TESTE <<<<<<<<
+//        teste(); // ---------------------------------------------------------------------------------->>>>>> TESTE <<<<<<<<
 	}
 
 	
@@ -134,11 +134,10 @@ public class LudoBoard extends JPanel{
 	}
 
 	//	Atualizacao do Board apos a execucao de um turno
-	public void updateBoardInfo() {		
-		this.moment = Moment.getInstance();	 
-		
+	public void updateBoardInfo() {
 		repaint();
 		
+		moment.print();
 		// Podio
 		int[][] podio = Moment.getInstance().getPodio();
 		if(moment.getPodio()[0][0] != -1) {

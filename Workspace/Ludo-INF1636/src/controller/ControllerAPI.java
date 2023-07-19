@@ -43,7 +43,12 @@ public class ControllerAPI {
 	}
 	
 	public int roll() {
-		return modalInst.roll();
+		int temp = modalInst.roll();
+		modalInst.set_dice(temp);
+		return temp;
+	}
+	public void set_die_value(int v) {
+		modalInst.set_dice(v);
 	}
 	
 	public void nextPlayer() {

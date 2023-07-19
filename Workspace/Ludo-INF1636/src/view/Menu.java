@@ -112,6 +112,7 @@ public class Menu{
 		panel.repaint();
 	}
 	public static void alterarImgDado(int valor_escolhido) {
+		control.set_die_value(valor_escolhido);
 		diceValue = valor_escolhido;
 		viewAPI.set_dadosRolados(true);
 		panel.repaint();
@@ -218,7 +219,7 @@ public class Menu{
     		            	}
     		            }
     		            
-    		            executaTurno(indice_path, indice_final_path, color); 
+    		            executaTurno(indice_path, indice_final_path, diceValue); 
 
     		            // DEBUG
     		            System.out.printf("Coords Cartesianas: (%d, %d)\nCoords Indices: (%d, %d)\n", coord_x, coord_y, casa_x, casa_y);
@@ -260,13 +261,14 @@ public class Menu{
 		private void saveGame() {
 			control.save_game();
 		}	
-		private static void executaTurno(int indice_path, int indice_final_path, int color) {
-			control.executaTurno(indice_path, indice_final_path, color);
+		private static void executaTurno(int indice_path, int indice_final_path, int dado) {
+			control.executaTurno(indice_path, indice_final_path, dado);
 		}
 		protected int roll() {
 			return control.roll();
 		}
-	
+
+		
 
 	// REFERENCIAS -----------------------
 	public static void addButtonsToPanel() {

@@ -4,8 +4,10 @@ import java.util.*;
 import controller.ObservadoIF;
 import controller.ObservadorIF;
 import view.ViewAPI;
+import controller.Moment;
 
-class Jogo implements ObservadoIF {    
+class Jogo implements ObservadoIF {   
+	private Moment moment = Moment.getInstance();
 	private static Jogo instance;
 	List<ObservadorIF> observadores = new ArrayList<ObservadorIF>();
 
@@ -69,22 +71,61 @@ class Jogo implements ObservadoIF {
 	protected void initializeTurn(int pathIndex, int finalPathIndex, int diceVal) {
 		int listIndex;		
 		int listType;	// 0 -> path, 1 -> casasIniciais, 2 -> finalPath (~ retaFinal)
+		Casa c;
+		Peca p;
+		Player ply = players[currentPlayer];
+//		if current player cant move, skip
+		if (!(ply.can_move(diceVal))) {
+			end_turn();
+			return;
+		}
+		else if (diceVal == 5) {
+			c = board.get_casasIniciaisIndex(ply.get_id());
+			if (c.get_num_pecas() != 0 && board.get_casaDeSaida(ply.get_id()).is_casa_vaga(c.get_primeira_peca_player(ply))) {
+				p = c.get_primeira_peca_player(ply);
+				p.move_to_casa_de_saida();
+				set_lastMovedPeca(p);
+				end_turn();
+				return;
+			}
+		}
+		else if (diceVal == 6) {
+			qtd_6_rolados++;
+			if (qtd_6_rolados == 3) {
+				c = lastMovedPeca.get_currentCasa();
+				if(c.get_tipo() != 5 && c.get_tipo() != 4) {
+					lastMovedPeca.move_to_base();
+				}
+				end_turn();
+				return;
+			}
+			
+			// verifica se player tem barreira
+			else if (ply.get_barrier() != null){
+				p = ply.get_barrier();
+				p.move(diceVal);
+				set_lastMovedPeca(p);
+				return;
+			}
+		}
 		
 		if(finalPathIndex != -1){
+			clickedCasa = board.get_retaFinalIndex(finalPathIndex, currentPlayer);
 			listIndex = finalPathIndex;
-			listType = 0;
+			listType = 2;
 		}
 		else if(pathIndex != -1) {
+			clickedCasa = board.get_pathIndex(pathIndex);
 			listIndex = pathIndex;
-			listType = 2;	
+			listType = 0;	
 		}
 		else {
+			clickedCasa = board.get_casasIniciaisIndex(currentPlayer);
 			listIndex = -1;
 			listType = 1;	
 		}
 		
-		set_dice(diceVal);
-//		TODO: 
+//		TODO:
 //		set_clickedCasa(listIndex, listType); // verificar se na casa tem pecas, caso tiver, e
 //		setCurrentPeca(listIndex, listType);
 		
@@ -93,67 +134,30 @@ class Jogo implements ObservadoIF {
 	
 	protected void turn() {
 		Player ply = players[currentPlayer];
-		Peca p;
+		Peca p = null;
 		Casa c;
 		
-		System.out.println("player " + currentPlayer + " turn");
+//		System.out.println("player " + currentPlayer + " turn");
 		System.out.println("dado = " + currentDice);
 		print_map();
 		
-		switch(currentDice) {
-			case 5:
-				c = board.get_casasIniciaisIndex(ply.get_id());
-				
-				//	verifica se tem peca na casa inicial
-				if (c.get_num_pecas() != 0 && board.get_casaDeSaida(ply.get_id()).is_casa_vaga(c.get_primeira_peca_player(ply))) {
-					p = c.get_primeira_peca_player(ply);
-					p.move_to_casa_de_saida();
-					set_lastMovedPeca(p);
+		for (int i = 0; i < 4; i++) {
+			if (clickedCasa.get_peca(i) != null) {
+				if (clickedCasa.get_peca(i).get_cor() == currentPlayer) {
+					p = clickedCasa.get_peca(i);
+					break;
 				}
-				// verifica se pode mover alguma coisa
-				else if (ply.can_move(currentDice)) {
-					p = ply.pick_peca(currentDice);
-					p.move(currentDice);
-					set_lastMovedPeca(p);
-				}
-				break;
-				
-			case 6:
-
-				qtd_6_rolados++;
-				if (qtd_6_rolados == 3) {
-					c = lastMovedPeca.get_currentCasa();
-					if(c.get_tipo() != 5 && c.get_tipo() != 4) {
-						lastMovedPeca.move_to_base();
-					}
-					end_turn();
-					return;
-				}
-				
-				// verifica se player tem barreira
-				else if (ply.get_barrier() != null){
-					p = ply.get_barrier();
-					p.move(currentDice);
-					set_lastMovedPeca(p);
-				}
-				
-				else if (ply.can_move(currentDice)){
-					p = ply.pick_peca(currentDice);
-					p.move(currentDice);
-					set_lastMovedPeca(p);
-				}
-				break;
-	
-			default:
-
-				if (ply.can_move(currentDice)) {
-					p = ply.pick_peca(currentDice);
-					p.move(currentDice);
-					set_currentPeca(ply, p);
-					set_lastMovedPeca(p);
-				}
+			}
 		}
+		if (p == null) return;
 		
+		if (p.can_move(currentDice)) {
+			p.move(currentDice);
+			set_currentPeca(ply, p);
+			set_lastMovedPeca(p);			
+		}
+		else return;
+
 		while (lastMovedPeca.get_currentCasa().is_casa_final() || captureFlag == true) {
 			if (captureFlag == true) update_capture(false);
 			if(ply.can_move(6)) {
@@ -168,7 +172,7 @@ class Jogo implements ObservadoIF {
 			end_game();
 		}
 		if (currentDice == 6) {
-			turn();
+			return;
 		}
 		end_turn();
 		return;		
@@ -281,23 +285,71 @@ class Jogo implements ObservadoIF {
 		}
 	}
 
-	public Object[] get() { return null;
-	// TODO: tirar esse snipet pois agora a comunicao eh feita por meio 'Moment.java'
-//    public Object[] get() {
-//    	Tabuleiro tabuleiro = Tabuleiro.getInstance();
-//    	Object info[] = new Object[8];
-//    	
-//    	info[0] = tabuleiro.getObs_casas_iniciais();	// int[4] 		-> qtd de peoes nas casas iniciais de cada jogador
-//    	info[1] = tabuleiro.getObs_path();				// int[52][2] 	-> peoes que ocupam cada casa e qual eh o principal (2 por casa)
-//    	info[2] = tabuleiro.getObs_rf_vermelho();		// int[6]		-> qtd de peoes em cada casa da reta fina do vermelho
-//    	info[3] = tabuleiro.getObs_rf_verde();			// int[6]		-> qtd de peoes em cada casa da reta fina do verde
-//    	info[4] = tabuleiro.getObs_rf_amarelo();		// int[6]		-> qtd de peoes em cada casa da reta fina do amarelo
-//    	info[5] = tabuleiro.getObs_rf_azul();			// int[6]		-> qtd de peoes em cada casa da reta fina do azul
-//    	info[6] = define_podio();						// int[4]		-> [1 lugar, 2 lugar, 3 lugar, 4 lugar]
-//    	info[7] = get_turn();
-//    	
-//    	return info;
-    }
+	public void get() { 
+		
+//		int[][] i = new int[2][2];
+//		moment.set_casasIniciais(board.getObs_casasIniciais());
+//		moment.set_path(board.getObs_path());
+//		moment.set_retaFinalVermelho(board.getObs_rf_vermelho());
+//		moment.set_retaFinalVerde(board.getObs_rf_verde());
+//		moment.set_retaFinalAmarelo(board.getObs_rf_amarelo());
+//		moment.set_retaFinalAzul(board.getObs_rf_azul());
+//		moment.set_podio(i);
+//		moment.set_turno(currentPlayer);
+		
+		int[] 	casas_iniciais 		= moment.get_casasIniciais();
+		int[][]	path				= moment.getPath();
+		int[] 	reta_final_vermelho = moment.getRetaFinalVermelho();
+		int[] 	reta_final_verde 	= moment.getRetaFinalVerde();
+		int[] 	reta_final_amarelo 	= moment.getRetaFinalAmarelo();
+		int[] 	reta_final_azul 	= moment.getRetaFinalAzul();
+		int[][]	podio 				= moment.getPodio();
+		int		turno				= moment.getTurno();
+		
+		// Casas iniciais
+		casas_iniciais[0] = 2;
+		casas_iniciais[1] = 1;
+		casas_iniciais[2] = 3;
+		casas_iniciais[3] = 0;
+		
+		// Path
+		path[10][0] = 0; path[10][1] = -1;	// normal
+		path[13][0] = 1; path[13][1] = 1;	// barreira
+		path[23][0] = 3; path[23][1] = 2;	// stack
+		
+		path[30][0] = 3; path[30][1] = -1;	// stack
+		
+//		// Retas finais
+		int [][] 	rfs = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul}; 
+		int [] 		rf 	= rfs[0];	// escolhe qual reta final voce quer adicionar pecas
+		rf[0] = 1;
+		rf[1] = 1;
+		rf[2] = 1;
+		rf[3] = 1;
+		rf[4] = 1;
+		rf[5] = 3;		
+//		
+		// Podio
+		podio[0][0] = 0; podio[0][1] = 10;
+		podio[1][0] = 2; podio[1][1] = 5;
+		podio[2][0] = 1; podio[2][1] = 8;
+		podio[3][0] = 3; podio[3][1] = 3;
+		
+		//Turno
+		turno = 2;
+
+		moment.setAll(
+				casas_iniciais,
+				path,
+				reta_final_vermelho,
+				reta_final_verde,
+				reta_final_amarelo,
+				reta_final_azul,
+				podio,
+				turno
+				);
+	}
+
     
 	//	Singleton ------------------------------------------
    	public static Jogo getInstance() {

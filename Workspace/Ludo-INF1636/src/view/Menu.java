@@ -34,8 +34,7 @@ public class Menu{
 	
 	static int SIZE;
 	static int BOARD_SIZE;
-	
-	
+
 	//	Posicionamento
 	private static int[][] 		arrPathIndex 		= ludoBoard.get_arrPathIndex();
 	private static int[][][] 	arrRetasFinaisIndex	= ludoBoard.get_arrRetasFinaisIndex();	
@@ -77,15 +76,14 @@ public class Menu{
 		manualDie[5] = diceManual6;
 	}
 	
-	
 	//	Dado
-	protected void drawDiceImg(Graphics g, int turn){
+	protected void drawDiceImg(Graphics g, int player){
 		
 		loadDiceImgs();
 		
 		Graphics2D g2D = (Graphics2D) g;
 		
-		g2D.setPaint(COLORS[turn]);
+		g2D.setPaint(COLORS[player]);
 		Rectangle2D rt = new Rectangle2D.Double(890.0,350.0,150.0,150.0);
 		g2D.fill(rt);
 		
@@ -106,10 +104,11 @@ public class Menu{
 		}
 	}
 
-	public void alterarImgDado() {
+	public int alterarImgDado() {
 		diceValue = roll();
 		viewAPI.set_dadosRolados(true);
 		panel.repaint();
+		return diceValue;
 	}
 	public static void alterarImgDado(int valor_escolhido) {
 		control.set_die_value(valor_escolhido);
@@ -154,20 +153,26 @@ public class Menu{
 		launchDiceButton.setFont(new Font("Arial", Font.PLAIN, 18));
 		launchDiceButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				alterarImgDado();
+				int diceVal = alterarImgDado();
+				if(diceVal == 5 || diceVal == 6) {
+					executaTurno(-2, -2, diceVal);
+				}
 			}
 		});
 		
 		
 		//	Selecionador manual do dado
 		for (int i = 0; i < manualDie.length; i++) {
-		    final int index = i + 1; // Create a final variable to capture the value of 'i'
+		    final int index = i + 1; // Cria uma variavel pra pegar o valor de 'i'
 		    manualDie[i] = new JButton(String.valueOf(i + 1));
 		    manualDie[i].setBounds(790 + 60 * i, 640, 50, 50);
 		    manualDie[i].setFont(new Font("Arial", Font.PLAIN, 18));
 		    manualDie[i].addActionListener(new ActionListener() {
 		        public void actionPerformed(ActionEvent e) {
 		            alterarImgDado(index);
+		            if(index == 5 || index == 6) {
+						executaTurno(-2, -2, index);
+					}
 		        }
 		    });
 		}
@@ -252,23 +257,22 @@ public class Menu{
 
 	
 	//	Operacoes -------------------------------------------
-		private void newGame(){
-			control.newGame();
-		}
-		private void loadSavedGame(){
-			control.load_game();
-		}
-		private void saveGame() {
-			control.save_game();
-		}	
-		private static void executaTurno(int indice_path, int indice_final_path, int dado) {
-			control.executaTurno(indice_path, indice_final_path, dado);
-		}
-		protected int roll() {
-			return control.roll();
-		}
+	private void newGame(){
+		control.newGame();
+	}
+	private void loadSavedGame(){
+		control.load_game();
+	}
+	private void saveGame() {
+		control.save_game();
+	}	
+	protected int roll() {
+		return control.roll();
+	}
 
-		
+	private static void executaTurno(int indice_path, int indice_final_path, int dado) {
+		control.executaTurno(indice_path, indice_final_path, dado);
+	}		
 
 	// REFERENCIAS -----------------------
 	public static void addButtonsToPanel() {

@@ -35,6 +35,7 @@ public class ViewAPI implements ObservadorIF{
 	
 	//	Implementacao da interface Observador ------
 	public void notify(ObservadoIF o) {
+		o.get();
 		LudoBoard ludoBoard = LudoBoard.getInstance();
 		ludoBoard.updateBoardInfo(); 
 	}

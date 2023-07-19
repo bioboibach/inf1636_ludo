@@ -37,8 +37,8 @@ public class LudoBoard extends JPanel{
 		int[] 	reta_final_amarelo 	= moment.getRetaFinalAmarelo();
 		int[] 	reta_final_azul 	= moment.getRetaFinalAzul();
 		int[][]	podio 				= moment.getPodio();
-		int		turno				= moment.getTurno();
-		
+		int		turno				= moment.getPlayer();
+		int 	diceVal				= moment.getDiceVal();
 		// Casas iniciais
 		casas_iniciais[0] = 4;
 		casas_iniciais[1] = 4;
@@ -70,7 +70,10 @@ public class LudoBoard extends JPanel{
 		
 		//Turno
 		turno  = 2;
-
+		
+		//Dado
+		diceVal = 0;
+				
 		moment.setAll(
 				casas_iniciais,
 				path,
@@ -79,7 +82,8 @@ public class LudoBoard extends JPanel{
 				reta_final_amarelo,
 				reta_final_azul,
 				podio,
-				turno
+				turno,
+				diceVal
 				);
 	}
 	//	------------------------------------------------------------------------------------------------
@@ -114,7 +118,7 @@ public class LudoBoard extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		int turno = moment.getTurno();
+		int turno = moment.getPlayer();
 		
 		menu.drawDiceImg(g, turno);
         
@@ -135,9 +139,10 @@ public class LudoBoard extends JPanel{
 
 	//	Atualizacao do Board apos a execucao de um turno
 	public void updateBoardInfo() {
+		moment.print();
+
 		repaint();
 		
-		moment.print();
 		// Podio
 		int[][] podio = Moment.getInstance().getPodio();
 		if(moment.getPodio()[0][0] != -1) {

@@ -11,7 +11,8 @@ public class Moment {
 	private int[] 		retaFinalAmarelo 	= new int[6];
 	private int[] 		retaFinalAzul 		= new int[6];
 	private int[][]		podio 				= new int[4][2];
-	private int			turno				= 0;
+	private int			player				= 0;
+	private int 		diceVal				;
 	
 // ____________________________________________________________________________________________________________________________
 //
@@ -29,7 +30,8 @@ public class Moment {
 	    System.out.println("retaFinalAmarelo: " 	+ Arrays.toString(retaFinalAmarelo));
 	    System.out.println("retaFinalAzul: " 		+ Arrays.toString(retaFinalAzul));
 	    System.out.println("podio: " 				+ Arrays.deepToString(podio));
-	    System.out.println("turno: " 				+ turno);
+	    System.out.println("player: " 				+ player);
+	    System.out.println("diceVal: " 				+ diceVal);
 	}
 	
 	// Inicializacao ------------------
@@ -42,7 +44,8 @@ public class Moment {
 		int[] 	reta_final_amarelo 		= this.getRetaFinalAmarelo();
 		int[] 	reta_final_azul 		= this.getRetaFinalAzul();
 		int[][]	podio					= this.getPodio();
-		int		turno					= 0;
+		int		player					= 0;
+		int		diceVal					= 0;
 		
 		// As casas_iniciais comecam cheias
 		for (int i = 0; i < casas_iniciais.length; i++) {
@@ -67,7 +70,7 @@ public class Moment {
 		//	Valor default do podio para indicar que ele esta vazio
 		podio[0][0] = -1;
 		
-		this.setAllCasas(
+		this.setAll(
 				casas_iniciais,
 				path,
 				reta_final_vermelho,
@@ -75,7 +78,8 @@ public class Moment {
 				reta_final_amarelo,
 				reta_final_azul,
 				podio,
-				turno
+				player,
+				diceVal
 				);
 		
 	}
@@ -89,7 +93,8 @@ public class Moment {
 			int[] 		reta_final_amarelo,
 			int[] 		reta_final_azul,
 			int[][]		podio,
-			int			turno
+			int			turno,
+			int			diceVal
 			) {
 		this.set_casasIniciais(casas_iniciais);
 		this.set_path(path);
@@ -98,32 +103,14 @@ public class Moment {
 		this.set_retaFinalAmarelo(reta_final_amarelo);
 		this.set_retaFinalAzul(reta_final_azul);
 		this.set_podio(podio);
-		this.set_turno(turno);
-	}
-	public void setAllCasas(
-			int[] casas_iniciais,
-			int[][] path,
-			int[] reta_final_vermelho,
-			int[] reta_final_verde,
-			int[] reta_final_amarelo,
-			int[] reta_final_azul,
-			int[][] podio,
-			int turn) {
-		this.set_casasIniciais(casas_iniciais);
-		this.set_path(path);
-		this.set_retaFinalVermelho(reta_final_vermelho);
-		this.set_retaFinalVerde(reta_final_verde);
-		this.set_retaFinalAmarelo(reta_final_amarelo);
-		this.set_retaFinalAzul(reta_final_azul);
-		this.set_podio(podio);
-		this.set_turno(turn);
-		
+		this.set_player(turno);
+		this.set_diceVal(diceVal);
 	}
 
 	public void set_casasIniciais		(int[] casas_iniciais) {
 	    this.casasIniciais = casas_iniciais;
 	}
-	public void set_path					(int[][] path) {
+	public void set_path				(int[][] path) {
 	    this.path = path;
 	}
 	public void set_retaFinalVermelho	(int[] reta_final_vermelho) {
@@ -132,7 +119,7 @@ public class Moment {
 	public void set_retaFinalVerde		(int[] reta_final_verde) {
 	    this.retaFinalVerde = reta_final_verde;
 	}
-	public void set_retaFinalAmarelo		(int[] reta_final_amarelo) {
+	public void set_retaFinalAmarelo	(int[] reta_final_amarelo) {
 	    this.retaFinalAmarelo = reta_final_amarelo;
 	}
 	public void set_retaFinalAzul		(int[] reta_final_azul) {
@@ -141,8 +128,11 @@ public class Moment {
 	public void set_podio				(int[][] podio) {
 	    this.podio = podio;
 	}
-	public void set_turno				(int turno) {
-	    this.turno = turno;
+	public void set_player				(int turno) {
+	    this.player = turno;
+	}
+	public void set_diceVal				(int diceVal) {
+		this.diceVal = diceVal;
 	}
 	
 	// GET ----------------------------
@@ -167,10 +157,13 @@ public class Moment {
 	public int[][] 	getPodio				() {
 	    return podio;
 	}
-	public int 		getTurno				() {
-	    return turno;
+	public int 		getPlayer				() {
+	    return player;
 	}
-
+	public int 		getDiceVal				() {
+		return diceVal;
+	}
+	
 	//	Singleton ------------------------------------------
 	public static Moment getInstance() {
 		if (instance == null) {

@@ -77,11 +77,12 @@ class Load_game {
 	        int[]	retaFinalAzul = stringToArray(rowData[5]);
 	        int[][]	podio = stringTo2DArray(rowData[6]);
 	        int		turno = Integer.parseInt(rowData[7]);
+	        int		diceVal = Integer.parseInt(rowData[8]);
 
 	        moment.print();
 	        
 	        
-	        moment.setAllCasas(casasIniciais, path, retaFinalVermelho, retaFinalVerde, retaFinalAmarelo, retaFinalAzul, podio, turno);
+	        moment.setAll(casasIniciais, path, retaFinalVermelho, retaFinalVerde, retaFinalAmarelo, retaFinalAzul, podio, turno, diceVal);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }

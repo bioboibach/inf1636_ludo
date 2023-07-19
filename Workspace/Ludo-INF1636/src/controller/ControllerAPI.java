@@ -7,8 +7,6 @@ public class ControllerAPI {
 	
 	private static ControllerAPI instance;
 	private ModalAPI modalInst = ModalAPI.getInstance();
-
-	private int currentPlayer;
 	
 // ____________________________________________________________________________________________________________________________
 //
@@ -38,8 +36,10 @@ public class ControllerAPI {
 	}
 
 	public void executaTurno(int pathIndex, int finalPathIndex, int diceVal){		
-		instance.nextPlayer();
 		modalInst.run_turn(pathIndex, finalPathIndex, diceVal);
+	}
+	public void executaTurno(int diceVal){		//	Caso do dado ser 5 ou 6 
+		modalInst.run_turn(-1, -1, diceVal);
 	}
 	
 	public int roll() {
@@ -51,18 +51,9 @@ public class ControllerAPI {
 		modalInst.set_dice(v);
 	}
 	
-	public void nextPlayer() {
-		currentPlayer = (currentPlayer + 1) % 4;
-	}
 
-	//	GET --------------------------------------------
-	protected int get_currentPlayer() {
-		return currentPlayer;
-	}
 
 	//	Singleton ------------------------------------------
-
-
 	public static ControllerAPI getInstance() {
 		if (instance == null) {
 			instance = new ControllerAPI();

@@ -60,7 +60,8 @@ class Save_game {
 	        sb.append(arrayToString(moment.getRetaFinalAmarelo())).append(",");
 	        sb.append(arrayToString(moment.getRetaFinalAzul())).append(",");
 	        sb.append(array2DToString(moment.getPodio())).append(",");
-	        sb.append(moment.getTurno());
+	        sb.append(moment.getPlayer());
+	        sb.append(moment.getDiceVal());
 
 	        writer.println(sb.toString());
 	    } catch (IOException e) {

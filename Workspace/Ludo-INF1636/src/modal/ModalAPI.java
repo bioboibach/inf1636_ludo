@@ -1,17 +1,35 @@
 package modal;
 
+import controller.Moment;
+
 public class ModalAPI {
 	private static ModalAPI instance;
 	private Jogo jogoInst = Jogo.getInstance();
 	private Tabuleiro tabuleiroInst = Tabuleiro.getInstance();
+	private Moment	moment = Moment.getInstance();
+	
+	//	Jogador anterior (para saber quando os valores 5 e 6 do dado representam um movimento e por isso um peao deve ser selecionado)
+	private int lastPlayer = 0;
+	
 // ____________________________________________________________________________________________________________________________
 //
 	private ModalAPI() {}
 	
 	//	Operacoes -------------------------------------------	
 	public void run_turn(int pathIndex, int finalPathIndex, int diceVal) {
-		jogoInst.initializeTurn(pathIndex, finalPathIndex, diceVal);
-//		jogoInst.turn();
+		System.out.println("index = " + diceVal);
+        System.out.println("lastTurn = " + lastPlayer);
+        if((diceVal == 5 || diceVal == 6) && moment.getPlayer() == lastPlayer) {
+        	System.out.println("Regra do 5 e 6: 2a vez");
+		}
+        else {
+        	nextPlayer();
+        	jogoInst.initializeTurn(pathIndex, finalPathIndex, diceVal);
+        }
+        if(pathIndex == -2 || finalPathIndex == -2) {
+        	return;
+		}
+    	jogoInst.initializeTurn(pathIndex, finalPathIndex, diceVal);
 	}
 
 	public void clear_tabuleiro() {
@@ -26,35 +44,17 @@ public class ModalAPI {
 	}
 
 	//	SET ----------------------------------------
-//	public void set_positions(int playerIndex, int listIndex, int listType) {
-//		Peca p = jogoInst.get_player(playerIndex).get_peca(listIndex, listType);
-//		Casa c = null;
-//		
-//		if (listType == 0) {		//	path
-//			c = tabuleiroInst.get_pathIndex(listIndex);
-//		}
-//		else if (listType == 1) {	//	casa inicial
-//			c = tabuleiroInst.get_casasIniciaisIndex(playerIndex);
-//		}
-//		else {						//	final path
-//			c = tabuleiroInst.get_retaFinalIndex(listIndex, playerIndex);
-//		}
-//		c.add_peca(p);
-//		p.change_casa(c);
-//		
-//
-//		jogoInst.set_currentPeca(jogoInst.get_player(p.get_cor()), p);
-//		notify();
-//	}
 
 	public void set_turn(int t) {
-		jogoInst.set_turn(t);
+		jogoInst.set_currentPlayer(t);
 	}
 	public void set_dice(int t) {
 		jogoInst.set_dice(t);
 	}
 
-	
+	private void nextPlayer() {
+		lastPlayer = (lastPlayer + 1) % 4;
+	}
 	//	GET ----------------------------------------
 	public Casa get_path_index(int index){
 		return Tabuleiro.getInstance().get_pathIndex(index);
@@ -76,7 +76,7 @@ public class ModalAPI {
 	}
 	
 	public int get_player_turn() {
-		return jogoInst.get_turn(); 
+		return jogoInst.get_currentPlayer(); 
 	}
 	public int[] get_peca_indexes(int player_id, int peca_id) {
 		Peca p = jogoInst.get_player(player_id).get_peca(peca_id);
@@ -84,6 +84,10 @@ public class ModalAPI {
 	}
 	public int get_roll() {
 		return jogoInst.get_currentDice();
+	}
+	
+	protected int get_currentPlayer() {
+		return lastPlayer;
 	}
 	
 	//	Singleton ------------------------------------------

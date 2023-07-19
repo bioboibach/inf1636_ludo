@@ -17,7 +17,7 @@ class Player {
 	
 	protected Peca pick_peca(int val_die) {
 		Jogo j = Jogo.getInstance();
-		Peca p = j.get_player(j.get_turn()).get_peca(0);
+		Peca p = j.get_player(j.get_currentPlayer()).get_peca(0);
 		
 		int[] possible_pieces = new int[4];
 		possible_pieces = get_movable_pieces(val_die);

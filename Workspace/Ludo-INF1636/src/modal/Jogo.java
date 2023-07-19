@@ -50,7 +50,7 @@ class Jogo implements ObservadoIF {
 	}
 	protected void start_game() {
 		update_capture(false);
-		set_turn(0);
+		set_currentPlayer(0);
 		currentDice = 5;
 		qtd_6_rolados = 0;
 //		Inicializa as casas iniciais de cada jogador com referencias as casas inicias respectivas no tabuleiro
@@ -85,6 +85,7 @@ class Jogo implements ObservadoIF {
 				p = c.get_primeira_peca_player(ply);
 				p.move_to_casa_de_saida();
 				set_lastMovedPeca(p);
+				currentPlayer = (currentPlayer - 1) % 4; 	// O jogador continua sendo o mesmo para a proxima chamada do Jogo
 				end_turn();
 				return;
 			}
@@ -228,7 +229,7 @@ class Jogo implements ObservadoIF {
 	}
 	
 	//	SET ----------------------------------------
-	protected void set_turn(int t) {
+	protected void set_currentPlayer(int t) {
 		currentPlayer = t;
 	}
 	protected void set_dice(int t) {
@@ -261,9 +262,6 @@ class Jogo implements ObservadoIF {
 	protected int 		get_currentPlayer	() {
 		return currentPlayer;
 	}
-	protected int 		get_turn			() {
-		return currentPlayer;
-	}
 	protected int 		get_currentDice		() {
 		return currentDice;
 	}
@@ -285,69 +283,16 @@ class Jogo implements ObservadoIF {
 		}
 	}
 
-	public void get() { 
-		
-//		int[][] i = new int[2][2];
-//		moment.set_casasIniciais(board.getObs_casasIniciais());
-//		moment.set_path(board.getObs_path());
-//		moment.set_retaFinalVermelho(board.getObs_rf_vermelho());
-//		moment.set_retaFinalVerde(board.getObs_rf_verde());
-//		moment.set_retaFinalAmarelo(board.getObs_rf_amarelo());
-//		moment.set_retaFinalAzul(board.getObs_rf_azul());
-//		moment.set_podio(i);
-//		moment.set_turno(currentPlayer);
-		
-		int[] 	casas_iniciais 		= moment.get_casasIniciais();
-		int[][]	path				= moment.getPath();
-		int[] 	reta_final_vermelho = moment.getRetaFinalVermelho();
-		int[] 	reta_final_verde 	= moment.getRetaFinalVerde();
-		int[] 	reta_final_amarelo 	= moment.getRetaFinalAmarelo();
-		int[] 	reta_final_azul 	= moment.getRetaFinalAzul();
-		int[][]	podio 				= moment.getPodio();
-		int		turno				= moment.getTurno();
-		
-		// Casas iniciais
-		casas_iniciais[0] = 2;
-		casas_iniciais[1] = 1;
-		casas_iniciais[2] = 3;
-		casas_iniciais[3] = 0;
-		
-		// Path
-		path[10][0] = 0; path[10][1] = -1;	// normal
-		path[13][0] = 1; path[13][1] = 1;	// barreira
-		path[23][0] = 3; path[23][1] = 2;	// stack
-		
-		path[30][0] = 3; path[30][1] = -1;	// stack
-		
-//		// Retas finais
-		int [][] 	rfs = {reta_final_vermelho, reta_final_verde, reta_final_amarelo, reta_final_azul}; 
-		int [] 		rf 	= rfs[0];	// escolhe qual reta final voce quer adicionar pecas
-		rf[0] = 1;
-		rf[1] = 1;
-		rf[2] = 1;
-		rf[3] = 1;
-		rf[4] = 1;
-		rf[5] = 3;		
-//		
-		// Podio
-		podio[0][0] = 0; podio[0][1] = 10;
-		podio[1][0] = 2; podio[1][1] = 5;
-		podio[2][0] = 1; podio[2][1] = 8;
-		podio[3][0] = 3; podio[3][1] = 3;
-		
-		//Turno
-		turno = 2;
-
-		moment.setAll(
-				casas_iniciais,
-				path,
-				reta_final_vermelho,
-				reta_final_verde,
-				reta_final_amarelo,
-				reta_final_azul,
-				podio,
-				turno
-				);
+	public void get() {
+		int[][] i = new int[2][2];
+		moment.set_casasIniciais(board.getObs_casasIniciais());
+		moment.set_path(board.getObs_path());
+		moment.set_retaFinalVermelho(board.getObs_rf_vermelho());
+		moment.set_retaFinalVerde(board.getObs_rf_verde());
+		moment.set_retaFinalAmarelo(board.getObs_rf_amarelo());
+		moment.set_retaFinalAzul(board.getObs_rf_azul());
+		moment.set_podio(i);
+		moment.set_player(currentPlayer);
 	}
 
     

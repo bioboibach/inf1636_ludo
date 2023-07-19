@@ -240,19 +240,19 @@ public class Menu{
 	
 	//	Exibe o podio
 	protected void showPodium(int[][] podio) {
-	    String[] players = {"Vermelho", "Verde", "Amarelo", "Azul"};
-	    
-	    StringBuilder podiumMessage = new StringBuilder("Podio:\n");
-	    for (int i = 0; i < podio.length; i++) {
-	        int playerNumber = podio[i][0];
-	        int score = podio[i][1];
-	        podiumMessage.append("#" + (i + 1) + " Jogador	 ").append(players[playerNumber]).append(": ").append(score).append("\n");
-	    }
-	    
-	    //	Exibe o icone do trofeu
-	    ImageIcon icon = new ImageIcon("res/images/trophy.png");
-	    
-	    JOptionPane.showMessageDialog(null, podiumMessage.toString(), "Podium", JOptionPane.INFORMATION_MESSAGE, icon);
+//	    String[] players = {"Vermelho", "Verde", "Amarelo", "Azul"};
+//	    
+//	    StringBuilder podiumMessage = new StringBuilder("Podio:\n");
+//	    for (int i = 0; i < podio.length; i++) {
+//	        int playerNumber = podio[i][0];
+//	        int score = podio[i][1];
+//	        podiumMessage.append("#" + (i + 1) + " Jogador	 ").append(players[playerNumber]).append(": ").append(score).append("\n");
+//	    }
+//	    
+//	    //	Exibe o icone do trofeu
+//	    ImageIcon icon = new ImageIcon("res/images/trophy.png");
+//	    
+//	    JOptionPane.showMessageDialog(null, podiumMessage.toString(), "Podium", JOptionPane.INFORMATION_MESSAGE, icon);
 	}
 
 	

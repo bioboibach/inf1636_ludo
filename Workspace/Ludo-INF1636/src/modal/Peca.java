@@ -8,7 +8,6 @@ class Peca {
 		id_time = id;
 	}
 	
-	
 	protected void move(int die_val) {
 		Tabuleiro t = Tabuleiro.getInstance();
 		Casa c;
@@ -22,9 +21,8 @@ class Peca {
 				else
 					cor = c.get_peca(0).get_cor();
 
-				if (cor != id_time && !c.is_abrigo() && !c.is_casa_de_saida()
-						&& (c.is_casa_de_saida() && c.get_cor() != cor)) {
-					Jogo.getInstance().captura(c);
+				if (cor != id_time && (!c.is_abrigo() || (c.is_casa_de_saida() && c.get_cor() != cor))) {
+							Jogo.getInstance().captura(c);
 				}
 			}
 			current_casa.remove_peca(this);
@@ -41,60 +39,6 @@ class Peca {
 
 	
 //	Operacoes -------------------------------------------
-	
-//	TODO =========  MOVE ORIGINAL ==============
-//	funcao encarregada de movimentar a peca
-//	verifica onde a peca ta, pra onde vai, se pode mover e atualiza-la
-//	protected void move(int die_val) {
-//		Tabuleiro t = Tabuleiro.getInstance();
-//		
-//		if (t.get_path_current_casa(this) == -1) return;
-//		
-//		Casa c = t.get_destination(t.get_path_current_casa(this), die_val, this, true);
-//		
-//		if (c.get_num_pecas() > 0) {
-//			int cor;
-//			if (c.get_peca(0) == null) cor = c.get_peca(1).get_cor(); 
-//			else cor = c.get_peca(0).get_cor();
-//			
-//			if (cor != id_time && !c.is_abrigo() && !c.is_casa_de_saida() && (c.is_casa_de_saida() && c.get_cor() != cor)) {
-//				Jogo.getInstance().captura(c);
-//			}
-//		}
-//		current_casa.remove_peca(this);
-//		current_casa = c;
-//		current_casa.add_peca(this);
-//	}
-	
-//	protected void move(int die_val) {
-//		Tabuleiro t = Tabuleiro.getInstance();
-//		Casa c;
-//		if (t.is_in_path(this)) {
-//			c = t.get_destination(t.get_path_current_casa(this), die_val, this, false);
-//
-//			if (c.get_num_pecas() > 0) {
-//				int cor;
-//				if (c.get_peca(0) == null)
-//					cor = c.get_peca(1).get_cor();
-//				else
-//					cor = c.get_peca(0).get_cor();
-//
-//				if (cor != id_time && !c.is_abrigo() && !c.is_casa_de_saida()
-//						&& (c.is_casa_de_saida() && c.get_cor() != cor)) {
-//					Jogo.getInstance().captura(c);
-//				}
-//			}
-//			current_casa.remove_peca(this);
-//			current_casa = c;
-//			current_casa.add_peca(this);
-//		}
-//		else if (t.is_in_reat_final(this)) {
-//			c = t.get_destination(t.get_reta_final_current_casa(this), die_val, this, true);
-//			current_casa.remove_peca(this);
-//			current_casa = c;
-//			current_casa.add_peca(this);
-//		}
-//	}
 	
 	protected void move_to_base() {
 		current_casa.remove_peca(this);

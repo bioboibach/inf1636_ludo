@@ -85,7 +85,6 @@ class Jogo implements ObservadoIF {
 				p = c.get_primeira_peca_player(ply);
 				p.move_to_casa_de_saida();
 				set_lastMovedPeca(p);
-				currentPlayer = (currentPlayer - 1) % 4; 	// O jogador continua sendo o mesmo para a proxima chamada do Jogo
 				end_turn();
 				return;
 			}
@@ -110,12 +109,14 @@ class Jogo implements ObservadoIF {
 			}
 		}
 		
-		if(finalPathIndex != -1){
+		if(finalPathIndex > -1){
+			System.out.println("finalPathIndex = " + finalPathIndex);
 			clickedCasa = board.get_retaFinalIndex(finalPathIndex, currentPlayer);
 			listIndex = finalPathIndex;
 			listType = 2;
 		}
-		else if(pathIndex != -1) {
+		else if(pathIndex > -1) {
+			System.out.println("pathIndex = " + pathIndex);
 			clickedCasa = board.get_pathIndex(pathIndex);
 			listIndex = pathIndex;
 			listType = 0;	
@@ -223,6 +224,7 @@ class Jogo implements ObservadoIF {
 		}
 		p.move_to_base();
 		update_capture(true);
+		atualizaObservadores();
 	}
 	protected void update_capture(boolean b) {
 		captureFlag = b;

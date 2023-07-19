@@ -277,8 +277,14 @@ class Tabuleiro {
     	    	obs_path[i][1] = -1;
     	    	break;
     	    case 1:
-    	    	obs_path[i][0] = casa.get_peca(0).get_cor();
-    	    	obs_path[i][1] = -1;
+    	    	if(casa.get_peca(0) != null) {
+	    	    	obs_path[i][0] = casa.get_peca(0).get_cor();
+	    	    	obs_path[i][1] = -1;
+    	    	}
+    	    	else{
+	    	    	obs_path[i][0] = casa.get_peca(1).get_cor();
+	    	    	obs_path[i][1] = -1;
+    	    	}
     	    	break;
     	    case 2:
     	    	obs_path[i][0] = casa.get_peca(0).get_cor();

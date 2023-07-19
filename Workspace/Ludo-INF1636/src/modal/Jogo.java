@@ -21,6 +21,7 @@ class Jogo implements ObservadoIF {
 	private int 	currentPlayer 	= 0;
 	private int 	currentDice 	= -1;
 	private int 	qtd_6_rolados 	= 0;
+	private int[][] podium			= new int[4][2];
 	
 	private Casa	clickedCasa 	;
 // ____________________________________________________________________________________________________________________________
@@ -69,7 +70,9 @@ class Jogo implements ObservadoIF {
 	
 	//	Operacoes -------------------------------------------
 	protected void initializeTurn(int pathIndex, int finalPathIndex, int diceVal) {
+		@SuppressWarnings("unused")
 		int listIndex;		
+		@SuppressWarnings("unused")
 		int listType;	// 0 -> path, 1 -> casasIniciais, 2 -> finalPath (~ retaFinal)
 		Casa c;
 		Peca p;
@@ -85,7 +88,7 @@ class Jogo implements ObservadoIF {
 				p = c.get_primeira_peca_player(ply);
 				p.move_to_casa_de_saida();
 				set_lastMovedPeca(p);
-				currentPlayer = (currentPlayer - 1) % 4; 	// O jogador continua sendo o mesmo para a proxima chamada do Jogo
+//				currentPlayer = (currentPlayer - 1) % 4; 	// O jogador continua sendo o mesmo para a proxima chamada do Jogo
 				end_turn();
 				return;
 			}
@@ -110,12 +113,12 @@ class Jogo implements ObservadoIF {
 			}
 		}
 		
-		if(finalPathIndex != -1){
+		if(finalPathIndex > -1){
 			clickedCasa = board.get_retaFinalIndex(finalPathIndex, currentPlayer);
 			listIndex = finalPathIndex;
 			listType = 2;
 		}
-		else if(pathIndex != -1) {
+		else if(pathIndex > -1) {
 			clickedCasa = board.get_pathIndex(pathIndex);
 			listIndex = pathIndex;
 			listType = 0;	
@@ -136,7 +139,6 @@ class Jogo implements ObservadoIF {
 	protected void turn() {
 		Player ply = players[currentPlayer];
 		Peca p = null;
-		Casa c;
 		
 //		System.out.println("player " + currentPlayer + " turn");
 		System.out.println("dado = " + currentDice);
@@ -199,23 +201,62 @@ class Jogo implements ObservadoIF {
 	}
 	protected void end_game() {
 		determinePodium();
+		atualizaObservadores();
 		System.out.print("\n\n\n ======================     FIM DE JOGO    ======================\n\n\n");
 	}
-	protected int[][] determinePodium() {
-		TreeSet<Integer> pecas_count = new TreeSet<>();
-		List<Integer> pecas_count_lst = new ArrayList<>(pecas_count);
-		int[][] podio = new int[4][2]; 		//Colocacao de cada player
+	protected void determinePodium() {
+		int[][] podium = new int[4][2]; 		//Colocacao de cada player
 		
-//		TODO: corrigir implementacao deste metodo: a regra diz que a pontuacao depende da distancia dos peoes do jogador ate a final ou algo parecido
-//		for(int i = 0; i < 4; i++)
-//			pecas_count.add(t.get_casa_final(i).get_num_pecas());
-//		
-//		for(int i = 0; i < 4; i++)
-//			podio[i] = pecas_count_lst.indexOf(t.get_casa_final(i).get_num_pecas());
-//		
-		return podio;
+		int[] playerPoints = {0, 0, 0, 0};
+		
+		//	Pecas na path
+		int pecaPrincipal;
+		int pecaSecundaria;
+		int colorOffset;	//	correcao para a distancia entre a casa de saida e a casa (indice da casa de saida do jogador)
+		
+		for(int i = 0; i < 52; i++) {
+			pecaPrincipal = moment.getPath()[i][0];
+			pecaSecundaria = moment.getPath()[i][1];
+			if(pecaPrincipal != -1) {
+				colorOffset = pecaPrincipal*13;
+				playerPoints[pecaPrincipal] += 52 - (pecaPrincipal - colorOffset) + 6;	// valor ate chegar na reta final respectiva + qtd de casas da reta final
+				
+				if(pecaSecundaria != -1) {
+					colorOffset = pecaPrincipal*13;
+					playerPoints[pecaPrincipal] += 52 - (pecaPrincipal - colorOffset) + 6;	// valor ate chegar na reta final respectiva + qtd de casas da reta final
+				}
+			}	
+		}
+		
+		//	Pecas nas retas finais
+		int[][] retas_finais = {moment.getRetaFinalVermelho(), moment.getRetaFinalVerde(), moment.getRetaFinalAmarelo(), moment.getRetaFinalAzul()};
+		
+		for(int i = 0; i < retas_finais.length; i++) {
+			for(int k = 0; k < retas_finais[i].length; k++) {
+				if(retas_finais[i][k] > 0) {
+					playerPoints[i] += 5 - k;
+				}
+			}
+		}
+		
+		//	Coloca em ordem
+		int place;
+		for(int i = 0; i < 4; i++) {
+			place = 0;
+			for(int k = 0; k < 4; k++) {
+				if(k != i) {
+					if(playerPoints[i] > playerPoints[k]) {
+						place++;
+					}
+				}
+			}
+			podium[place][0] = i;
+			podium[place][1] = playerPoints[i];
+		}
+		
+		this.podium= podium;
 	}
-		
+
 	protected void captura(Casa c) {
 		Peca p = c.get_peca(0);
 		if (p == null) {
@@ -284,14 +325,14 @@ class Jogo implements ObservadoIF {
 	}
 
 	public void get() {
-		int[][] i = new int[2][2];
+		podium[0][0] = -1;
 		moment.set_casasIniciais(board.getObs_casasIniciais());
 		moment.set_path(board.getObs_path());
 		moment.set_retaFinalVermelho(board.getObs_rf_vermelho());
 		moment.set_retaFinalVerde(board.getObs_rf_verde());
 		moment.set_retaFinalAmarelo(board.getObs_rf_amarelo());
 		moment.set_retaFinalAzul(board.getObs_rf_azul());
-		moment.set_podio(i);
+		moment.set_podio(podium);
 		moment.set_player(currentPlayer);
 	}
 
